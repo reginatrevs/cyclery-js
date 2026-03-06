@@ -53,7 +53,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             <label class="crx-rqnl__field">
               <span>Brand</span>
-              <input name="brand" type="text" placeholder="Factor, etc.">
+              <select name="brand" required>
+                <option value="">Select…</option>
+                <option>Factor</option>
+                <option>ENVE</option>
+                <option>TIME</option>
+                <option>Look</option>
+                <option>Bianchi</option>
+                <option>Specialized</option>
+                <option>Colnago</option>
+                <option>De Rosa</option>
+                <option>Scott</option>
+                <option>Merckx</option>
+                <option>Ridley</option>
+              </select>
             </label>
 
             <label class="crx-rqnl__field">
@@ -111,11 +124,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const iframe = mount.querySelector(".crx-rqnl__frame");
 
   let hasSubmitted = false;
-  let ignoreNextIframeLoad = true; // the iframe will "load" once even before submit
+  let ignoreNextIframeLoad = true;
 
   function open() {
     status.textContent = "";
-    ignoreNextIframeLoad = true; // opening modal will cause an iframe load
+    ignoreNextIframeLoad = true;
     modal.classList.add("crx-rqnl__modal--open");
     modal.setAttribute("aria-hidden", "false");
   }
@@ -132,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", () => {
     hasSubmitted = true;
     status.textContent = "Sending…";
-    ignoreNextIframeLoad = false; // the next load is the submission response
+    ignoreNextIframeLoad = false;
   });
 
   iframe.addEventListener("load", () => {
@@ -142,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
     status.textContent = "Sent ✔";
     form.reset();
     hasSubmitted = false;
-    ignoreNextIframeLoad = true; // prevent any extra loads from re-triggering
+    ignoreNextIframeLoad = true;
   });
 
   function escapeHtml(str) {
