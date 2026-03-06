@@ -154,6 +154,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     status.textContent = "Sent ✔";
     form.reset();
+
+    // Auto-close after a short delay, so they can read "Sent"
+    setTimeout(() => {
+      close();
+      status.textContent = "";
+    }, 1200);
+
     hasSubmitted = false;
     ignoreNextIframeLoad = true;
   });
