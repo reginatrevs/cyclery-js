@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
       width:100%;border:1px solid rgba(0,0,0,.18);border-radius:12px;padding:10px 12px
     }
     .crx-rqnl__submit{border-radius:999px;padding:10px 14px;font-weight:900;cursor:pointer;border:1px solid rgba(0,0,0,.18);background:#111;color:#fff}
-    .crx-rqnl__status{margin:0;font-weight:800}
+    .crx-rqnl__status{margin:0;font-weight:800;min-height:1.2em}
     .crx-rqnl__frame{width:0;height:0;border:0;position:absolute;opacity:0}
     .crx-rqnl__hp{display:none}
   `;
@@ -110,18 +110,33 @@ document.addEventListener("DOMContentLoaded", function () {
   const status = mount.querySelector(".crx-rqnl__status");
   const iframe = mount.querySelector(".crx-rqnl__frame");
 
-  function open() { modal.classList.add("crx-rqnl__modal--open"); modal.setAttribute("aria-hidden","false"); }
-  function close() { modal.classList.remove("crx-rqnl__modal--open"); modal.setAttribute("aria-hidden","true"); }
+  let hasSubmitted = false;
+
+  function open() {
+    status.textContent = "";
+    modal.classList.add("crx-rqnl__modal--open");
+    modal.setAttribute("aria-hidden", "false");
+  }
+
+  function close() {
+    modal.classList.remove("crx-rqnl__modal--open");
+    modal.setAttribute("aria-hidden", "true");
+  }
 
   openBtn.addEventListener("click", open);
   mount.addEventListener("click", (e) => { if (e.target.closest("[data-crx-close]")) close(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
-  form.addEventListener("submit", () => { status.textContent = "Sending…"; });
+  form.addEventListener("submit", () => {
+    hasSubmitted = true;
+    status.textContent = "Sending…";
+  });
 
   iframe.addEventListener("load", () => {
+    if (!hasSubmitted) return; // prevents the initial iframe load from showing "Sent"
     status.textContent = "Sent ✔";
     form.reset();
+    hasSubmitted = false;
   });
 
   function escapeHtml(str) {
