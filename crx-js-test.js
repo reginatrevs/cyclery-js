@@ -111,9 +111,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const iframe = mount.querySelector(".crx-rqnl__frame");
 
   let hasSubmitted = false;
+  let ignoreNextIframeLoad = true; // the iframe will "load" once even before submit
 
   function open() {
     status.textContent = "";
+    ignoreNextIframeLoad = true; // opening modal will cause an iframe load
     modal.classList.add("crx-rqnl__modal--open");
     modal.setAttribute("aria-hidden", "false");
   }
@@ -130,13 +132,17 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", () => {
     hasSubmitted = true;
     status.textContent = "Sending…";
+    ignoreNextIframeLoad = false; // the next load is the submission response
   });
 
   iframe.addEventListener("load", () => {
-    if (!hasSubmitted) return; // prevents the initial iframe load from showing "Sent"
+    if (ignoreNextIframeLoad) return;
+    if (!hasSubmitted) return;
+
     status.textContent = "Sent ✔";
     form.reset();
     hasSubmitted = false;
+    ignoreNextIframeLoad = true; // prevent any extra loads from re-triggering
   });
 
   function escapeHtml(str) {
