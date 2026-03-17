@@ -338,9 +338,9 @@ function crxInitHomeBikes() {
 
 /* ───────────────────────────────────────────────────
    3-A. HOMEPAGE BRANDS – ALT OPTION A
-   Seamless infinite carousel: cards clone for endless
-   loop, center card scales up, smooth rAF-driven
-   crawl, click-to-focus, arrows step one at a time.
+   Truly endless rAF-driven carousel. Center card
+   scales up fluidly. Click any card to scroll it to
+   center. Arrows step one card. Silky smooth motion.
    Mount: <div class="crx-homebike-alt-a-mount"></div>
    ─────────────────────────────────────────────────── */
 function crxInitHomeBikeAltA() {
@@ -365,15 +365,14 @@ function crxInitHomeBikeAltA() {
     return name.split(" ").map(function(w){ return w[0]; }).join("");
   }
 
-  /* Build cards — we triple the set so there is always
-     a full clone on each side for seamless wrapping. */
-  function cardHTML(brand, setOffset) {
-    return '<button class="crx-hba__card" data-crx-hba-brand="' + brand.slug + '" type="button" aria-label="' + brand.name + '">' +
+  function cardHTML(brand) {
+    return '<button class="crx-hba__card" data-crx-hba-slug="' + brand.slug + '" type="button" aria-label="' + brand.name + '">' +
       '<span class="crx-hba__card-initial">' + brandInitials(brand.name) + '</span>' +
       '<span class="crx-hba__card-name">' + brand.name + '</span>' +
     '</button>';
   }
 
+  /* Triple the set for seamless infinite wrapping */
   var tripled = brands.concat(brands).concat(brands);
   var cardsHTML = tripled.map(function(b) { return cardHTML(b); }).join("");
 
@@ -384,9 +383,11 @@ function crxInitHomeBikeAltA() {
         '<h2 class="crx-hba__title">High-end bike builds</h2>' +
         '<p class="crx-hba__sub">Hand-built frames from the world\'s finest manufacturers, fitted and assembled to your exact specification.</p>' +
       '</div>' +
-      '<div class="crx-hba__viewport">' +
+      '<div class="crx-hba__stage">' +
         '<button class="crx-hba__arrow crx-hba__arrow--prev" type="button" aria-label="Previous">&#8249;</button>' +
-        '<div class="crx-hba__track">' + cardsHTML + '</div>' +
+        '<div class="crx-hba__viewport">' +
+          '<div class="crx-hba__track">' + cardsHTML + '</div>' +
+        '</div>' +
         '<button class="crx-hba__arrow crx-hba__arrow--next" type="button" aria-label="Next">&#8250;</button>' +
       '</div>' +
       '<div class="crx-hba__cta-wrap">' +
@@ -406,32 +407,29 @@ function crxInitHomeBikeAltA() {
     '.crx-hba__title{font-size:clamp(24px,4vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
     '.crx-hba__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
 
+    /* stage = arrows flanking the viewport */
+    '.crx-hba__stage{position:relative;display:flex;align-items:center;padding:0 56px}' +
+
     /* viewport with edge fade */
-    '.crx-hba__viewport{position:relative;width:100%;overflow:hidden;padding:28px 0;' +
-      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);' +
-      'mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%)}' +
+    '.crx-hba__viewport{flex:1;overflow:hidden;padding:28px 0;' +
+      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);' +
+      'mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%)}' +
     '.crx-hba__track{display:flex;align-items:center;gap:18px;will-change:transform}' +
 
-    /* cards */
+    /* cards — scale/opacity driven by JS via inline styles for fluid transitions */
     '.crx-hba__card{' +
       'flex:0 0 auto;width:160px;height:200px;' +
       'background:#111;border:1px solid rgba(255,255,255,.06);border-radius:16px;' +
       'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
-      'cursor:pointer;' +
-      'transition:transform .7s cubic-bezier(.25,.1,.25,1),box-shadow .7s ease,opacity .7s ease;' +
-      'color:#fff;opacity:.4;transform:scale(.85);' +
+      'cursor:pointer;color:#fff;' +
+      'transition:box-shadow .4s ease;' +
       'outline:none;-webkit-tap-highlight-color:transparent;padding:0;font-family:inherit}' +
-    '.crx-hba__card:hover{opacity:.65}' +
-    '.crx-hba__card.crx-hba__card--active{' +
-      'transform:scale(1.05);opacity:1;' +
-      'box-shadow:0 12px 48px rgba(0,0,0,.4)}' +
-    '.crx-hba__card.crx-hba__card--near{transform:scale(.95);opacity:.7}' +
-    '.crx-hba__card.crx-hba__card--far{transform:scale(.9);opacity:.5}' +
+    '.crx-hba__card:hover{box-shadow:0 8px 32px rgba(0,0,0,.35)}' +
 
     '.crx-hba__card-initial{font-size:36px;font-weight:900;letter-spacing:.04em;line-height:1;color:rgba(255,255,255,.9)}' +
     '.crx-hba__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
 
-    /* navigation arrows – positioned on sides */
+    /* navigation arrows – outside the masked viewport */
     '.crx-hba__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;' +
       'width:42px;height:42px;border-radius:50%;border:1px solid rgba(0,0,0,.12);' +
       'background:rgba(255,255,255,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);' +
@@ -439,8 +437,8 @@ function crxInitHomeBikeAltA() {
       'transition:background .2s,color .2s,box-shadow .2s;color:#111;line-height:1;padding:0;' +
       'box-shadow:0 2px 8px rgba(0,0,0,.1)}' +
     '.crx-hba__arrow:hover{background:#111;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.2)}' +
-    '.crx-hba__arrow--prev{left:12px}' +
-    '.crx-hba__arrow--next{right:12px}' +
+    '.crx-hba__arrow--prev{left:6px}' +
+    '.crx-hba__arrow--next{right:6px}' +
 
     /* cta */
     '.crx-hba__cta-wrap{margin-top:32px}' +
@@ -450,140 +448,199 @@ function crxInitHomeBikeAltA() {
 
     /* reduced motion */
     '@media(prefers-reduced-motion:reduce){' +
-      '.crx-hba__card{transition:none}' +
-      '.crx-hba__track{transition:none}' +
+      '.crx-hba__viewport{overflow-x:auto;-webkit-overflow-scrolling:touch}' +
     '}' +
 
     /* responsive */
     '@media(max-width:640px){' +
       '.crx-hba__card{width:130px;height:170px}' +
       '.crx-hba__card-initial{font-size:28px}' +
+      '.crx-hba__stage{padding:0 44px}' +
       '.crx-hba__arrow{width:34px;height:34px;font-size:18px}' +
-      '.crx-hba__arrow--prev{left:6px}' +
-      '.crx-hba__arrow--next{right:6px}' +
+      '.crx-hba__arrow--prev{left:4px}' +
+      '.crx-hba__arrow--next{right:4px}' +
     '}';
 
   document.head.appendChild(style);
 
-  /* ── carousel logic ── */
+  /* ── rAF-driven continuous scroll with center-card emphasis ── */
   var track = mount.querySelector(".crx-hba__track");
+  var viewport = mount.querySelector(".crx-hba__viewport");
   var allCards = Array.prototype.slice.call(track.querySelectorAll(".crx-hba__card"));
-  var n = brands.length;                 // 11 real brands
-  var totalCards = allCards.length;       // 33 (tripled)
-  var activeIdx = n;                     // start in the middle set
+  var n = brands.length;
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var autoTimer = null;
-  var paused = false;
-  var isSnapping = false;
+  if (reducedMotion) return;
 
-  /* Measure one card step (card width + gap) */
-  function cardStep() {
-    if (allCards.length < 2) return 178;
-    return allCards[1].offsetLeft - allCards[0].offsetLeft;
+  var speed = 0.3;          /* px per frame — slow, premium crawl */
+  var pos = 0;
+  var halfWidth = 0;        /* width of one brand-set (n cards + gaps) */
+  var paused = false;
+  var arrowAnimating = false;
+  var resumeTimer = null;
+
+  function measureHalf() {
+    halfWidth = track.scrollWidth / 3;
   }
 
-  /* Apply visual classes based on distance from active */
-  function applyClasses() {
-    allCards.forEach(function(card, i) {
-      card.classList.remove("crx-hba__card--active", "crx-hba__card--near", "crx-hba__card--far");
-      var dist = Math.abs(i - activeIdx);
-      if (dist === 0)      card.classList.add("crx-hba__card--active");
-      else if (dist === 1) card.classList.add("crx-hba__card--near");
-      else if (dist === 2) card.classList.add("crx-hba__card--far");
+  /* Start positioned so the middle set is visible */
+  function initPosition() {
+    measureHalf();
+    pos = -halfWidth;   /* begin at start of middle set */
+    track.style.transform = "translateX(" + pos + "px)";
+  }
+
+  /* Apply scale/opacity based on distance from viewport center */
+  function applyProximity() {
+    var vpRect = viewport.getBoundingClientRect();
+    var vpCenter = vpRect.left + vpRect.width / 2;
+
+    allCards.forEach(function(card) {
+      var cardRect = card.getBoundingClientRect();
+      var cardCenter = cardRect.left + cardRect.width / 2;
+      var dist = Math.abs(vpCenter - cardCenter);
+      var maxDist = vpRect.width / 2;
+
+      /* normalised 0..1 where 0 = dead centre */
+      var t = Math.min(dist / maxDist, 1);
+
+      /* scale: 1.05 at centre → 0.82 at edges */
+      var scale = 1.05 - (t * 0.23);
+      /* opacity: 1 at centre → 0.35 at edges */
+      var opacity = 1 - (t * 0.65);
+
+      card.style.transform = "scale(" + scale.toFixed(3) + ")";
+      card.style.opacity = opacity.toFixed(3);
     });
   }
 
-  /* Centre activeIdx card in viewport (with optional CSS transition) */
-  function centreOn(idx, animate) {
-    var viewportW = mount.querySelector(".crx-hba__viewport").offsetWidth;
-    var card = allCards[idx];
-    var offset = -(card.offsetLeft - (viewportW / 2) + (card.offsetWidth / 2));
-    if (animate) {
-      track.style.transition = "transform .7s cubic-bezier(.25,.1,.25,1)";
-    } else {
-      track.style.transition = "none";
+  function tick() {
+    if (!paused && !arrowAnimating) {
+      pos -= speed;
+      /* seamless wrap */
+      if (pos <= -halfWidth * 2) pos += halfWidth;
+      if (pos > -halfWidth + halfWidth) pos -= halfWidth;
+      track.style.transform = "translateX(" + pos + "px)";
     }
-    track.style.transform = "translateX(" + offset + "px)";
+    applyProximity();
+    requestAnimationFrame(tick);
   }
 
-  /* Silently jump to equivalent position in middle set
-     (called after transition ends if we've drifted into a clone set) */
-  function wrapIndex() {
-    if (activeIdx < n) {
-      activeIdx += n;
-      centreOn(activeIdx, false);
-    } else if (activeIdx >= 2 * n) {
-      activeIdx -= n;
-      centreOn(activeIdx, false);
+  /* Arrow: smoothly scroll by one card width */
+  function arrowStep(direction) {
+    var step = allCards.length >= 2
+      ? allCards[1].offsetLeft - allCards[0].offsetLeft
+      : 178;
+
+    arrowAnimating = true;
+    paused = true;
+    clearTimeout(resumeTimer);
+
+    var target = pos + (direction === "next" ? -step : step);
+    var startPos = pos;
+    var startTime = null;
+    var duration = 600;
+
+    function ease(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
+
+    function animate(now) {
+      if (!startTime) startTime = now;
+      var elapsed = now - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = ease(progress);
+
+      pos = startPos + (target - startPos) * eased;
+
+      /* wrap */
+      if (pos <= -halfWidth * 2) pos += halfWidth;
+      if (pos > 0) pos -= halfWidth;
+
+      track.style.transform = "translateX(" + pos + "px)";
+      applyProximity();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        arrowAnimating = false;
+        resumeTimer = setTimeout(function() { paused = false; }, 2000);
+      }
+    }
+    requestAnimationFrame(animate);
   }
 
-  function goTo(idx, animate) {
-    activeIdx = idx;
-    applyClasses();
-    centreOn(idx, animate);
-    if (animate) {
-      isSnapping = true;
-      /* Wait for transition, then silently re-centre if needed */
-      setTimeout(function() {
-        wrapIndex();
-        applyClasses();
-        isSnapping = false;
-      }, 720);
-    }
-  }
-
-  function next() { goTo(activeIdx + 1, true); }
-  function prev() { goTo(activeIdx - 1, true); }
-
-  /* Arrow click handlers */
   mount.querySelector(".crx-hba__arrow--next").addEventListener("click", function() {
-    if (isSnapping) return;
-    next();
-    resetAuto();
+    if (arrowAnimating) return;
+    arrowStep("next");
   });
   mount.querySelector(".crx-hba__arrow--prev").addEventListener("click", function() {
-    if (isSnapping) return;
-    prev();
-    resetAuto();
+    if (arrowAnimating) return;
+    arrowStep("prev");
   });
 
-  /* Click any card to focus it */
-  allCards.forEach(function(card, i) {
+  /* Click any card to scroll it toward center */
+  allCards.forEach(function(card) {
     card.addEventListener("click", function() {
-      if (i === activeIdx || isSnapping) return;
-      goTo(i, true);
-      resetAuto();
+      if (arrowAnimating) return;
+      var vpRect = viewport.getBoundingClientRect();
+      var vpCenter = vpRect.left + vpRect.width / 2;
+      var cardRect = card.getBoundingClientRect();
+      var cardCenter = cardRect.left + cardRect.width / 2;
+      var diff = cardCenter - vpCenter;
+
+      arrowAnimating = true;
+      paused = true;
+      clearTimeout(resumeTimer);
+
+      var startPos = pos;
+      var target = pos - diff;
+      var startTime = null;
+      var duration = 700;
+
+      function ease(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function animate(now) {
+        if (!startTime) startTime = now;
+        var elapsed = now - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        pos = startPos + (target - startPos) * ease(progress);
+        if (pos <= -halfWidth * 2) pos += halfWidth;
+        if (pos > 0) pos -= halfWidth;
+        track.style.transform = "translateX(" + pos + "px)";
+        applyProximity();
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          arrowAnimating = false;
+          resumeTimer = setTimeout(function() { paused = false; }, 2000);
+        }
+      }
+      requestAnimationFrame(animate);
     });
   });
 
-  /* Auto-rotate: slow, one card at a time */
-  function startAuto() {
-    if (reducedMotion) return;
-    stopAuto();
-    autoTimer = setInterval(function() {
-      if (!paused && !isSnapping) next();
-    }, 4500);
-  }
-  function stopAuto() { clearInterval(autoTimer); }
-  function resetAuto() { stopAuto(); startAuto(); }
-
   /* Pause on hover */
-  var vp = mount.querySelector(".crx-hba__viewport");
-  vp.addEventListener("mouseenter", function() { paused = true; });
-  vp.addEventListener("mouseleave", function() { paused = false; });
+  viewport.addEventListener("mouseenter", function() { paused = true; clearTimeout(resumeTimer); });
+  viewport.addEventListener("mouseleave", function() {
+    if (!arrowAnimating) {
+      resumeTimer = setTimeout(function() { paused = false; }, 300);
+    }
+  });
 
   /* Init */
-  goTo(activeIdx, false);
-  startAuto();
+  initPosition();
+  applyProximity();
+  requestAnimationFrame(tick);
 }
 
 
 /* ───────────────────────────────────────────────────
    3-B. HOMEPAGE BRANDS – ALT OPTION B
    Continuous single-row auto-scroll (dark card tiles)
-   with left/right arrow navigation. rAF-driven scroll
-   pauses on hover & arrow interaction, resumes after.
+   with visible left/right arrow navigation outside the
+   masked area. rAF-driven, pauses on hover & arrows.
    Mount: <div class="crx-homebike-alt-b-mount"></div>
    ─────────────────────────────────────────────────── */
 function crxInitHomeBikeAltB() {
@@ -650,24 +707,25 @@ function crxInitHomeBikeAltB() {
     '.crx-hbb__title{font-size:clamp(24px,4vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
     '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
 
-    /* stage = arrows + marquee row */
-    '.crx-hbb__stage{position:relative;display:flex;align-items:center}' +
+    /* stage: flex row with arrows flanking the marquee */
+    '.crx-hbb__stage{position:relative;display:flex;align-items:center;gap:0;padding:0 56px}' +
 
-    /* navigation arrows */
-    '.crx-hbb__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;' +
-      'width:42px;height:42px;border-radius:50%;border:1px solid rgba(0,0,0,.12);' +
-      'background:rgba(255,255,255,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);' +
-      'font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;' +
-      'transition:background .2s,color .2s,box-shadow .2s;color:#111;line-height:1;padding:0;' +
-      'box-shadow:0 2px 8px rgba(0,0,0,.1)}' +
-    '.crx-hbb__arrow:hover{background:#111;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.2)}' +
-    '.crx-hbb__arrow--prev{left:8px}' +
-    '.crx-hbb__arrow--next{right:8px}' +
+    /* navigation arrows — positioned outside the fade mask */
+    '.crx-hbb__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:4;' +
+      'width:44px;height:44px;border-radius:50%;border:1px solid rgba(0,0,0,.12);' +
+      'background:rgba(255,255,255,.95);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);' +
+      'font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;' +
+      'transition:background .2s,color .2s,box-shadow .2s,transform .2s;color:#111;line-height:1;padding:0;' +
+      'box-shadow:0 2px 10px rgba(0,0,0,.12)}' +
+    '.crx-hbb__arrow:hover{background:#111;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.25);transform:translateY(-50%) scale(1.08)}' +
+    '.crx-hbb__arrow:active{transform:translateY(-50%) scale(.96)}' +
+    '.crx-hbb__arrow--prev{left:4px}' +
+    '.crx-hbb__arrow--next{right:4px}' +
 
     /* marquee with edge fade */
     '.crx-hbb__marquee{flex:1;overflow:hidden;padding:22px 0;' +
-      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);' +
-      'mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%)}' +
+      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%);' +
+      'mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%)}' +
     '.crx-hbb__track{display:flex;gap:16px;width:max-content;will-change:transform}' +
 
     /* cards */
@@ -699,9 +757,10 @@ function crxInitHomeBikeAltB() {
     '@media(max-width:640px){' +
       '.crx-hbb__card{width:130px;height:170px}' +
       '.crx-hbb__card-initial{font-size:28px}' +
-      '.crx-hbb__arrow{width:34px;height:34px;font-size:18px}' +
-      '.crx-hbb__arrow--prev{left:4px}' +
-      '.crx-hbb__arrow--next{right:4px}' +
+      '.crx-hbb__stage{padding:0 44px}' +
+      '.crx-hbb__arrow{width:36px;height:36px;font-size:18px}' +
+      '.crx-hbb__arrow--prev{left:2px}' +
+      '.crx-hbb__arrow--next{right:2px}' +
     '}';
 
   document.head.appendChild(style);
@@ -714,9 +773,8 @@ function crxInitHomeBikeAltB() {
   var speed = 0.4;                       /* px per frame (~24 px/s at 60fps) */
   var pos = 0;
   var halfWidth = 0;
-  var rafId = null;
   var paused = false;
-  var arrowHoldId = null;
+  var arrowBusy = false;
   var resumeTimer = null;
 
   function measureHalf() {
@@ -724,53 +782,71 @@ function crxInitHomeBikeAltB() {
   }
 
   function tick() {
-    if (!paused) {
+    if (!paused && !arrowBusy) {
       pos -= speed;
-      /* seamless wrap: when we've scrolled past the first set, jump back */
+      /* seamless wrap */
       if (pos <= -halfWidth) pos += halfWidth;
       if (pos > 0) pos -= halfWidth;
       track.style.transform = "translateX(" + pos + "px)";
     }
-    rafId = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
   }
 
-  /* Arrow: jump one card-width smoothly using CSS transition,
-     then sync pos and resume rAF scroll */
+  /* Arrow: smoothly animate one card-width, then resume */
   function arrowStep(direction) {
-    /* Measure one card step */
     var cards = track.querySelectorAll(".crx-hbb__card");
-    var step = 176; /* fallback */
+    var step = 176;
     if (cards.length >= 2) step = cards[1].offsetLeft - cards[0].offsetLeft;
 
+    arrowBusy = true;
     paused = true;
     clearTimeout(resumeTimer);
 
+    var startPos = pos;
     var target = pos + (direction === "next" ? -step : step);
+    var startTime = null;
+    var duration = 500;
 
-    track.style.transition = "transform .5s cubic-bezier(.25,.1,.25,1)";
-    track.style.transform = "translateX(" + target + "px)";
+    function ease(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
 
-    setTimeout(function() {
-      track.style.transition = "none";
-      pos = target;
-      /* wrap */
+    function animate(now) {
+      if (!startTime) startTime = now;
+      var elapsed = now - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      pos = startPos + (target - startPos) * ease(progress);
+
       if (pos <= -halfWidth) pos += halfWidth;
       if (pos > 0) pos -= halfWidth;
       track.style.transform = "translateX(" + pos + "px)";
 
-      /* resume auto-scroll after pause */
-      resumeTimer = setTimeout(function() { paused = false; }, 2500);
-    }, 520);
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        arrowBusy = false;
+        resumeTimer = setTimeout(function() { paused = false; }, 2500);
+      }
+    }
+    requestAnimationFrame(animate);
   }
 
-  mount.querySelector(".crx-hbb__arrow--next").addEventListener("click", function() { arrowStep("next"); });
-  mount.querySelector(".crx-hbb__arrow--prev").addEventListener("click", function() { arrowStep("prev"); });
+  mount.querySelector(".crx-hbb__arrow--next").addEventListener("click", function() {
+    if (arrowBusy) return;
+    arrowStep("next");
+  });
+  mount.querySelector(".crx-hbb__arrow--prev").addEventListener("click", function() {
+    if (arrowBusy) return;
+    arrowStep("prev");
+  });
 
   /* Pause on hover over marquee area */
   var marquee = mount.querySelector(".crx-hbb__marquee");
   marquee.addEventListener("mouseenter", function() { paused = true; clearTimeout(resumeTimer); });
   marquee.addEventListener("mouseleave", function() {
-    resumeTimer = setTimeout(function() { paused = false; }, 400);
+    if (!arrowBusy) {
+      resumeTimer = setTimeout(function() { paused = false; }, 400);
+    }
   });
 
   /* Init */
