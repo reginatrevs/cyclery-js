@@ -376,9 +376,9 @@ function crxInitHomeBikeAltA() {
   mount.innerHTML =
     '<section class="crx-hba">' +
       '<div class="crx-hba__header">' +
-        '<p class="crx-hba__kicker">Premium brands</p>' +
-        '<h2 class="crx-hba__title">High-end bike builds</h2>' +
-        '<p class="crx-hba__sub">Hand-built frames from the world\'s finest manufacturers, fitted and assembled to your exact specification.</p>' +
+        '<p class="crx-hba__kicker">Elite brands</p>' +
+        '<h2 class="crx-hba__title">The brands we carry</h2>' +
+        '<p class="crx-hba__sub">We partner with the world\'s most prestigious cycling brands — each one selected for its craftsmanship, performance, and heritage.</p>' +
       '</div>' +
       '<div class="crx-hba__viewport">' +
         '<div class="crx-hba__track">' + cardsHTML + '</div>' +
@@ -386,7 +386,7 @@ function crxInitHomeBikeAltA() {
         '<button class="crx-hba__arrow crx-hba__arrow--next" type="button" aria-label="Next">&#8250;</button>' +
       '</div>' +
       '<div class="crx-hba__cta-wrap">' +
-        '<a href="/bike-builds" class="crx-hba__cta">View bike builds &rarr;</a>' +
+        '<a href="/bike-builds" class="crx-hba__cta">Explore our brands &rarr;</a>' +
       '</div>' +
     '</section>';
 
@@ -636,9 +636,9 @@ function crxInitHomeBikeAltB() {
   mount.innerHTML =
     '<section class="crx-hbb">' +
       '<div class="crx-hbb__header">' +
-        '<p class="crx-hbb__kicker">Premium brands</p>' +
-        '<h2 class="crx-hbb__title">High-end bike builds</h2>' +
-        '<p class="crx-hbb__sub">Hand-built frames from the world\'s finest manufacturers, fitted and assembled to your exact specification.</p>' +
+        '<p class="crx-hbb__kicker">Elite brands</p>' +
+        '<h2 class="crx-hbb__title">The brands we carry</h2>' +
+        '<p class="crx-hbb__sub">We partner with the world\'s most prestigious cycling brands — each one selected for its craftsmanship, performance, and heritage.</p>' +
       '</div>' +
       '<div class="crx-hbb__stage">' +
         '<button class="crx-hbb__arrow crx-hbb__arrow--prev" type="button" aria-label="Scroll left">&#8249;</button>' +
@@ -648,7 +648,7 @@ function crxInitHomeBikeAltB() {
         '<button class="crx-hbb__arrow crx-hbb__arrow--next" type="button" aria-label="Scroll right">&#8250;</button>' +
       '</div>' +
       '<div class="crx-hbb__cta-wrap">' +
-        '<a href="/bike-builds" class="crx-hbb__cta">View bike builds &rarr;</a>' +
+        '<a href="/bike-builds" class="crx-hbb__cta">Explore our brands &rarr;</a>' +
       '</div>' +
     '</section>';
 
