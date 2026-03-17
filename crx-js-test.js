@@ -407,8 +407,8 @@ function crxInitHomeBikeAltA() {
 
     /* viewport with edge fade */
     '.crx-hba__viewport{position:relative;width:100%;overflow:hidden;padding:28px 0;' +
-      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);' +
-      'mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%)}' +
+      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 3%,#000 97%,transparent 100%);' +
+      'mask-image:linear-gradient(90deg,transparent 0%,#000 3%,#000 97%,transparent 100%)}' +
     '.crx-hba__track{display:flex;align-items:center;gap:18px;will-change:transform}' +
 
     /* cards — scale/opacity driven by JS via inline styles for fluid transitions */
@@ -465,7 +465,7 @@ function crxInitHomeBikeAltA() {
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reducedMotion) return;
 
-  var speed = 0.3;          /* px per frame — slow, premium crawl */
+  var speed = 0.7;          /* px per frame — smooth, steady crawl */
   var pos = 0;
   var setWidth = 0;         /* width of one brand-set (n cards + gaps) */
   var paused = false;
