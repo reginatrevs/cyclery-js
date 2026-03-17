@@ -383,11 +383,9 @@ function crxInitHomeBikeAltA() {
         '<h2 class="crx-hba__title">High-end bike builds</h2>' +
         '<p class="crx-hba__sub">Hand-built frames from the world\'s finest manufacturers, fitted and assembled to your exact specification.</p>' +
       '</div>' +
-      '<div class="crx-hba__stage">' +
+      '<div class="crx-hba__viewport">' +
+        '<div class="crx-hba__track">' + cardsHTML + '</div>' +
         '<button class="crx-hba__arrow crx-hba__arrow--prev" type="button" aria-label="Previous">&#8249;</button>' +
-        '<div class="crx-hba__viewport">' +
-          '<div class="crx-hba__track">' + cardsHTML + '</div>' +
-        '</div>' +
         '<button class="crx-hba__arrow crx-hba__arrow--next" type="button" aria-label="Next">&#8250;</button>' +
       '</div>' +
       '<div class="crx-hba__cta-wrap">' +
@@ -407,13 +405,10 @@ function crxInitHomeBikeAltA() {
     '.crx-hba__title{font-size:clamp(24px,4vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
     '.crx-hba__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
 
-    /* stage = arrows flanking the viewport */
-    '.crx-hba__stage{position:relative;display:flex;align-items:center;padding:0 56px}' +
-
     /* viewport with edge fade */
-    '.crx-hba__viewport{flex:1;overflow:hidden;padding:28px 0;' +
-      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);' +
-      'mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%)}' +
+    '.crx-hba__viewport{position:relative;width:100%;overflow:hidden;padding:28px 0;' +
+      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);' +
+      'mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%)}' +
     '.crx-hba__track{display:flex;align-items:center;gap:18px;will-change:transform}' +
 
     /* cards — scale/opacity driven by JS via inline styles for fluid transitions */
@@ -429,7 +424,7 @@ function crxInitHomeBikeAltA() {
     '.crx-hba__card-initial{font-size:36px;font-weight:900;letter-spacing:.04em;line-height:1;color:rgba(255,255,255,.9)}' +
     '.crx-hba__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
 
-    /* navigation arrows – outside the masked viewport */
+    /* navigation arrows – overlaid inside the viewport */
     '.crx-hba__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;' +
       'width:42px;height:42px;border-radius:50%;border:1px solid rgba(0,0,0,.12);' +
       'background:rgba(255,255,255,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);' +
@@ -437,8 +432,8 @@ function crxInitHomeBikeAltA() {
       'transition:background .2s,color .2s,box-shadow .2s;color:#111;line-height:1;padding:0;' +
       'box-shadow:0 2px 8px rgba(0,0,0,.1)}' +
     '.crx-hba__arrow:hover{background:#111;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.2)}' +
-    '.crx-hba__arrow--prev{left:6px}' +
-    '.crx-hba__arrow--next{right:6px}' +
+    '.crx-hba__arrow--prev{left:12px}' +
+    '.crx-hba__arrow--next{right:12px}' +
 
     /* cta */
     '.crx-hba__cta-wrap{margin-top:32px}' +
@@ -455,10 +450,9 @@ function crxInitHomeBikeAltA() {
     '@media(max-width:640px){' +
       '.crx-hba__card{width:130px;height:170px}' +
       '.crx-hba__card-initial{font-size:28px}' +
-      '.crx-hba__stage{padding:0 44px}' +
       '.crx-hba__arrow{width:34px;height:34px;font-size:18px}' +
-      '.crx-hba__arrow--prev{left:4px}' +
-      '.crx-hba__arrow--next{right:4px}' +
+      '.crx-hba__arrow--prev{left:6px}' +
+      '.crx-hba__arrow--next{right:6px}' +
     '}';
 
   document.head.appendChild(style);
@@ -473,20 +467,29 @@ function crxInitHomeBikeAltA() {
 
   var speed = 0.3;          /* px per frame — slow, premium crawl */
   var pos = 0;
-  var halfWidth = 0;        /* width of one brand-set (n cards + gaps) */
+  var setWidth = 0;         /* width of one brand-set (n cards + gaps) */
   var paused = false;
   var arrowAnimating = false;
   var resumeTimer = null;
 
-  function measureHalf() {
-    halfWidth = track.scrollWidth / 3;
+  function measure() {
+    /* track has 3 identical sets; one set = total / 3 */
+    setWidth = track.scrollWidth / 3;
   }
 
-  /* Start positioned so the middle set is visible */
+  /* Start positioned at the beginning of the middle (2nd) set */
   function initPosition() {
-    measureHalf();
-    pos = -halfWidth;   /* begin at start of middle set */
+    measure();
+    pos = -setWidth;
     track.style.transform = "translateX(" + pos + "px)";
+  }
+
+  /* Seamless wrap: keep pos within the middle set range.
+     The 3 sets occupy [0 .. -2*setWidth]. Middle set is [-setWidth .. -2*setWidth].
+     If we scroll past the middle set in either direction, jump back by one setWidth. */
+  function wrapPos() {
+    if (pos <= -setWidth * 2) pos += setWidth;
+    if (pos > 0)              pos -= setWidth;
   }
 
   /* Apply scale/opacity based on distance from viewport center */
@@ -516,57 +519,51 @@ function crxInitHomeBikeAltA() {
   function tick() {
     if (!paused && !arrowAnimating) {
       pos -= speed;
-      /* seamless wrap */
-      if (pos <= -halfWidth * 2) pos += halfWidth;
-      if (pos > -halfWidth + halfWidth) pos -= halfWidth;
+      wrapPos();
       track.style.transform = "translateX(" + pos + "px)";
     }
     applyProximity();
     requestAnimationFrame(tick);
   }
 
-  /* Arrow: smoothly scroll by one card width */
-  function arrowStep(direction) {
-    var step = allCards.length >= 2
-      ? allCards[1].offsetLeft - allCards[0].offsetLeft
-      : 178;
+  /* Shared easing function */
+  function ease(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
 
+  /* Smoothly animate from current pos to a target, then resume auto-scroll */
+  function animateTo(target, duration) {
     arrowAnimating = true;
     paused = true;
     clearTimeout(resumeTimer);
 
-    var target = pos + (direction === "next" ? -step : step);
     var startPos = pos;
     var startTime = null;
-    var duration = 600;
 
-    function ease(t) {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-
-    function animate(now) {
+    function step(now) {
       if (!startTime) startTime = now;
-      var elapsed = now - startTime;
-      var progress = Math.min(elapsed / duration, 1);
-      var eased = ease(progress);
-
-      pos = startPos + (target - startPos) * eased;
-
-      /* wrap */
-      if (pos <= -halfWidth * 2) pos += halfWidth;
-      if (pos > 0) pos -= halfWidth;
-
+      var progress = Math.min((now - startTime) / duration, 1);
+      pos = startPos + (target - startPos) * ease(progress);
+      wrapPos();
       track.style.transform = "translateX(" + pos + "px)";
       applyProximity();
-
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        requestAnimationFrame(step);
       } else {
         arrowAnimating = false;
         resumeTimer = setTimeout(function() { paused = false; }, 2000);
       }
     }
-    requestAnimationFrame(animate);
+    requestAnimationFrame(step);
+  }
+
+  /* Arrow: scroll by one card width */
+  function arrowStep(direction) {
+    var cardStep = allCards.length >= 2
+      ? allCards[1].offsetLeft - allCards[0].offsetLeft
+      : 178;
+    var target = pos + (direction === "next" ? -cardStep : cardStep);
+    animateTo(target, 600);
   }
 
   mount.querySelector(".crx-hba__arrow--next").addEventListener("click", function() {
@@ -587,37 +584,7 @@ function crxInitHomeBikeAltA() {
       var cardRect = card.getBoundingClientRect();
       var cardCenter = cardRect.left + cardRect.width / 2;
       var diff = cardCenter - vpCenter;
-
-      arrowAnimating = true;
-      paused = true;
-      clearTimeout(resumeTimer);
-
-      var startPos = pos;
-      var target = pos - diff;
-      var startTime = null;
-      var duration = 700;
-
-      function ease(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
-
-      function animate(now) {
-        if (!startTime) startTime = now;
-        var elapsed = now - startTime;
-        var progress = Math.min(elapsed / duration, 1);
-        pos = startPos + (target - startPos) * ease(progress);
-        if (pos <= -halfWidth * 2) pos += halfWidth;
-        if (pos > 0) pos -= halfWidth;
-        track.style.transform = "translateX(" + pos + "px)";
-        applyProximity();
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          arrowAnimating = false;
-          resumeTimer = setTimeout(function() { paused = false; }, 2000);
-        }
-      }
-      requestAnimationFrame(animate);
+      animateTo(pos - diff, 700);
     });
   });
 
@@ -632,6 +599,7 @@ function crxInitHomeBikeAltA() {
   /* Init */
   initPosition();
   applyProximity();
+  window.addEventListener("resize", measure);
   requestAnimationFrame(tick);
 }
 
