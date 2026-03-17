@@ -347,27 +347,24 @@ function crxInitHomeBikeAltA() {
   var mount = document.querySelector(".crx-homebike-alt-a-mount");
   if (!mount) return;
 
+  var CDN = "https://cdn.shoplightspeed.com/shops/635245/files/";
   var brands = [
-    { name: "Factor",      slug: "factor" },
-    { name: "ENVE",        slug: "enve" },
-    { name: "TIME",        slug: "time" },
-    { name: "Look",        slug: "look" },
-    { name: "Bianchi",     slug: "bianchi" },
-    { name: "Specialized", slug: "specialized" },
-    { name: "Colnago",     slug: "colnago" },
-    { name: "De Rosa",     slug: "de-rosa" },
-    { name: "Scott",       slug: "scott" },
-    { name: "Merckx",      slug: "merckx" },
-    { name: "Ridley",      slug: "ridley" },
+    { name: "Factor",      slug: "factor",      img: CDN + "75058063/factor.png" },
+    { name: "ENVE",        slug: "enve",        img: CDN + "75058062/enve.png" },
+    { name: "TIME",        slug: "time",        img: CDN + "75058071/time.png" },
+    { name: "Look",        slug: "look",        img: CDN + "75058064/look.png" },
+    { name: "Bianchi",     slug: "bianchi",     img: CDN + "75058058/bianchi.png" },
+    { name: "Specialized", slug: "specialized", img: CDN + "75058070/specialized.png" },
+    { name: "Colnago",     slug: "colnago",     img: CDN + "75058059/colnago.png" },
+    { name: "De Rosa",     slug: "de-rosa",     img: CDN + "75058060/derosa.png" },
+    { name: "Scott",       slug: "scott",       img: CDN + "75058069/scott.png" },
+    { name: "Merckx",      slug: "merckx",      img: CDN + "75058065/merckx.png" },
+    { name: "Ridley",      slug: "ridley",      img: CDN + "75058067/ridley.png" },
   ];
-
-  function brandInitials(name) {
-    return name.split(" ").map(function(w){ return w[0]; }).join("");
-  }
 
   function cardHTML(brand) {
     return '<button class="crx-hba__card" data-crx-hba-slug="' + brand.slug + '" type="button" aria-label="' + brand.name + '">' +
-      '<span class="crx-hba__card-initial">' + brandInitials(brand.name) + '</span>' +
+      '<img class="crx-hba__card-logo" src="' + brand.img + '" alt="' + brand.name + '" loading="lazy">' +
       '<span class="crx-hba__card-name">' + brand.name + '</span>' +
     '</button>';
   }
@@ -421,7 +418,7 @@ function crxInitHomeBikeAltA() {
       'outline:none;-webkit-tap-highlight-color:transparent;padding:0;font-family:inherit}' +
     '.crx-hba__card:hover{box-shadow:0 8px 32px rgba(0,0,0,.35)}' +
 
-    '.crx-hba__card-initial{font-size:36px;font-weight:900;letter-spacing:.04em;line-height:1;color:rgba(255,255,255,.9)}' +
+    '.crx-hba__card-logo{width:80px;height:80px;object-fit:contain;pointer-events:none;filter:brightness(0) invert(1);opacity:.9}' +
     '.crx-hba__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
 
     /* navigation arrows – overlaid inside the viewport */
@@ -449,7 +446,7 @@ function crxInitHomeBikeAltA() {
     /* responsive */
     '@media(max-width:640px){' +
       '.crx-hba__card{width:130px;height:170px}' +
-      '.crx-hba__card-initial{font-size:28px}' +
+      '.crx-hba__card-logo{width:60px;height:60px}' +
       '.crx-hba__arrow{width:34px;height:34px;font-size:18px}' +
       '.crx-hba__arrow--prev{left:6px}' +
       '.crx-hba__arrow--next{right:6px}' +
@@ -602,27 +599,24 @@ function crxInitHomeBikeAltB() {
   var mount = document.querySelector(".crx-homebike-alt-b-mount");
   if (!mount) return;
 
+  var CDN = "https://cdn.shoplightspeed.com/shops/635245/files/";
   var brands = [
-    { name: "Factor",      slug: "factor" },
-    { name: "ENVE",        slug: "enve" },
-    { name: "TIME",        slug: "time" },
-    { name: "Look",        slug: "look" },
-    { name: "Bianchi",     slug: "bianchi" },
-    { name: "Specialized", slug: "specialized" },
-    { name: "Colnago",     slug: "colnago" },
-    { name: "De Rosa",     slug: "de-rosa" },
-    { name: "Scott",       slug: "scott" },
-    { name: "Merckx",      slug: "merckx" },
-    { name: "Ridley",      slug: "ridley" },
+    { name: "Factor",      slug: "factor",      img: CDN + "75058063/factor.png" },
+    { name: "ENVE",        slug: "enve",        img: CDN + "75058062/enve.png" },
+    { name: "TIME",        slug: "time",        img: CDN + "75058071/time.png" },
+    { name: "Look",        slug: "look",        img: CDN + "75058064/look.png" },
+    { name: "Bianchi",     slug: "bianchi",     img: CDN + "75058058/bianchi.png" },
+    { name: "Specialized", slug: "specialized", img: CDN + "75058070/specialized.png" },
+    { name: "Colnago",     slug: "colnago",     img: CDN + "75058059/colnago.png" },
+    { name: "De Rosa",     slug: "de-rosa",     img: CDN + "75058060/derosa.png" },
+    { name: "Scott",       slug: "scott",       img: CDN + "75058069/scott.png" },
+    { name: "Merckx",      slug: "merckx",      img: CDN + "75058065/merckx.png" },
+    { name: "Ridley",      slug: "ridley",      img: CDN + "75058067/ridley.png" },
   ];
-
-  function brandInitials(name) {
-    return name.split(" ").map(function(w){ return w[0]; }).join("");
-  }
 
   function cardHTML(brand) {
     return '<a href="/collections/' + brand.slug + '" class="crx-hbb__card">' +
-      '<span class="crx-hbb__card-initial">' + brandInitials(brand.name) + '</span>' +
+      '<img class="crx-hbb__card-logo" src="' + brand.img + '" alt="' + brand.name + '" loading="lazy">' +
       '<span class="crx-hbb__card-name">' + brand.name + '</span>' +
     '</a>';
   }
@@ -679,8 +673,8 @@ function crxInitHomeBikeAltB() {
 
     /* marquee with edge fade */
     '.crx-hbb__marquee{flex:1;overflow:hidden;padding:22px 0;' +
-      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%);' +
-      'mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%)}' +
+      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%);' +
+      'mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%)}' +
     '.crx-hbb__track{display:flex;gap:16px;width:max-content;will-change:transform}' +
 
     /* cards */
@@ -693,7 +687,7 @@ function crxInitHomeBikeAltB() {
       'cursor:pointer}' +
     '.crx-hbb__card:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 10px 36px rgba(0,0,0,.35)}' +
 
-    '.crx-hbb__card-initial{font-size:36px;font-weight:900;letter-spacing:.04em;line-height:1;color:rgba(255,255,255,.9)}' +
+    '.crx-hbb__card-logo{width:80px;height:80px;object-fit:contain;pointer-events:none;filter:brightness(0) invert(1);opacity:.9}' +
     '.crx-hbb__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
 
     /* cta */
@@ -711,7 +705,7 @@ function crxInitHomeBikeAltB() {
     /* responsive */
     '@media(max-width:640px){' +
       '.crx-hbb__card{width:130px;height:170px}' +
-      '.crx-hbb__card-initial{font-size:28px}' +
+      '.crx-hbb__card-logo{width:60px;height:60px}' +
       '.crx-hbb__stage{padding:0 44px}' +
       '.crx-hbb__arrow{width:36px;height:36px;font-size:18px}' +
       '.crx-hbb__arrow--prev{left:2px}' +
