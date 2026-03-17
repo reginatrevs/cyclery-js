@@ -465,7 +465,7 @@ function crxInitHomeBikeAltA() {
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reducedMotion) return;
 
-  var speed = 0.3;          /* px per frame — slow, premium crawl */
+  var speed = 0.7;          /* px per frame — smooth, steady crawl */
   var pos = 0;
   var setWidth = 0;         /* width of one brand-set (n cards + gaps) */
   var paused = false;
