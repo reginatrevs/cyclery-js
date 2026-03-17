@@ -465,142 +465,125 @@ function crxInitHomeBikeAltA() {
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reducedMotion) return;
 
-  var speed = 0.7;          /* px per frame — smooth, steady crawl */
-  var pos = 0;
-  var setWidth = 0;         /* width of one brand-set (n cards + gaps) */
-  var paused = false;
-  var arrowAnimating = false;
-  var resumeTimer = null;
+  var activeIdx = n;            /* start at first card of middle set */
+  var animating = false;
+  var autoTimer = null;
+  var hovered = false;
 
-  function measure() {
-    /* track has 3 identical sets; one set = total / 3 */
-    setWidth = track.scrollWidth / 3;
+  /* Easing */
+  function ease(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
-  /* Start positioned at the beginning of the middle (2nd) set */
-  function initPosition() {
-    measure();
-    pos = -setWidth;
-    track.style.transform = "translateX(" + pos + "px)";
+  /* Centre a card in the viewport (no animation) */
+  function centreOn(idx) {
+    var vpW = viewport.offsetWidth;
+    var card = allCards[idx];
+    var offset = -(card.offsetLeft - (vpW / 2) + (card.offsetWidth / 2));
+    track.style.transform = "translateX(" + offset + "px)";
   }
 
-  /* Seamless wrap: keep pos within the middle set range.
-     The 3 sets occupy [0 .. -2*setWidth]. Middle set is [-setWidth .. -2*setWidth].
-     If we scroll past the middle set in either direction, jump back by one setWidth. */
-  function wrapPos() {
-    if (pos <= -setWidth * 2) pos += setWidth;
-    if (pos > 0)              pos -= setWidth;
-  }
-
-  /* Apply scale/opacity based on distance from viewport center */
+  /* Apply scale/opacity based on distance from active index */
   function applyProximity() {
-    var vpRect = viewport.getBoundingClientRect();
-    var vpCenter = vpRect.left + vpRect.width / 2;
-
-    allCards.forEach(function(card) {
-      var cardRect = card.getBoundingClientRect();
-      var cardCenter = cardRect.left + cardRect.width / 2;
-      var dist = Math.abs(vpCenter - cardCenter);
-      var maxDist = vpRect.width / 2;
-
-      /* normalised 0..1 where 0 = dead centre */
-      var t = Math.min(dist / maxDist, 1);
-
-      /* scale: 1.05 at centre → 0.82 at edges */
-      var scale = 1.05 - (t * 0.23);
-      /* opacity: 1 at centre → 0.35 at edges */
-      var opacity = 1 - (t * 0.65);
-
+    allCards.forEach(function(card, i) {
+      var dist = Math.abs(i - activeIdx);
+      /* scale: 1.08 for active → 0.82 at 4+ away */
+      var scale = Math.max(1.08 - (dist * 0.065), 0.82);
+      /* opacity: 1 for active → 0.35 at 4+ away */
+      var opacity = Math.max(1 - (dist * 0.16), 0.35);
       card.style.transform = "scale(" + scale.toFixed(3) + ")";
       card.style.opacity = opacity.toFixed(3);
     });
   }
 
-  function tick() {
-    if (!paused && !arrowAnimating) {
-      pos -= speed;
-      wrapPos();
-      track.style.transform = "translateX(" + pos + "px)";
+  /* Silently wrap index back to middle set if we've drifted into a clone */
+  function wrapIndex() {
+    if (activeIdx < n) {
+      activeIdx += n;
+      centreOn(activeIdx);
+    } else if (activeIdx >= 2 * n) {
+      activeIdx -= n;
+      centreOn(activeIdx);
     }
+  }
+
+  /* Animate from current card to a new index */
+  function goTo(idx, callback) {
+    if (animating) return;
+    animating = true;
+
+    var vpW = viewport.offsetWidth;
+    var startCard = allCards[activeIdx];
+    var endCard = allCards[idx];
+    var startX = -(startCard.offsetLeft - (vpW / 2) + (startCard.offsetWidth / 2));
+    var endX = -(endCard.offsetLeft - (vpW / 2) + (endCard.offsetWidth / 2));
+
+    activeIdx = idx;
     applyProximity();
-    requestAnimationFrame(tick);
-  }
 
-  /* Shared easing function */
-  function ease(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
-
-  /* Smoothly animate from current pos to a target, then resume auto-scroll */
-  function animateTo(target, duration) {
-    arrowAnimating = true;
-    paused = true;
-    clearTimeout(resumeTimer);
-
-    var startPos = pos;
     var startTime = null;
+    var duration = 600;
 
     function step(now) {
       if (!startTime) startTime = now;
       var progress = Math.min((now - startTime) / duration, 1);
-      pos = startPos + (target - startPos) * ease(progress);
-      wrapPos();
-      track.style.transform = "translateX(" + pos + "px)";
-      applyProximity();
+      var x = startX + (endX - startX) * ease(progress);
+      track.style.transform = "translateX(" + x + "px)";
       if (progress < 1) {
         requestAnimationFrame(step);
       } else {
-        arrowAnimating = false;
-        resumeTimer = setTimeout(function() { paused = false; }, 2000);
+        animating = false;
+        wrapIndex();
+        applyProximity();
+        if (callback) callback();
       }
     }
     requestAnimationFrame(step);
   }
 
-  /* Arrow: scroll by one card width */
-  function arrowStep(direction) {
-    var cardStep = allCards.length >= 2
-      ? allCards[1].offsetLeft - allCards[0].offsetLeft
-      : 178;
-    var target = pos + (direction === "next" ? -cardStep : cardStep);
-    animateTo(target, 600);
-  }
+  function next() { goTo(activeIdx + 1); }
+  function prev() { goTo(activeIdx - 1); }
 
+  /* Auto-rotate: advance one card every 2 seconds */
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(function() {
+      if (!hovered && !animating) next();
+    }, 2000);
+  }
+  function stopAuto() { clearInterval(autoTimer); }
+  function resetAuto() { stopAuto(); startAuto(); }
+
+  /* Arrow click handlers */
   mount.querySelector(".crx-hba__arrow--next").addEventListener("click", function() {
-    if (arrowAnimating) return;
-    arrowStep("next");
+    if (animating) return;
+    next();
+    resetAuto();
   });
   mount.querySelector(".crx-hba__arrow--prev").addEventListener("click", function() {
-    if (arrowAnimating) return;
-    arrowStep("prev");
+    if (animating) return;
+    prev();
+    resetAuto();
   });
 
-  /* Click any card to scroll it toward center */
-  allCards.forEach(function(card) {
+  /* Click any card to focus it */
+  allCards.forEach(function(card, i) {
     card.addEventListener("click", function() {
-      if (arrowAnimating) return;
-      var vpRect = viewport.getBoundingClientRect();
-      var vpCenter = vpRect.left + vpRect.width / 2;
-      var cardRect = card.getBoundingClientRect();
-      var cardCenter = cardRect.left + cardRect.width / 2;
-      var diff = cardCenter - vpCenter;
-      animateTo(pos - diff, 700);
+      if (i === activeIdx || animating) return;
+      goTo(i);
+      resetAuto();
     });
   });
 
   /* Pause on hover */
-  viewport.addEventListener("mouseenter", function() { paused = true; clearTimeout(resumeTimer); });
-  viewport.addEventListener("mouseleave", function() {
-    if (!arrowAnimating) {
-      resumeTimer = setTimeout(function() { paused = false; }, 300);
-    }
-  });
+  viewport.addEventListener("mouseenter", function() { hovered = true; });
+  viewport.addEventListener("mouseleave", function() { hovered = false; });
 
   /* Init */
-  initPosition();
+  centreOn(activeIdx);
   applyProximity();
-  window.addEventListener("resize", measure);
-  requestAnimationFrame(tick);
+  startAuto();
+  window.addEventListener("resize", function() { centreOn(activeIdx); });
 }
 
 
