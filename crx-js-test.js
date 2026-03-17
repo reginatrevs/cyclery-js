@@ -417,7 +417,7 @@ function crxInitHomeBikeAltA() {
       'background:#111;border:1px solid rgba(255,255,255,.06);border-radius:16px;' +
       'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
       'cursor:pointer;color:#fff;' +
-      'transition:box-shadow .4s ease;' +
+      'transition:transform .3s ease,opacity .3s ease,box-shadow .3s ease;' +
       'outline:none;-webkit-tap-highlight-color:transparent;padding:0;font-family:inherit}' +
     '.crx-hba__card:hover{box-shadow:0 8px 32px rgba(0,0,0,.35)}' +
 
@@ -483,16 +483,20 @@ function crxInitHomeBikeAltA() {
     track.style.transform = "translateX(" + offset + "px)";
   }
 
-  /* Apply scale/opacity based on distance from active index */
+  /* Apply scale/opacity — active card is clearly dominant */
   function applyProximity() {
     allCards.forEach(function(card, i) {
       var dist = Math.abs(i - activeIdx);
-      /* scale: 1.08 for active → 0.82 at 4+ away */
-      var scale = Math.max(1.08 - (dist * 0.065), 0.82);
-      /* opacity: 1 for active → 0.35 at 4+ away */
-      var opacity = Math.max(1 - (dist * 0.16), 0.35);
-      card.style.transform = "scale(" + scale.toFixed(3) + ")";
-      card.style.opacity = opacity.toFixed(3);
+      if (dist === 0) {
+        card.style.transform = "scale(1.12)";
+        card.style.opacity = "1";
+      } else if (dist === 1) {
+        card.style.transform = "scale(0.88)";
+        card.style.opacity = "0.5";
+      } else {
+        card.style.transform = "scale(0.8)";
+        card.style.opacity = "0.3";
+      }
     });
   }
 
@@ -522,7 +526,7 @@ function crxInitHomeBikeAltA() {
     applyProximity();
 
     var startTime = null;
-    var duration = 600;
+    var duration = 300;
 
     function step(now) {
       if (!startTime) startTime = now;
