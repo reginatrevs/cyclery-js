@@ -376,9 +376,9 @@ function crxInitHomeBikeAltA() {
   mount.innerHTML =
     '<section class="crx-hba">' +
       '<div class="crx-hba__header">' +
-        '<p class="crx-hba__kicker">Elite brands</p>' +
-        '<h2 class="crx-hba__title">The brands we carry</h2>' +
-        '<p class="crx-hba__sub">We partner with the world\'s most prestigious cycling brands — each one selected for its craftsmanship, performance, and heritage.</p>' +
+        '<p class="crx-hba__kicker">Premium Brands</p>' +
+        '<h2 class="crx-hba__title">Built around the brands you ride</h2>' +
+        '<p class="crx-hba__sub">We carry the world\'s most elite cycling brands and build every bike to your exact specification.</p>' +
       '</div>' +
       '<div class="crx-hba__viewport">' +
         '<div class="crx-hba__track">' + cardsHTML + '</div>' +
@@ -636,9 +636,9 @@ function crxInitHomeBikeAltB() {
   mount.innerHTML =
     '<section class="crx-hbb">' +
       '<div class="crx-hbb__header">' +
-        '<p class="crx-hbb__kicker">Elite brands</p>' +
-        '<h2 class="crx-hbb__title">The brands we carry</h2>' +
-        '<p class="crx-hbb__sub">We partner with the world\'s most prestigious cycling brands — each one selected for its craftsmanship, performance, and heritage.</p>' +
+        '<p class="crx-hbb__kicker">Premium Brands</p>' +
+        '<h2 class="crx-hbb__title">Built around the brands you ride</h2>' +
+        '<p class="crx-hbb__sub">We carry the world\'s most elite cycling brands and build every bike to your exact specification.</p>' +
       '</div>' +
       '<div class="crx-hbb__stage">' +
         '<button class="crx-hbb__arrow crx-hbb__arrow--prev" type="button" aria-label="Scroll left">&#8249;</button>' +
