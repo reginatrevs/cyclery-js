@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   crxInitRequestModal();
   crxInitHomeBikes();
+  crxInitHomeBikeAltA();
+  crxInitHomeBikeAltB();
 });
 
 /* ───────────────────────────────────────────────────
@@ -331,5 +333,304 @@ function crxInitHomeBikes() {
       }
     }
   `;
+  document.head.appendChild(style);
+}
+
+/* ───────────────────────────────────────────────────
+   3-A. HOMEPAGE BRANDS – ALT OPTION A
+   Center-focus carousel: active card scales up,
+   neighbours stay smaller, click-to-focus, auto-rotate
+   Mount: <div class="crx-homebike-alt-a-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitHomeBikeAltA() {
+  var mount = document.querySelector(".crx-homebike-alt-a-mount");
+  if (!mount) return;
+
+  var brands = [
+    { name: "Factor",      slug: "factor" },
+    { name: "ENVE",        slug: "enve" },
+    { name: "TIME",        slug: "time" },
+    { name: "Look",        slug: "look" },
+    { name: "Bianchi",     slug: "bianchi" },
+    { name: "Specialized", slug: "specialized" },
+    { name: "Colnago",     slug: "colnago" },
+    { name: "De Rosa",     slug: "de-rosa" },
+    { name: "Scott",       slug: "scott" },
+    { name: "Merckx",      slug: "merckx" },
+    { name: "Ridley",      slug: "ridley" },
+  ];
+
+  /* SVG logo placeholders — brand initial inside dark card */
+  function brandInitials(name) {
+    return name.split(" ").map(function(w){ return w[0]; }).join("");
+  }
+
+  function cardHTML(brand, idx) {
+    return '<button class="crx-hba__card" data-crx-hba-idx="' + idx + '" data-crx-slug="' + brand.slug + '" type="button" aria-label="' + brand.name + '">' +
+      '<span class="crx-hba__card-initial">' + brandInitials(brand.name) + '</span>' +
+      '<span class="crx-hba__card-name">' + brand.name + '</span>' +
+    '</button>';
+  }
+
+  var cardsHTML = brands.map(function(b, i) { return cardHTML(b, i); }).join("");
+
+  mount.innerHTML =
+    '<section class="crx-hba">' +
+      '<div class="crx-hba__header">' +
+        '<p class="crx-hba__kicker">Premium brands</p>' +
+        '<h2 class="crx-hba__title">High-end bike builds</h2>' +
+        '<p class="crx-hba__sub">Hand-built frames from the world\'s finest manufacturers, fitted and assembled to your exact specification.</p>' +
+      '</div>' +
+      '<div class="crx-hba__viewport">' +
+        '<div class="crx-hba__track">' + cardsHTML + '</div>' +
+      '</div>' +
+      '<div class="crx-hba__nav">' +
+        '<button class="crx-hba__arrow crx-hba__arrow--prev" type="button" aria-label="Previous">&#8249;</button>' +
+        '<button class="crx-hba__arrow crx-hba__arrow--next" type="button" aria-label="Next">&#8250;</button>' +
+      '</div>' +
+      '<div class="crx-hba__cta-wrap">' +
+        '<a href="/bike-builds" class="crx-hba__cta">View bike builds &rarr;</a>' +
+      '</div>' +
+    '</section>';
+
+  /* ── inject styles ── */
+  var style = document.createElement("style");
+  style.textContent =
+    '.crx-hba{padding:56px 0;text-align:center;overflow:hidden;' +
+      'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
+      'background:#fafafa}' +
+
+    '.crx-hba__header{max-width:560px;margin:0 auto 36px;padding:0 20px}' +
+    '.crx-hba__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
+    '.crx-hba__title{font-size:clamp(24px,4vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
+    '.crx-hba__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
+
+    /* viewport */
+    '.crx-hba__viewport{position:relative;width:100%;overflow:hidden;padding:24px 0}' +
+    '.crx-hba__track{display:flex;align-items:center;justify-content:center;gap:16px;' +
+      'transition:transform .5s cubic-bezier(.4,0,.2,1)}' +
+
+    /* cards */
+    '.crx-hba__card{' +
+      'flex:0 0 auto;width:160px;height:200px;' +
+      'background:#111;border:1px solid rgba(255,255,255,.08);border-radius:16px;' +
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
+      'cursor:pointer;transition:transform .45s cubic-bezier(.4,0,.2,1),box-shadow .45s ease,opacity .45s ease;' +
+      'color:#fff;opacity:.55;transform:scale(.88);' +
+      'outline:none;-webkit-tap-highlight-color:transparent;padding:0;font-family:inherit}' +
+    '.crx-hba__card:hover{opacity:.8}' +
+    '.crx-hba__card.crx-hba__card--active{' +
+      'transform:scale(1.08);opacity:1;' +
+      'box-shadow:0 8px 40px rgba(0,0,0,.35)}' +
+    '.crx-hba__card.crx-hba__card--near{transform:scale(.96);opacity:.75}' +
+
+    '.crx-hba__card-initial{' +
+      'font-size:36px;font-weight:900;letter-spacing:.04em;line-height:1;' +
+      'color:rgba(255,255,255,.9)}' +
+    '.crx-hba__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
+
+    /* navigation arrows */
+    '.crx-hba__nav{display:flex;justify-content:center;gap:12px;margin-top:20px}' +
+    '.crx-hba__arrow{width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,0,0,.15);' +
+      'background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;' +
+      'transition:background .2s,color .2s;color:#111;line-height:1;padding:0}' +
+    '.crx-hba__arrow:hover{background:#111;color:#fff}' +
+
+    /* cta */
+    '.crx-hba__cta-wrap{margin-top:28px}' +
+    '.crx-hba__cta{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
+      'letter-spacing:.02em;background:#111;color:#fff;text-decoration:none;transition:opacity .2s}' +
+    '.crx-hba__cta:hover{opacity:.78}' +
+
+    /* reduced motion */
+    '@media(prefers-reduced-motion:reduce){' +
+      '.crx-hba__card{transition:none}' +
+      '.crx-hba__track{transition:none}' +
+    '}' +
+
+    /* responsive */
+    '@media(max-width:640px){' +
+      '.crx-hba__card{width:130px;height:170px}' +
+      '.crx-hba__card-initial{font-size:28px}' +
+    '}';
+
+  document.head.appendChild(style);
+
+  /* ── carousel logic ── */
+  var track = mount.querySelector(".crx-hba__track");
+  var cards = Array.prototype.slice.call(mount.querySelectorAll(".crx-hba__card"));
+  var total = cards.length;
+  var activeIdx = Math.floor(total / 2);
+  var autoInterval = null;
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function setActive(idx) {
+    idx = ((idx % total) + total) % total;
+    activeIdx = idx;
+
+    cards.forEach(function(card, i) {
+      card.classList.remove("crx-hba__card--active", "crx-hba__card--near");
+      if (i === idx) {
+        card.classList.add("crx-hba__card--active");
+      } else if (Math.abs(i - idx) === 1) {
+        card.classList.add("crx-hba__card--near");
+      }
+    });
+
+    /* centre the active card in the viewport */
+    var viewportW = mount.querySelector(".crx-hba__viewport").offsetWidth;
+    var cardEl = cards[idx];
+    var cardLeft = cardEl.offsetLeft;
+    var cardW = cardEl.offsetWidth;
+    var offset = -(cardLeft - (viewportW / 2) + (cardW / 2));
+    track.style.transform = "translateX(" + offset + "px)";
+  }
+
+  function next() { setActive(activeIdx + 1); }
+  function prev() { setActive(activeIdx - 1); }
+
+  mount.querySelector(".crx-hba__arrow--next").addEventListener("click", function() { next(); resetAuto(); });
+  mount.querySelector(".crx-hba__arrow--prev").addEventListener("click", function() { prev(); resetAuto(); });
+
+  /* click any card to focus it */
+  cards.forEach(function(card) {
+    card.addEventListener("click", function() {
+      var idx = parseInt(card.getAttribute("data-crx-hba-idx"), 10);
+      setActive(idx);
+      resetAuto();
+    });
+  });
+
+  /* auto-rotate */
+  function startAuto() {
+    if (reducedMotion) return;
+    autoInterval = setInterval(next, 3200);
+  }
+  function resetAuto() {
+    clearInterval(autoInterval);
+    startAuto();
+  }
+
+  /* pause on hover */
+  mount.querySelector(".crx-hba__viewport").addEventListener("mouseenter", function() { clearInterval(autoInterval); });
+  mount.querySelector(".crx-hba__viewport").addEventListener("mouseleave", function() { startAuto(); });
+
+  setActive(activeIdx);
+  startAuto();
+}
+
+
+/* ───────────────────────────────────────────────────
+   3-B. HOMEPAGE BRANDS – ALT OPTION B
+   Continuous single-row auto-scroll (dark card tiles)
+   Mount: <div class="crx-homebike-alt-b-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitHomeBikeAltB() {
+  var mount = document.querySelector(".crx-homebike-alt-b-mount");
+  if (!mount) return;
+
+  var brands = [
+    { name: "Factor",      slug: "factor" },
+    { name: "ENVE",        slug: "enve" },
+    { name: "TIME",        slug: "time" },
+    { name: "Look",        slug: "look" },
+    { name: "Bianchi",     slug: "bianchi" },
+    { name: "Specialized", slug: "specialized" },
+    { name: "Colnago",     slug: "colnago" },
+    { name: "De Rosa",     slug: "de-rosa" },
+    { name: "Scott",       slug: "scott" },
+    { name: "Merckx",      slug: "merckx" },
+    { name: "Ridley",      slug: "ridley" },
+  ];
+
+  function brandInitials(name) {
+    return name.split(" ").map(function(w){ return w[0]; }).join("");
+  }
+
+  function cardHTML(brand) {
+    return '<a href="/collections/' + brand.slug + '" class="crx-hbb__card">' +
+      '<span class="crx-hbb__card-initial">' + brandInitials(brand.name) + '</span>' +
+      '<span class="crx-hbb__card-name">' + brand.name + '</span>' +
+    '</a>';
+  }
+
+  /* duplicate set for seamless loop */
+  var singleSet = brands.map(cardHTML).join("");
+  var doubledCards = singleSet + singleSet;
+
+  mount.innerHTML =
+    '<section class="crx-hbb">' +
+      '<div class="crx-hbb__header">' +
+        '<p class="crx-hbb__kicker">Premium brands</p>' +
+        '<h2 class="crx-hbb__title">High-end bike builds</h2>' +
+        '<p class="crx-hbb__sub">Hand-built frames from the world\'s finest manufacturers, fitted and assembled to your exact specification.</p>' +
+      '</div>' +
+      '<div class="crx-hbb__marquee">' +
+        '<div class="crx-hbb__track">' + doubledCards + '</div>' +
+      '</div>' +
+      '<div class="crx-hbb__cta-wrap">' +
+        '<a href="/bike-builds" class="crx-hbb__cta">View bike builds &rarr;</a>' +
+      '</div>' +
+    '</section>';
+
+  /* ── inject styles ── */
+  var style = document.createElement("style");
+  style.textContent =
+    '.crx-hbb{padding:56px 0;text-align:center;overflow:hidden;' +
+      'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
+      'background:#fafafa}' +
+
+    '.crx-hbb__header{max-width:560px;margin:0 auto 36px;padding:0 20px}' +
+    '.crx-hbb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
+    '.crx-hbb__title{font-size:clamp(24px,4vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
+    '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
+
+    /* marquee */
+    '.crx-hbb__marquee{overflow:hidden;padding:20px 0;' +
+      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);' +
+      'mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%)}' +
+    '.crx-hbb__track{display:flex;gap:16px;width:max-content;will-change:transform;' +
+      'animation:crx-hbb-scroll 45s linear infinite}' +
+
+    '@keyframes crx-hbb-scroll{' +
+      '0%{transform:translateX(0)}' +
+      '100%{transform:translateX(-50%)}' +
+    '}' +
+
+    /* cards */
+    '.crx-hbb__card{' +
+      'flex:0 0 auto;width:160px;height:200px;' +
+      'background:#111;border:1px solid rgba(255,255,255,.08);border-radius:16px;' +
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
+      'text-decoration:none;color:#fff;' +
+      'transition:transform .3s ease,box-shadow .3s ease;' +
+      'cursor:pointer}' +
+    '.crx-hbb__card:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 10px 36px rgba(0,0,0,.35)}' +
+
+    '.crx-hbb__card-initial{font-size:36px;font-weight:900;letter-spacing:.04em;line-height:1;color:rgba(255,255,255,.9)}' +
+    '.crx-hbb__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
+
+    /* cta */
+    '.crx-hbb__cta-wrap{margin-top:28px}' +
+    '.crx-hbb__cta{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
+      'letter-spacing:.02em;background:#111;color:#fff;text-decoration:none;transition:opacity .2s}' +
+    '.crx-hbb__cta:hover{opacity:.78}' +
+
+    /* pause on hover */
+    '.crx-hbb__marquee:hover .crx-hbb__track{animation-play-state:paused}' +
+
+    /* reduced motion */
+    '@media(prefers-reduced-motion:reduce){' +
+      '.crx-hbb__track{animation:none}' +
+      '.crx-hbb__marquee{overflow-x:auto;-webkit-overflow-scrolling:touch}' +
+      '.crx-hbb__card:hover{transform:none}' +
+    '}' +
+
+    /* responsive */
+    '@media(max-width:640px){' +
+      '.crx-hbb__card{width:130px;height:170px}' +
+      '.crx-hbb__card-initial{font-size:28px}' +
+    '}';
+
   document.head.appendChild(style);
 }
