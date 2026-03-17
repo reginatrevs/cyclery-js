@@ -418,7 +418,7 @@ function crxInitHomeBikeAltA() {
       'outline:none;-webkit-tap-highlight-color:transparent;padding:0;font-family:inherit}' +
     '.crx-hba__card:hover{box-shadow:0 8px 32px rgba(0,0,0,.35)}' +
 
-    '.crx-hba__card-logo{width:80px;height:80px;object-fit:contain;pointer-events:none;filter:brightness(0) invert(1);opacity:.9}' +
+    '.crx-hba__card-logo{width:80px;height:80px;object-fit:contain;pointer-events:none;opacity:.9}' +
     '.crx-hba__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
 
     /* navigation arrows – overlaid inside the viewport */
@@ -687,7 +687,7 @@ function crxInitHomeBikeAltB() {
       'cursor:pointer}' +
     '.crx-hbb__card:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 10px 36px rgba(0,0,0,.35)}' +
 
-    '.crx-hbb__card-logo{width:80px;height:80px;object-fit:contain;pointer-events:none;filter:brightness(0) invert(1);opacity:.9}' +
+    '.crx-hbb__card-logo{width:80px;height:80px;object-fit:contain;pointer-events:none;opacity:.9}' +
     '.crx-hbb__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
 
     /* cta */
