@@ -397,9 +397,9 @@ function crxInitHomeBikeAltA() {
       'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
       'background:#fafafa}' +
 
-    '.crx-hba__header{max-width:560px;margin:0 auto 36px;padding:0 20px}' +
+    '.crx-hba__header{max-width:680px;margin:0 auto 36px;padding:0 20px}' +
     '.crx-hba__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
-    '.crx-hba__title{font-size:clamp(24px,4vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
+    '.crx-hba__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
     '.crx-hba__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
 
     /* viewport with edge fade */
@@ -659,9 +659,9 @@ function crxInitHomeBikeAltB() {
       'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
       'background:#fafafa}' +
 
-    '.crx-hbb__header{max-width:560px;margin:0 auto 36px;padding:0 20px}' +
+    '.crx-hbb__header{max-width:680px;margin:0 auto 36px;padding:0 20px}' +
     '.crx-hbb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
-    '.crx-hbb__title{font-size:clamp(24px,4vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
+    '.crx-hbb__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
     '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
 
     /* stage: flex row with arrows flanking the marquee */
