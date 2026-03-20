@@ -848,7 +848,7 @@ function crxInitContactBikeRequest() {
   style.textContent =
     '.crx-cbr{padding:0 0 32px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
       'box-sizing:border-box}' +
-    '.crx-cbr__inner{background:#f5f5f5;border:1px solid rgba(0,0,0,.08);border-radius:12px;' +
+    '.crx-cbr__inner{background:#dddddd;border:1px solid rgba(0,0,0,.08);border-radius:12px;' +
       'padding:32px 28px;text-align:left}' +
     '.crx-cbr__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
     '.crx-cbr__title{font-size:clamp(20px,3vw,26px);font-weight:900;margin:0 0 10px;line-height:1.15;color:#111}' +
