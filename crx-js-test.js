@@ -195,22 +195,22 @@ function crxInitHomeBikes() {
   if (!mount) return;
 
   const brands = [
-    { name: "Factor",      slug: "factor" },
-    { name: "ENVE",        slug: "enve" },
-    { name: "TIME",        slug: "time" },
-    { name: "Look",        slug: "look" },
-    { name: "Bianchi",     slug: "bianchi" },
-    { name: "Specialized", slug: "specialized" },
-    { name: "Colnago",     slug: "colnago" },
-    { name: "De Rosa",     slug: "de-rosa" },
-    { name: "Scott",       slug: "scott" },
-    { name: "Merckx",      slug: "merckx" },
-    { name: "Ridley",      slug: "ridley" },
+    { name: "Factor",      url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547498&min=0&max=20000" },
+    { name: "ENVE",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=2818995&min=0&max=20000" },
+    { name: "TIME",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547339&min=0&max=20000" },
+    { name: "Look",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547338&min=0&max=20000" },
+    { name: "Bianchi",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547502&min=0&max=20000" },
+    { name: "Specialized", url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547244&min=0&max=20000" },
+    { name: "Colnago",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular" },
+    { name: "De Rosa",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547503&min=0&max=20000" },
+    { name: "Scott",       url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1611752&min=0&max=20000" },
+    { name: "Merckx",      url: "https://www.thecyclery.ca/service/store-hours/" },
+    { name: "Ridley",      url: "https://www.thecyclery.ca/service/store-hours/" },
   ];
 
   // Build chip HTML — duplicate the list so the strip is 2x wide for seamless loop
   function chipHTML(brand) {
-    return `<a href="/collections/${brand.slug}" class="crx-hb__chip">${brand.name}</a>`;
+    return `<a href="${brand.url}" class="crx-hb__chip">${brand.name}</a>`;
   }
 
   const row1Brands = brands;
@@ -349,21 +349,21 @@ function crxInitHomeBikeAltA() {
 
   var CDN = "https://cdn.shoplightspeed.com/shops/635245/files/";
   var brands = [
-    { name: "Factor",      slug: "factor",      img: CDN + "75058063/factor.png" },
-    { name: "ENVE",        slug: "enve",        img: CDN + "75058062/enve.png" },
-    { name: "TIME",        slug: "time",        img: CDN + "75058071/time.png" },
-    { name: "Look",        slug: "look",        img: CDN + "75058064/look.png" },
-    { name: "Bianchi",     slug: "bianchi",     img: CDN + "75058058/bianchi.png" },
-    { name: "Specialized", slug: "specialized", img: CDN + "75058070/specialized.png" },
-    { name: "Colnago",     slug: "colnago",     img: CDN + "75058059/colnago.png" },
-    { name: "De Rosa",     slug: "de-rosa",     img: CDN + "75058060/derosa.png" },
-    { name: "Scott",       slug: "scott",       img: CDN + "75058069/scott.png" },
-    { name: "Merckx",      slug: "merckx",      img: CDN + "75058065/merckx.png" },
-    { name: "Ridley",      slug: "ridley",      img: CDN + "75058067/ridley.png" },
+    { name: "Factor",      url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547498&min=0&max=20000", img: CDN + "75058063/factor.png" },
+    { name: "ENVE",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=2818995&min=0&max=20000", img: CDN + "75058062/enve.png" },
+    { name: "TIME",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547339&min=0&max=20000", img: CDN + "75058071/time.png" },
+    { name: "Look",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547338&min=0&max=20000", img: CDN + "75058064/look.png" },
+    { name: "Bianchi",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547502&min=0&max=20000", img: CDN + "75058058/bianchi.png" },
+    { name: "Specialized", url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547244&min=0&max=20000", img: CDN + "75058070/specialized.png" },
+    { name: "Colnago",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular",                              img: CDN + "75058059/colnago.png" },
+    { name: "De Rosa",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547503&min=0&max=20000", img: CDN + "75058060/derosa.png" },
+    { name: "Scott",       url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1611752&min=0&max=20000", img: CDN + "75058069/scott.png" },
+    { name: "Merckx",      url: "https://www.thecyclery.ca/service/store-hours/",                                                        img: CDN + "75058065/merckx.png" },
+    { name: "Ridley",      url: "https://www.thecyclery.ca/service/store-hours/",                                                        img: CDN + "75058067/ridley.png" },
   ];
 
   function cardHTML(brand) {
-    return '<button class="crx-hba__card" data-crx-hba-slug="' + brand.slug + '" type="button" aria-label="' + brand.name + '">' +
+    return '<button class="crx-hba__card" data-crx-hba-url="' + brand.url + '" type="button" aria-label="' + brand.name + '">' +
       '<img class="crx-hba__card-logo" src="' + brand.img + '" alt="' + brand.name + '" loading="lazy">' +
       '<span class="crx-hba__card-name">' + brand.name + '</span>' +
     '</button>';
@@ -575,10 +575,15 @@ function crxInitHomeBikeAltA() {
     resetAuto();
   });
 
-  /* Click any card to focus it */
+  /* Click: non-active card → focus it; active card → navigate to brand URL */
   allCards.forEach(function(card, i) {
     card.addEventListener("click", function() {
-      if (i === activeIdx || animating) return;
+      if (animating) return;
+      if (i === activeIdx) {
+        var url = card.getAttribute("data-crx-hba-url");
+        if (url) window.location.href = url;
+        return;
+      }
       goTo(i);
       resetAuto();
     });
@@ -609,21 +614,21 @@ function crxInitHomeBikeAltB() {
 
   var CDN = "https://cdn.shoplightspeed.com/shops/635245/files/";
   var brands = [
-    { name: "Factor",      slug: "factor",      img: CDN + "75058063/factor.png" },
-    { name: "ENVE",        slug: "enve",        img: CDN + "75058062/enve.png" },
-    { name: "TIME",        slug: "time",        img: CDN + "75058071/time.png" },
-    { name: "Look",        slug: "look",        img: CDN + "75058064/look.png" },
-    { name: "Bianchi",     slug: "bianchi",     img: CDN + "75058058/bianchi.png" },
-    { name: "Specialized", slug: "specialized", img: CDN + "75058070/specialized.png" },
-    { name: "Colnago",     slug: "colnago",     img: CDN + "75058059/colnago.png" },
-    { name: "De Rosa",     slug: "de-rosa",     img: CDN + "75058060/derosa.png" },
-    { name: "Scott",       slug: "scott",       img: CDN + "75058069/scott.png" },
-    { name: "Merckx",      slug: "merckx",      img: CDN + "75058065/merckx.png" },
-    { name: "Ridley",      slug: "ridley",      img: CDN + "75058067/ridley.png" },
+    { name: "Factor",      url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547498&min=0&max=20000", img: CDN + "75058063/factor.png" },
+    { name: "ENVE",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=2818995&min=0&max=20000", img: CDN + "75058062/enve.png" },
+    { name: "TIME",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547339&min=0&max=20000", img: CDN + "75058071/time.png" },
+    { name: "Look",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547338&min=0&max=20000", img: CDN + "75058064/look.png" },
+    { name: "Bianchi",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547502&min=0&max=20000", img: CDN + "75058058/bianchi.png" },
+    { name: "Specialized", url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547244&min=0&max=20000", img: CDN + "75058070/specialized.png" },
+    { name: "Colnago",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular",                              img: CDN + "75058059/colnago.png" },
+    { name: "De Rosa",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547503&min=0&max=20000", img: CDN + "75058060/derosa.png" },
+    { name: "Scott",       url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1611752&min=0&max=20000", img: CDN + "75058069/scott.png" },
+    { name: "Merckx",      url: "https://www.thecyclery.ca/service/store-hours/",                                                        img: CDN + "75058065/merckx.png" },
+    { name: "Ridley",      url: "https://www.thecyclery.ca/service/store-hours/",                                                        img: CDN + "75058067/ridley.png" },
   ];
 
   function cardHTML(brand) {
-    return '<a href="/collections/' + brand.slug + '" class="crx-hbb__card">' +
+    return '<a href="' + brand.url + '" class="crx-hbb__card">' +
       '<img class="crx-hbb__card-logo" src="' + brand.img + '" alt="' + brand.name + '" loading="lazy">' +
       '<span class="crx-hbb__card-name">' + brand.name + '</span>' +
     '</a>';
