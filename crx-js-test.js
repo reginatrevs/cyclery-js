@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   crxInitRequestModal();
   crxInitHomeBikes();
-  crxInitHomeBikeAltA();
+  // crxInitHomeBikeAltA(); /* Option A disabled — code kept below for reference */
   crxInitHomeBikeAltB();
   crxInitContactBikeRequest();
 });
