@@ -839,7 +839,7 @@ function crxInitContactBikeRequest() {
         '<p class="crx-cbr__kicker">Custom Bike Inquiry</p>' +
         '<h2 class="crx-cbr__title">Looking for a specific build?</h2>' +
         '<p class="crx-cbr__sub">We work with the world\'s top cycling brands and can source models that may not appear in our online catalog. Tell us what you\'re looking for and we\'ll take it from there.</p>' +
-        '<button type="button" class="crx-cbr__btn">Request a bike</button>' +
+        '<button type="button" class="crx-cbr__btn">Get a custom quote</button>' +
       '</div>' +
     '</section>';
 
@@ -856,6 +856,10 @@ function crxInitContactBikeRequest() {
       'letter-spacing:.02em;background:#111;color:#fff;border:none;cursor:pointer;' +
       'font-family:inherit;transition:opacity .2s}' +
     '.crx-cbr__btn:hover{opacity:.78}';
+
+  /* hide the modal's own trigger button — our CTA replaces it */
+  var modalBtn = document.querySelector(".crx-rqnl__open");
+  if (modalBtn) modalBtn.style.display = "none";
 
   document.head.appendChild(style);
 
