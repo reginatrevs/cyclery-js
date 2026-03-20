@@ -846,13 +846,14 @@ function crxInitContactBikeRequest() {
   /* ── inject styles ── */
   var style = document.createElement("style");
   style.textContent =
-    '.crx-cbr{padding:48px 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
-      'background:#fff;box-sizing:border-box}' +
-    '.crx-cbr__inner{max-width:640px;margin:0 auto;text-align:center}' +
+    '.crx-cbr{padding:0 0 32px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
+      'box-sizing:border-box}' +
+    '.crx-cbr__inner{background:#f5f5f5;border:1px solid rgba(0,0,0,.08);border-radius:12px;' +
+      'padding:32px 28px;text-align:left}' +
     '.crx-cbr__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
-    '.crx-cbr__title{font-size:clamp(22px,3.2vw,30px);font-weight:900;margin:0 0 14px;line-height:1.15;color:#111}' +
-    '.crx-cbr__sub{font-size:15px;line-height:1.6;opacity:.65;margin:0 0 24px;color:#333}' +
-    '.crx-cbr__btn{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
+    '.crx-cbr__title{font-size:clamp(20px,3vw,26px);font-weight:900;margin:0 0 10px;line-height:1.15;color:#111}' +
+    '.crx-cbr__sub{font-size:14px;line-height:1.6;opacity:.65;margin:0 0 20px;color:#333}' +
+    '.crx-cbr__btn{display:inline-block;padding:11px 26px;border-radius:999px;font-size:14px;font-weight:800;' +
       'letter-spacing:.02em;background:#111;color:#fff;border:none;cursor:pointer;' +
       'font-family:inherit;transition:opacity .2s}' +
     '.crx-cbr__btn:hover{opacity:.78}';
