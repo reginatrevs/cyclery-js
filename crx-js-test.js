@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   crxInitHomeBikes();
   crxInitHomeBikeAltA();
   crxInitHomeBikeAltB();
+  crxInitContactBikeRequest();
 });
 
 /* ───────────────────────────────────────────────────
@@ -201,7 +202,7 @@ function crxInitHomeBikes() {
     { name: "Look",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547338&min=0&max=20000" },
     { name: "Bianchi",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547502&min=0&max=20000" },
     { name: "Specialized", url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547244&min=0&max=20000" },
-    { name: "Colnago",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular" },
+    { name: "Colnago",     url: "https://www.thecyclery.ca/service/store-hours/" },
     { name: "De Rosa",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547503&min=0&max=20000" },
     { name: "Scott",       url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1611752&min=0&max=20000" },
     { name: "Merckx",      url: "https://www.thecyclery.ca/service/store-hours/" },
@@ -355,7 +356,7 @@ function crxInitHomeBikeAltA() {
     { name: "Look",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547338&min=0&max=20000", img: CDN + "75058064/look.png" },
     { name: "Bianchi",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547502&min=0&max=20000", img: CDN + "75058058/bianchi.png" },
     { name: "Specialized", url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547244&min=0&max=20000", img: CDN + "75058070/specialized.png" },
-    { name: "Colnago",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular",                              img: CDN + "75058059/colnago.png" },
+    { name: "Colnago",     url: "https://www.thecyclery.ca/service/store-hours/",                              img: CDN + "75058059/colnago.png" },
     { name: "De Rosa",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547503&min=0&max=20000", img: CDN + "75058060/derosa.png" },
     { name: "Scott",       url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1611752&min=0&max=20000", img: CDN + "75058069/scott.png" },
     { name: "Merckx",      url: "https://www.thecyclery.ca/service/store-hours/",                                                        img: CDN + "75058065/merckx.png" },
@@ -620,7 +621,7 @@ function crxInitHomeBikeAltB() {
     { name: "Look",        url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547338&min=0&max=20000", img: CDN + "75058064/look.png" },
     { name: "Bianchi",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547502&min=0&max=20000", img: CDN + "75058058/bianchi.png" },
     { name: "Specialized", url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547244&min=0&max=20000", img: CDN + "75058070/specialized.png" },
-    { name: "Colnago",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular",                              img: CDN + "75058059/colnago.png" },
+    { name: "Colnago",     url: "https://www.thecyclery.ca/service/store-hours/",                              img: CDN + "75058059/colnago.png" },
     { name: "De Rosa",     url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1547503&min=0&max=20000", img: CDN + "75058060/derosa.png" },
     { name: "Scott",       url: "https://www.thecyclery.ca/bike/bicycles/?mode=grid&limit=12&sort=popular&brand=1611752&min=0&max=20000", img: CDN + "75058069/scott.png" },
     { name: "Merckx",      url: "https://www.thecyclery.ca/service/store-hours/",                                                        img: CDN + "75058065/merckx.png" },
@@ -643,7 +644,7 @@ function crxInitHomeBikeAltB() {
       '<div class="crx-hbb__header">' +
         '<p class="crx-hbb__kicker">Premium Brands</p>' +
         '<h2 class="crx-hbb__title">Built around the brands you ride</h2>' +
-        '<p class="crx-hbb__sub">We carry the world\'s most elite cycling brands and build every bike to your exact specification.</p>' +
+        '<p class="crx-hbb__sub">We carry the world\'s most elite cycling brands and build every bike to your exact specification. Don\'t see a model in our catalog? We can source and order it for you — <a href="https://www.thecyclery.ca/service/store-hours/" class="crx-hbb__sub-link">contact us</a> to inquire.</p>' +
       '</div>' +
       '<div class="crx-hbb__stage">' +
         '<button class="crx-hbb__arrow crx-hbb__arrow--prev" type="button" aria-label="Scroll left">&#8249;</button>' +
@@ -653,7 +654,7 @@ function crxInitHomeBikeAltB() {
         '<button class="crx-hbb__arrow crx-hbb__arrow--next" type="button" aria-label="Scroll right">&#8250;</button>' +
       '</div>' +
       '<div class="crx-hbb__cta-wrap">' +
-        '<a href="/bike-builds" class="crx-hbb__cta">Explore our brands &rarr;</a>' +
+        '<a href="https://www.thecyclery.ca/bike/bicycles/" class="crx-hbb__cta">Explore our brands &rarr;</a>' +
       '</div>' +
     '</section>';
 
@@ -668,6 +669,8 @@ function crxInitHomeBikeAltB() {
     '.crx-hbb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
     '.crx-hbb__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
     '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
+    '.crx-hbb__sub-link{color:#111;font-weight:700;text-decoration:underline;text-underline-offset:2px;transition:opacity .2s}' +
+    '.crx-hbb__sub-link:hover{opacity:.6}' +
 
     /* stage: flex row with arrows flanking the marquee */
     '.crx-hbb__stage{position:relative;display:flex;align-items:center;gap:0;padding:0 56px;max-width:100%;margin:0 auto}' +
@@ -815,4 +818,130 @@ function crxInitHomeBikeAltB() {
   measureHalf();
   window.addEventListener("resize", measureHalf);
   tick();
+}
+
+
+/* ───────────────────────────────────────────────────
+   4. CONTACT PAGE – BIKE REQUEST FORM
+   Standalone section with inline form that emails
+   vince@thecyclery.ca via Netlify Forms.
+   Mount: <div class="crx-contact-bikereq-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitContactBikeRequest() {
+  var mount = document.querySelector(".crx-contact-bikereq-mount");
+  if (!mount) return;
+
+  var NETLIFY_SITE_URL = "https://cyclery-request-form.netlify.app";
+
+  mount.innerHTML =
+    '<section class="crx-cbr">' +
+      '<div class="crx-cbr__inner">' +
+        '<div class="crx-cbr__text">' +
+          '<p class="crx-cbr__kicker">Custom Bike Inquiry</p>' +
+          '<h2 class="crx-cbr__title">Looking for a specific build?</h2>' +
+          '<p class="crx-cbr__sub">We work with the world\'s top cycling brands and can source models that may not appear in our online catalog. Tell us what you\'re looking for and we\'ll take it from there.</p>' +
+        '</div>' +
+        '<div class="crx-cbr__form-wrap">' +
+          '<iframe class="crx-cbr__frame" name="crx-cbr-target" title="hidden submit" aria-hidden="true"></iframe>' +
+          '<form class="crx-cbr__form" method="POST" action="' + NETLIFY_SITE_URL + '/" target="crx-cbr-target">' +
+            '<input type="hidden" name="form-name" value="crx-contact-bike-request">' +
+            '<input type="hidden" name="notify_email" value="vince@thecyclery.ca">' +
+            '<input type="hidden" name="page_url" value="' + window.location.href + '">' +
+            '<p class="crx-cbr__hp"><label>Don\'t fill this out: <input name="bot-field"></label></p>' +
+            '<label class="crx-cbr__field">' +
+              '<span>Name</span>' +
+              '<input name="name" type="text" required placeholder="Your full name">' +
+            '</label>' +
+            '<label class="crx-cbr__field">' +
+              '<span>Email</span>' +
+              '<input name="email" type="email" required placeholder="your@email.com">' +
+            '</label>' +
+            '<label class="crx-cbr__field">' +
+              '<span>Phone (optional)</span>' +
+              '<input name="phone" type="tel" placeholder="(555) 123-4567">' +
+            '</label>' +
+            '<label class="crx-cbr__field">' +
+              '<span>Brand of interest</span>' +
+              '<select name="brand" required>' +
+                '<option value="">Select a brand…</option>' +
+                '<option>Factor</option>' +
+                '<option>ENVE</option>' +
+                '<option>TIME</option>' +
+                '<option>Look</option>' +
+                '<option>Bianchi</option>' +
+                '<option>Specialized</option>' +
+                '<option>Colnago</option>' +
+                '<option>De Rosa</option>' +
+                '<option>Scott</option>' +
+                '<option>Merckx</option>' +
+                '<option>Ridley</option>' +
+                '<option>Other</option>' +
+              '</select>' +
+            '</label>' +
+            '<label class="crx-cbr__field">' +
+              '<span>What are you looking for?</span>' +
+              '<textarea name="details" rows="4" required placeholder="Model, size, groupset preference, budget range, timeline…"></textarea>' +
+            '</label>' +
+            '<button class="crx-cbr__submit" type="submit">Send inquiry</button>' +
+            '<p class="crx-cbr__status" role="status" aria-live="polite"></p>' +
+          '</form>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
+
+  /* ── inject styles ── */
+  var style = document.createElement("style");
+  style.textContent =
+    '.crx-cbr{padding:48px 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
+      'background:#fff;box-sizing:border-box}' +
+    '.crx-cbr__inner{max-width:920px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}' +
+
+    '.crx-cbr__text{padding-top:8px}' +
+    '.crx-cbr__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
+    '.crx-cbr__title{font-size:clamp(22px,3.2vw,30px);font-weight:900;margin:0 0 14px;line-height:1.15;color:#111}' +
+    '.crx-cbr__sub{font-size:15px;line-height:1.6;opacity:.65;margin:0;color:#333}' +
+
+    '.crx-cbr__form-wrap{position:relative}' +
+    '.crx-cbr__form{display:grid;gap:14px}' +
+    '.crx-cbr__field span{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#111}' +
+    '.crx-cbr__field input,.crx-cbr__field textarea,.crx-cbr__field select{' +
+      'width:100%;border:1px solid rgba(0,0,0,.15);border-radius:10px;padding:10px 14px;' +
+      'font-size:14px;font-family:inherit;box-sizing:border-box;transition:border-color .2s}' +
+    '.crx-cbr__field input:focus,.crx-cbr__field textarea:focus,.crx-cbr__field select:focus{' +
+      'outline:none;border-color:#111}' +
+
+    '.crx-cbr__submit{border-radius:999px;padding:12px 28px;font-size:14px;font-weight:800;' +
+      'cursor:pointer;border:none;background:#111;color:#fff;transition:opacity .2s;font-family:inherit}' +
+    '.crx-cbr__submit:hover{opacity:.8}' +
+    '.crx-cbr__status{margin:0;font-weight:700;font-size:14px;min-height:1.2em;color:#111}' +
+    '.crx-cbr__frame{width:0;height:0;border:0;position:absolute;opacity:0}' +
+    '.crx-cbr__hp{display:none}' +
+
+    '@media(max-width:700px){' +
+      '.crx-cbr__inner{grid-template-columns:1fr;gap:28px}' +
+      '.crx-cbr__text{text-align:center}' +
+    '}';
+
+  document.head.appendChild(style);
+
+  /* ── form submission handling ── */
+  var form = mount.querySelector(".crx-cbr__form");
+  var status = mount.querySelector(".crx-cbr__status");
+  var iframe = mount.querySelector(".crx-cbr__frame");
+  var hasSubmitted = false;
+  var ignoreNextLoad = true;
+
+  form.addEventListener("submit", function() {
+    hasSubmitted = true;
+    status.textContent = "Sending…";
+    ignoreNextLoad = false;
+  });
+
+  iframe.addEventListener("load", function() {
+    if (ignoreNextLoad || !hasSubmitted) return;
+    status.textContent = "Sent ✔  We'll be in touch soon.";
+    form.reset();
+    hasSubmitted = false;
+    ignoreNextLoad = true;
+  });
 }
