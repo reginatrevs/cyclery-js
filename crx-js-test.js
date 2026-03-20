@@ -661,11 +661,11 @@ function crxInitHomeBikeAltB() {
   /* ── inject styles ── */
   var style = document.createElement("style");
   style.textContent =
-    '.crx-hbb{padding:44px 0;text-align:center;overflow:hidden;width:100%;' +
+    '.crx-hbb{padding:24px 0;text-align:center;overflow:hidden;width:100%;' +
       'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
       'background:#fff;box-sizing:border-box}' +
 
-    '.crx-hbb__header{max-width:960px;margin:0 auto 32px;padding:0 20px}' +
+    '.crx-hbb__header{max-width:960px;margin:0 auto 20px;padding:0 20px}' +
     '.crx-hbb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
     '.crx-hbb__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
     '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
@@ -688,7 +688,7 @@ function crxInitHomeBikeAltB() {
     '.crx-hbb__arrow--next{right:4px}' +
 
     /* marquee with edge fade */
-    '.crx-hbb__marquee{flex:1;overflow:hidden;padding:22px 0;' +
+    '.crx-hbb__marquee{flex:1;overflow:hidden;padding:14px 0;' +
       '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%);' +
       'mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%)}' +
     '.crx-hbb__track{display:flex;gap:14px;width:max-content;will-change:transform}' +
@@ -696,7 +696,7 @@ function crxInitHomeBikeAltB() {
     /* cards */
     '.crx-hbb__card{' +
       'flex:0 0 auto;width:160px;height:200px;' +
-      'background:#111;border:1px solid rgba(255,255,255,.06);border-radius:16px;' +
+      'background:#111;border:1px solid rgba(255,255,255,.06);border-radius:8px;' +
       'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
       'text-decoration:none;color:#fff;' +
       'transition:transform .3s ease,box-shadow .3s ease;' +
@@ -707,7 +707,7 @@ function crxInitHomeBikeAltB() {
     '.crx-hbb__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
 
     /* cta */
-    '.crx-hbb__cta-wrap{margin-top:28px}' +
+    '.crx-hbb__cta-wrap{margin-top:20px}' +
     '.crx-hbb__cta{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
       'letter-spacing:.02em;background:#111;color:#fff;text-decoration:none;transition:opacity .2s}' +
     '.crx-hbb__cta:hover{opacity:.78}' +
