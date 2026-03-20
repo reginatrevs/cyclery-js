@@ -822,70 +822,24 @@ function crxInitHomeBikeAltB() {
 
 
 /* ───────────────────────────────────────────────────
-   4. CONTACT PAGE – BIKE REQUEST FORM
-   Standalone section with inline form that emails
-   vince@thecyclery.ca via Netlify Forms.
-   Mount: <div class="crx-contact-bikereq-mount"></div>
+   4. CONTACT PAGE – BIKE REQUEST CTA
+   Renders a styled section with a button that opens
+   the existing request modal (Section 1).
+   Requires BOTH mounts on the contact page:
+     <div class="crx-rqnl-mount"></div>
+     <div class="crx-contact-bikereq-mount"></div>
    ─────────────────────────────────────────────────── */
 function crxInitContactBikeRequest() {
   var mount = document.querySelector(".crx-contact-bikereq-mount");
   if (!mount) return;
 
-  var NETLIFY_SITE_URL = "https://cyclery-request-form.netlify.app";
-
   mount.innerHTML =
     '<section class="crx-cbr">' +
       '<div class="crx-cbr__inner">' +
-        '<div class="crx-cbr__text">' +
-          '<p class="crx-cbr__kicker">Custom Bike Inquiry</p>' +
-          '<h2 class="crx-cbr__title">Looking for a specific build?</h2>' +
-          '<p class="crx-cbr__sub">We work with the world\'s top cycling brands and can source models that may not appear in our online catalog. Tell us what you\'re looking for and we\'ll take it from there.</p>' +
-        '</div>' +
-        '<div class="crx-cbr__form-wrap">' +
-          '<iframe class="crx-cbr__frame" name="crx-cbr-target" title="hidden submit" aria-hidden="true"></iframe>' +
-          '<form class="crx-cbr__form" method="POST" action="' + NETLIFY_SITE_URL + '/" target="crx-cbr-target">' +
-            '<input type="hidden" name="form-name" value="crx-contact-bike-request">' +
-            '<input type="hidden" name="notify_email" value="vince@thecyclery.ca">' +
-            '<input type="hidden" name="page_url" value="' + window.location.href + '">' +
-            '<p class="crx-cbr__hp"><label>Don\'t fill this out: <input name="bot-field"></label></p>' +
-            '<label class="crx-cbr__field">' +
-              '<span>Name</span>' +
-              '<input name="name" type="text" required placeholder="Your full name">' +
-            '</label>' +
-            '<label class="crx-cbr__field">' +
-              '<span>Email</span>' +
-              '<input name="email" type="email" required placeholder="your@email.com">' +
-            '</label>' +
-            '<label class="crx-cbr__field">' +
-              '<span>Phone (optional)</span>' +
-              '<input name="phone" type="tel" placeholder="(555) 123-4567">' +
-            '</label>' +
-            '<label class="crx-cbr__field">' +
-              '<span>Brand of interest</span>' +
-              '<select name="brand" required>' +
-                '<option value="">Select a brand…</option>' +
-                '<option>Factor</option>' +
-                '<option>ENVE</option>' +
-                '<option>TIME</option>' +
-                '<option>Look</option>' +
-                '<option>Bianchi</option>' +
-                '<option>Specialized</option>' +
-                '<option>Colnago</option>' +
-                '<option>De Rosa</option>' +
-                '<option>Scott</option>' +
-                '<option>Merckx</option>' +
-                '<option>Ridley</option>' +
-                '<option>Other</option>' +
-              '</select>' +
-            '</label>' +
-            '<label class="crx-cbr__field">' +
-              '<span>What are you looking for?</span>' +
-              '<textarea name="details" rows="4" required placeholder="Model, size, groupset preference, budget range, timeline…"></textarea>' +
-            '</label>' +
-            '<button class="crx-cbr__submit" type="submit">Send inquiry</button>' +
-            '<p class="crx-cbr__status" role="status" aria-live="polite"></p>' +
-          '</form>' +
-        '</div>' +
+        '<p class="crx-cbr__kicker">Custom Bike Inquiry</p>' +
+        '<h2 class="crx-cbr__title">Looking for a specific build?</h2>' +
+        '<p class="crx-cbr__sub">We work with the world\'s top cycling brands and can source models that may not appear in our online catalog. Tell us what you\'re looking for and we\'ll take it from there.</p>' +
+        '<button type="button" class="crx-cbr__btn">Get a custom quote</button>' +
       '</div>' +
     '</section>';
 
@@ -894,54 +848,27 @@ function crxInitContactBikeRequest() {
   style.textContent =
     '.crx-cbr{padding:48px 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
       'background:#fff;box-sizing:border-box}' +
-    '.crx-cbr__inner{max-width:920px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}' +
-
-    '.crx-cbr__text{padding-top:8px}' +
+    '.crx-cbr__inner{max-width:640px;margin:0 auto;text-align:center}' +
     '.crx-cbr__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
     '.crx-cbr__title{font-size:clamp(22px,3.2vw,30px);font-weight:900;margin:0 0 14px;line-height:1.15;color:#111}' +
-    '.crx-cbr__sub{font-size:15px;line-height:1.6;opacity:.65;margin:0;color:#333}' +
+    '.crx-cbr__sub{font-size:15px;line-height:1.6;opacity:.65;margin:0 0 24px;color:#333}' +
+    '.crx-cbr__btn{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
+      'letter-spacing:.02em;background:#111;color:#fff;border:none;cursor:pointer;' +
+      'font-family:inherit;transition:opacity .2s}' +
+    '.crx-cbr__btn:hover{opacity:.78}';
 
-    '.crx-cbr__form-wrap{position:relative}' +
-    '.crx-cbr__form{display:grid;gap:14px}' +
-    '.crx-cbr__field span{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#111}' +
-    '.crx-cbr__field input,.crx-cbr__field textarea,.crx-cbr__field select{' +
-      'width:100%;border:1px solid rgba(0,0,0,.15);border-radius:10px;padding:10px 14px;' +
-      'font-size:14px;font-family:inherit;box-sizing:border-box;transition:border-color .2s}' +
-    '.crx-cbr__field input:focus,.crx-cbr__field textarea:focus,.crx-cbr__field select:focus{' +
-      'outline:none;border-color:#111}' +
-
-    '.crx-cbr__submit{border-radius:999px;padding:12px 28px;font-size:14px;font-weight:800;' +
-      'cursor:pointer;border:none;background:#111;color:#fff;transition:opacity .2s;font-family:inherit}' +
-    '.crx-cbr__submit:hover{opacity:.8}' +
-    '.crx-cbr__status{margin:0;font-weight:700;font-size:14px;min-height:1.2em;color:#111}' +
-    '.crx-cbr__frame{width:0;height:0;border:0;position:absolute;opacity:0}' +
-    '.crx-cbr__hp{display:none}' +
-
-    '@media(max-width:700px){' +
-      '.crx-cbr__inner{grid-template-columns:1fr;gap:28px}' +
-      '.crx-cbr__text{text-align:center}' +
-    '}';
+  /* hide the modal's own trigger button — our CTA replaces it */
+  var modalBtn = document.querySelector(".crx-rqnl__open");
+  if (modalBtn) modalBtn.style.display = "none";
 
   document.head.appendChild(style);
 
-  /* ── form submission handling ── */
-  var form = mount.querySelector(".crx-cbr__form");
-  var status = mount.querySelector(".crx-cbr__status");
-  var iframe = mount.querySelector(".crx-cbr__frame");
-  var hasSubmitted = false;
-  var ignoreNextLoad = true;
-
-  form.addEventListener("submit", function() {
-    hasSubmitted = true;
-    status.textContent = "Sending…";
-    ignoreNextLoad = false;
-  });
-
-  iframe.addEventListener("load", function() {
-    if (ignoreNextLoad || !hasSubmitted) return;
-    status.textContent = "Sent ✔  We'll be in touch soon.";
-    form.reset();
-    hasSubmitted = false;
-    ignoreNextLoad = true;
+  /* ── open the existing request modal when button is clicked ── */
+  mount.querySelector(".crx-cbr__btn").addEventListener("click", function() {
+    var modal = document.querySelector(".crx-rqnl__modal");
+    if (modal) {
+      modal.classList.add("crx-rqnl__modal--open");
+      modal.setAttribute("aria-hidden", "false");
+    }
   });
 }
