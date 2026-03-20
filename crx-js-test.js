@@ -393,19 +393,19 @@ function crxInitHomeBikeAltA() {
   /* ── inject styles ── */
   var style = document.createElement("style");
   style.textContent =
-    '.crx-hba{padding:56px 0;text-align:center;overflow:hidden;' +
+    '.crx-hba{padding:44px 0;text-align:center;overflow:hidden;width:100%;' +
       'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
-      'background:#fafafa}' +
+      'background:#fff;box-sizing:border-box}' +
 
-    '.crx-hba__header{max-width:680px;margin:0 auto 36px;padding:0 20px}' +
+    '.crx-hba__header{max-width:960px;margin:0 auto 32px;padding:0 20px}' +
     '.crx-hba__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
     '.crx-hba__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
     '.crx-hba__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
 
     /* viewport with edge fade */
     '.crx-hba__viewport{position:relative;width:100%;overflow:hidden;padding:28px 0;' +
-      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 3%,#000 97%,transparent 100%);' +
-      'mask-image:linear-gradient(90deg,transparent 0%,#000 3%,#000 97%,transparent 100%)}' +
+      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%);' +
+      'mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%)}' +
     '.crx-hba__track{display:flex;align-items:center;gap:18px;will-change:transform}' +
 
     /* cards — scale/opacity driven by JS via inline styles for fluid transitions */
@@ -655,17 +655,17 @@ function crxInitHomeBikeAltB() {
   /* ── inject styles ── */
   var style = document.createElement("style");
   style.textContent =
-    '.crx-hbb{padding:56px 0;text-align:center;overflow:hidden;' +
+    '.crx-hbb{padding:44px 0;text-align:center;overflow:hidden;width:100%;' +
       'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
-      'background:#fafafa}' +
+      'background:#fff;box-sizing:border-box}' +
 
-    '.crx-hbb__header{max-width:680px;margin:0 auto 36px;padding:0 20px}' +
+    '.crx-hbb__header{max-width:960px;margin:0 auto 32px;padding:0 20px}' +
     '.crx-hbb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
     '.crx-hbb__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
     '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
 
     /* stage: flex row with arrows flanking the marquee */
-    '.crx-hbb__stage{position:relative;display:flex;align-items:center;gap:0;padding:0 48px;max-width:1400px;margin:0 auto}' +
+    '.crx-hbb__stage{position:relative;display:flex;align-items:center;gap:0;padding:0 56px;max-width:100%;margin:0 auto}' +
 
     /* navigation arrows — positioned outside the fade mask */
     '.crx-hbb__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:4;' +
