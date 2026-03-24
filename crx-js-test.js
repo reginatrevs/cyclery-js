@@ -696,7 +696,7 @@ function crxInitHomeBikeAltB() {
     /* cards */
     '.crx-hbb__card{' +
       'flex:0 0 auto;width:160px;height:200px;' +
-      'background:#000;border:1px solid rgba(255,255,255,.06);border-radius:0;' +
+      'background:#000;border:1px solid rgba(255,255,255,.06);border-radius:4px;' +
       'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
       'text-decoration:none;color:#fff;' +
       'transition:transform .3s ease,box-shadow .3s ease;' +
