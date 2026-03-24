@@ -724,9 +724,6 @@ function crxInitHomeBikeAltB() {
       '.crx-hbb__card-logo{width:60px;height:60px}' +
       '.crx-hbb__stage{padding:0 12px}' +
       '.crx-hbb__arrow{display:none}' +
-      '.crx-hbb__marquee{overflow-x:auto;-webkit-overflow-scrolling:touch;' +
-        '-webkit-mask-image:none;mask-image:none;scroll-snap-type:x mandatory}' +
-      '.crx-hbb__card{scroll-snap-align:start}' +
     '}';
 
   document.head.appendChild(style);
@@ -734,8 +731,7 @@ function crxInitHomeBikeAltB() {
   /* ── rAF-driven continuous scroll with arrow override ── */
   var track = mount.querySelector(".crx-hbb__track");
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var isMobile = window.matchMedia("(max-width: 640px)").matches;
-  if (reducedMotion || isMobile) return; /* fallback: native touch scroll on mobile */
+  if (reducedMotion) return;
 
   var speed = 0.4;                       /* px per frame (~24 px/s at 60fps) */
   var pos = 0;
@@ -814,6 +810,37 @@ function crxInitHomeBikeAltB() {
     if (!arrowBusy) {
       resumeTimer = setTimeout(function() { paused = false; }, 400);
     }
+  });
+
+  /* Touch swipe support for mobile — drag to scroll, pause then resume */
+  var touchStartX = 0;
+  var touchLastX = 0;
+  var isTouching = false;
+
+  marquee.addEventListener("touchstart", function(e) {
+    isTouching = true;
+    paused = true;
+    clearTimeout(resumeTimer);
+    touchStartX = e.touches[0].clientX;
+    touchLastX = touchStartX;
+  }, { passive: true });
+
+  marquee.addEventListener("touchmove", function(e) {
+    if (!isTouching) return;
+    var currentX = e.touches[0].clientX;
+    var delta = currentX - touchLastX;
+    touchLastX = currentX;
+    pos += delta;
+    /* seamless wrap */
+    if (pos <= -halfWidth) pos += halfWidth;
+    if (pos > 0) pos -= halfWidth;
+    track.style.transform = "translateX(" + pos + "px)";
+  }, { passive: true });
+
+  marquee.addEventListener("touchend", function() {
+    isTouching = false;
+    /* pause 3s so user can tap a card, then resume */
+    resumeTimer = setTimeout(function() { paused = false; }, 3000);
   });
 
   /* Init */
