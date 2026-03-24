@@ -696,7 +696,7 @@ function crxInitHomeBikeAltB() {
     /* cards */
     '.crx-hbb__card{' +
       'flex:0 0 auto;width:160px;height:200px;' +
-      'background:#111;border:1px solid rgba(255,255,255,.06);border-radius:8px;' +
+      'background:#000;border:1px solid rgba(255,255,255,.06);border-radius:0;' +
       'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
       'text-decoration:none;color:#fff;' +
       'transition:transform .3s ease,box-shadow .3s ease;' +
@@ -722,10 +722,11 @@ function crxInitHomeBikeAltB() {
     '@media(max-width:640px){' +
       '.crx-hbb__card{width:130px;height:170px}' +
       '.crx-hbb__card-logo{width:60px;height:60px}' +
-      '.crx-hbb__stage{padding:0 44px}' +
-      '.crx-hbb__arrow{width:36px;height:36px;font-size:18px}' +
-      '.crx-hbb__arrow--prev{left:2px}' +
-      '.crx-hbb__arrow--next{right:2px}' +
+      '.crx-hbb__stage{padding:0 12px}' +
+      '.crx-hbb__arrow{display:none}' +
+      '.crx-hbb__marquee{overflow-x:auto;-webkit-overflow-scrolling:touch;' +
+        '-webkit-mask-image:none;mask-image:none;scroll-snap-type:x mandatory}' +
+      '.crx-hbb__card{scroll-snap-align:start}' +
     '}';
 
   document.head.appendChild(style);
@@ -733,7 +734,8 @@ function crxInitHomeBikeAltB() {
   /* ── rAF-driven continuous scroll with arrow override ── */
   var track = mount.querySelector(".crx-hbb__track");
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reducedMotion) return; /* graceful fallback: static scrollable row */
+  var isMobile = window.matchMedia("(max-width: 640px)").matches;
+  if (reducedMotion || isMobile) return; /* fallback: native touch scroll on mobile */
 
   var speed = 0.4;                       /* px per frame (~24 px/s at 60fps) */
   var pos = 0;
