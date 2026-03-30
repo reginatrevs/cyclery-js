@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // crxInitHomeBikeAltA(); /* Option A disabled — code kept below for reference */
   crxInitHomeBikeAltB();
   crxInitContactBikeRequest();
+  crxInitDonateA();
+  crxInitDonateB();
+  crxInitDonateC();
 });
 
 /* ───────────────────────────────────────────────────
@@ -901,4 +904,175 @@ function crxInitContactBikeRequest() {
       modal.setAttribute("aria-hidden", "false");
     }
   });
+}
+
+
+/* ───────────────────────────────────────────────────
+   5-A. DONATION SECTION – BOLD STATEMENT
+   Dark full-width banner, large type, strong presence.
+   Feels like a team announcement / race-day energy.
+   Mount: <div class="crx-donate-a-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitDonateA() {
+  var mount = document.querySelector(".crx-donate-a-mount");
+  if (!mount) return;
+
+  mount.innerHTML =
+    '<section class="crx-dna">' +
+      '<div class="crx-dna__inner">' +
+        '<div class="crx-dna__content">' +
+          '<p class="crx-dna__kicker">Cyclery Racing &mdash; Abacus Data</p>' +
+          '<h2 class="crx-dna__title">Fuel the next race.</h2>' +
+          '<p class="crx-dna__sub">Support our competitive cycling team. Every contribution goes directly to race entries, travel, equipment, and developing the next generation of Canadian cyclists.</p>' +
+          '<div class="crx-dna__actions">' +
+            '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="crx-dna__btn crx-dna__btn--primary">Donate now</a>' +
+            '<a href="https://www.thecyclery.ca" class="crx-dna__btn crx-dna__btn--secondary">Visit The Cyclery &rarr;</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="crx-dna__accent" aria-hidden="true">' +
+          '<span class="crx-dna__accent-text">RACING</span>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
+
+  var style = document.createElement("style");
+  style.textContent =
+    '.crx-dna{padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box}' +
+    '.crx-dna__inner{background:#111;color:#fff;border-radius:6px;padding:56px 48px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto}' +
+    '.crx-dna__content{position:relative;z-index:2;max-width:560px}' +
+    '.crx-dna__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.45;margin:0 0 12px}' +
+    '.crx-dna__title{font-size:clamp(28px,4.5vw,48px);font-weight:900;margin:0 0 16px;line-height:1.05;letter-spacing:-.02em}' +
+    '.crx-dna__sub{font-size:15px;line-height:1.65;opacity:.6;margin:0 0 28px;max-width:480px}' +
+    '.crx-dna__actions{display:flex;gap:12px;flex-wrap:wrap}' +
+    '.crx-dna__btn{display:inline-block;padding:12px 28px;border-radius:999px;font-size:14px;font-weight:800;letter-spacing:.02em;text-decoration:none;transition:opacity .2s,transform .2s}' +
+    '.crx-dna__btn--primary{background:#fff;color:#111}' +
+    '.crx-dna__btn--primary:hover{opacity:.88;transform:scale(1.03)}' +
+    '.crx-dna__btn--secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25)}' +
+    '.crx-dna__btn--secondary:hover{border-color:rgba(255,255,255,.5)}' +
+
+    /* giant watermark text */
+    '.crx-dna__accent{position:absolute;right:-20px;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none}' +
+    '.crx-dna__accent-text{font-size:clamp(100px,18vw,220px);font-weight:900;letter-spacing:-.04em;opacity:.06;line-height:1;white-space:nowrap;color:#fff}' +
+
+    '@media(max-width:640px){' +
+      '.crx-dna__inner{padding:36px 24px}' +
+      '.crx-dna__accent{display:none}' +
+    '}';
+
+  document.head.appendChild(style);
+}
+
+
+/* ───────────────────────────────────────────────────
+   5-B. DONATION SECTION – MINIMAL CLEAN
+   White background, thin-bordered card, understated.
+   Fits the premium bike-shop aesthetic seamlessly.
+   Mount: <div class="crx-donate-b-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitDonateB() {
+  var mount = document.querySelector(".crx-donate-b-mount");
+  if (!mount) return;
+
+  mount.innerHTML =
+    '<section class="crx-dnb">' +
+      '<div class="crx-dnb__inner">' +
+        '<div class="crx-dnb__badge" aria-hidden="true">&#9733;</div>' +
+        '<p class="crx-dnb__kicker">Cyclery Racing &mdash; Abacus Data</p>' +
+        '<h2 class="crx-dnb__title">Support our racing team</h2>' +
+        '<p class="crx-dnb__sub">We race at the highest level in Canadian cycling. Your donation funds race entries, travel, and the gear our athletes rely on. Every dollar makes a difference.</p>' +
+        '<div class="crx-dnb__actions">' +
+          '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="crx-dnb__btn crx-dnb__btn--primary">Make a donation</a>' +
+          '<a href="https://www.thecyclery.ca" class="crx-dnb__link">thecyclery.ca &rarr;</a>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
+
+  var style = document.createElement("style");
+  style.textContent =
+    '.crx-dnb{padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box}' +
+    '.crx-dnb__inner{border:1px solid rgba(0,0,0,.1);border-radius:6px;padding:40px 36px;max-width:640px;margin:0 auto;text-align:center;position:relative}' +
+    '.crx-dnb__badge{font-size:28px;margin:0 0 12px;opacity:.18}' +
+    '.crx-dnb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.4;margin:0 0 10px}' +
+    '.crx-dnb__title{font-size:clamp(20px,3.2vw,28px);font-weight:900;margin:0 0 12px;line-height:1.15;color:#111}' +
+    '.crx-dnb__sub{font-size:14px;line-height:1.65;opacity:.55;margin:0 0 24px;color:#333;max-width:480px;display:inline-block}' +
+    '.crx-dnb__actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}' +
+    '.crx-dnb__btn{display:inline-block;padding:11px 26px;border-radius:999px;font-size:14px;font-weight:800;letter-spacing:.02em;text-decoration:none;transition:opacity .2s}' +
+    '.crx-dnb__btn--primary{background:#111;color:#fff}' +
+    '.crx-dnb__btn--primary:hover{opacity:.78}' +
+    '.crx-dnb__link{font-size:13px;font-weight:700;color:#111;text-decoration:underline;text-underline-offset:2px;transition:opacity .2s}' +
+    '.crx-dnb__link:hover{opacity:.55}' +
+
+    '@media(max-width:640px){' +
+      '.crx-dnb__inner{padding:28px 20px}' +
+    '}';
+
+  document.head.appendChild(style);
+}
+
+
+/* ───────────────────────────────────────────────────
+   5-C. DONATION SECTION – SPLIT / ABSTRACT
+   Two-column layout with text left and a geometric
+   accent block on the right. Personality without photos.
+   Mount: <div class="crx-donate-c-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitDonateC() {
+  var mount = document.querySelector(".crx-donate-c-mount");
+  if (!mount) return;
+
+  mount.innerHTML =
+    '<section class="crx-dnc">' +
+      '<div class="crx-dnc__inner">' +
+        '<div class="crx-dnc__text">' +
+          '<p class="crx-dnc__kicker">Cyclery Racing</p>' +
+          '<h2 class="crx-dnc__title">Behind every finish line is a team that believed.</h2>' +
+          '<p class="crx-dnc__sub">The Cyclery Racing &mdash; Abacus Data team competes across Canada\'s top cycling events. Your support keeps us on the start line.</p>' +
+          '<div class="crx-dnc__actions">' +
+            '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="crx-dnc__btn">Donate &rarr;</a>' +
+            '<a href="https://www.thecyclery.ca" class="crx-dnc__link">The Cyclery</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="crx-dnc__visual" aria-hidden="true">' +
+          '<div class="crx-dnc__block crx-dnc__block--1"></div>' +
+          '<div class="crx-dnc__block crx-dnc__block--2"></div>' +
+          '<div class="crx-dnc__block crx-dnc__block--3"></div>' +
+          '<span class="crx-dnc__visual-label">EST. 2024</span>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
+
+  var style = document.createElement("style");
+  style.textContent =
+    '.crx-dnc{padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box}' +
+    '.crx-dnc__inner{display:flex;align-items:center;gap:48px;max-width:1000px;margin:0 auto;' +
+      'background:#fafafa;border:1px solid rgba(0,0,0,.07);border-radius:6px;padding:44px 40px;overflow:hidden}' +
+
+    '.crx-dnc__text{flex:1;min-width:0}' +
+    '.crx-dnc__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.4;margin:0 0 10px}' +
+    '.crx-dnc__title{font-size:clamp(20px,3vw,26px);font-weight:900;margin:0 0 12px;line-height:1.2;color:#111}' +
+    '.crx-dnc__sub{font-size:14px;line-height:1.65;opacity:.55;margin:0 0 24px;color:#333}' +
+    '.crx-dnc__actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}' +
+    '.crx-dnc__btn{display:inline-block;padding:11px 26px;border-radius:999px;font-size:14px;font-weight:800;' +
+      'letter-spacing:.02em;background:#111;color:#fff;text-decoration:none;transition:opacity .2s}' +
+    '.crx-dnc__btn:hover{opacity:.78}' +
+    '.crx-dnc__link{font-size:13px;font-weight:700;color:#111;text-decoration:underline;text-underline-offset:2px;transition:opacity .2s}' +
+    '.crx-dnc__link:hover{opacity:.55}' +
+
+    /* abstract geometric accent */
+    '.crx-dnc__visual{position:relative;flex:0 0 220px;height:200px}' +
+    '.crx-dnc__block{position:absolute;border-radius:4px}' +
+    '.crx-dnc__block--1{width:140px;height:140px;background:#111;top:10px;left:40px;opacity:.9}' +
+    '.crx-dnc__block--2{width:100px;height:100px;background:#333;top:50px;left:90px;opacity:.7}' +
+    '.crx-dnc__block--3{width:60px;height:60px;background:#666;top:0;left:10px;opacity:.5}' +
+    '.crx-dnc__visual-label{position:absolute;bottom:8px;right:0;font-size:10px;font-weight:800;letter-spacing:.14em;opacity:.25;text-transform:uppercase}' +
+
+    '@media(max-width:720px){' +
+      '.crx-dnc__inner{flex-direction:column;gap:28px;padding:32px 24px}' +
+      '.crx-dnc__visual{flex:0 0 auto;width:100%;height:120px}' +
+      '.crx-dnc__block--1{width:100px;height:100px;left:calc(50% - 30px);top:5px}' +
+      '.crx-dnc__block--2{width:70px;height:70px;left:calc(50% + 20px);top:30px}' +
+      '.crx-dnc__block--3{width:45px;height:45px;left:calc(50% - 70px);top:0}' +
+    '}';
+
+  document.head.appendChild(style);
 }
