@@ -935,24 +935,29 @@ function crxInitDonateA() {
   var style = document.createElement("style");
   style.textContent =
     '.crx-donate-a-mount{display:block!important;width:100%!important;overflow:visible!important}' +
-    '.crx-dna{display:block;padding:0 20px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
-    '.crx-dna__inner{background:#f07ded;border-radius:6px;padding:48px 48px 40px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto;text-align:center}' +
+    '.crx-dna{display:block;padding:0 20px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
+    '.crx-dna__inner{background:#f07ded;border-radius:6px;padding:40px 56px 36px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto;text-align:center}' +
 
-    /* giant watermark behind content */
-    '.crx-dna__watermark{font-size:clamp(48px,10vw,120px);font-weight:900;line-height:1;letter-spacing:-.02em;color:#bd48ba;margin:0 0 16px;pointer-events:none;word-break:break-word}' +
+    /* watermark title — single line, scales to fill width */
+    '.crx-dna__watermark{font-size:clamp(36px,7.8vw,108px);font-weight:900;line-height:.95;letter-spacing:-.03em;color:#bd48ba;margin:0 0 4px;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
 
     '.crx-dna__content{position:relative;z-index:2}' +
-    '.crx-dna__tagline{font-size:clamp(13px,1.6vw,16px);font-weight:800;letter-spacing:.06em;color:#bd48ba;margin:0 0 8px;text-transform:uppercase}' +
-    '.crx-dna__sub{font-size:clamp(14px,1.4vw,16px);line-height:1.6;color:#bd48ba;opacity:.85;margin:0 auto 36px;max-width:680px}' +
-    '.crx-dna__actions{display:flex;flex-direction:column;align-items:center;gap:14px}' +
-    '.crx-dna__btn{display:inline-block;padding:16px 64px;background:#bd48ba;color:#f07ded;font-size:clamp(18px,2.4vw,28px);font-weight:700;border-radius:6px;text-decoration:none;transition:opacity .2s,transform .2s;letter-spacing:.01em}' +
+    '.crx-dna__tagline{font-size:clamp(11px,1.2vw,14px);font-weight:800;letter-spacing:.08em;color:#bd48ba;margin:0 0 6px;text-transform:uppercase}' +
+    '.crx-dna__sub{font-size:clamp(13px,1.2vw,15px);line-height:1.55;color:#bd48ba;opacity:.75;margin:0 auto 40px;max-width:620px}' +
+    '.crx-dna__actions{display:flex;flex-direction:column;align-items:center;gap:10px}' +
+    '.crx-dna__btn{display:inline-block;padding:18px 72px;background:#bd48ba;color:#f07ded;font-size:clamp(20px,2.6vw,32px);font-weight:700;border-radius:6px;text-decoration:none;transition:opacity .2s,transform .2s;letter-spacing:.01em}' +
     '.crx-dna__btn:hover{opacity:.88;transform:scale(1.03)}' +
-    '.crx-dna__link{font-size:13px;font-weight:700;color:#bd48ba;text-decoration:underline;text-underline-offset:3px;letter-spacing:.06em;transition:opacity .2s}' +
+    '.crx-dna__link{font-size:12px;font-weight:700;color:#bd48ba;text-decoration:underline;text-underline-offset:3px;letter-spacing:.08em;transition:opacity .2s}' +
     '.crx-dna__link:hover{opacity:.65}' +
 
+    '@media(max-width:900px){' +
+      '.crx-dna__watermark{white-space:normal;font-size:clamp(32px,9vw,72px)}' +
+    '}' +
     '@media(max-width:640px){' +
-      '.crx-dna__inner{padding:32px 20px 28px}' +
-      '.crx-dna__btn{padding:14px 48px;font-size:20px}' +
+      '.crx-dna__inner{padding:28px 20px 24px}' +
+      '.crx-dna__watermark{font-size:clamp(28px,10vw,52px)}' +
+      '.crx-dna__sub{margin-bottom:28px}' +
+      '.crx-dna__btn{padding:14px 52px;font-size:20px}' +
     '}';
 
   document.head.appendChild(style);
