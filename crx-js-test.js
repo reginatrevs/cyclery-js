@@ -917,7 +917,7 @@ function crxDonateHTML(prefix) {
   return '<section class="' + prefix + '">' +
     '<div class="' + prefix + '__inner">' +
       '<div class="' + prefix + '__watermark" aria-hidden="true">' +
-        '<span class="' + prefix + '__wm-line1">Cyclery Racing</span>' +
+        '<span class="' + prefix + '__wm-line1">Cyclery Racing -</span>' +
         '<span class="' + prefix + '__wm-line2">Abacus Data</span>' +
       '</div>' +
       '<div class="' + prefix + '__content">' +
@@ -932,45 +932,60 @@ function crxDonateHTML(prefix) {
   '</section>';
 }
 
-function crxDonateCSS(p, bg, accent, btnBg, btnTxt) {
-  return '.crx-donate-' + p.replace('crx-dn','') + '-mount{display:block!important;width:100%!important;overflow:visible!important}' +
-    '.' + p + '{display:block;padding:0 20px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
-    '.' + p + '__inner{background:' + bg + ';border-radius:6px;padding:44px 48px 36px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto;text-align:center}' +
-    '.' + p + '__watermark{pointer-events:none;margin:0 0 10px}' +
-    '.' + p + '__wm-line1,.' + p + '__wm-line2{display:block;font-weight:900;line-height:.92;letter-spacing:-.03em;color:' + accent + ';opacity:.55}' +
-    '.' + p + '__wm-line1{font-size:clamp(42px,9.5vw,130px)}' +
-    '.' + p + '__wm-line2{font-size:clamp(36px,7.5vw,105px)}' +
+/* ── shared base CSS (layout only, no colors) ── */
+function crxDonateBaseCSS(p) {
+  return '.' + p + '{display:block;padding:0 20px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
+    '.' + p + '__inner{border-radius:6px;padding:48px 56px 40px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto;text-align:center}' +
+    '.' + p + '__watermark{pointer-events:none;margin:0 0 12px}' +
+    '.' + p + '__wm-line1,.' + p + '__wm-line2{display:block;font-weight:900;line-height:.9;letter-spacing:-.03em}' +
+    '.' + p + '__wm-line1{font-size:120px}' +
+    '.' + p + '__wm-line2{font-size:120px}' +
     '.' + p + '__content{position:relative;z-index:2}' +
-    '.' + p + '__tagline{font-size:clamp(11px,1.1vw,14px);font-weight:800;letter-spacing:.08em;color:' + accent + ';margin:0 0 6px;text-transform:uppercase}' +
-    '.' + p + '__sub{font-size:clamp(13px,1.15vw,15px);line-height:1.55;color:' + accent + ';opacity:.7;margin:0 auto 48px;max-width:640px}' +
+    '.' + p + '__tagline{font-size:14px;font-weight:800;letter-spacing:.06em;margin:0 0 8px;text-transform:uppercase}' +
+    '.' + p + '__sub{font-size:15px;line-height:1.55;margin:0 auto 56px;max-width:660px}' +
     '.' + p + '__actions{display:flex;flex-direction:column;align-items:center;gap:12px}' +
-    '.' + p + '__btn{display:inline-block;padding:18px 80px;background:' + btnBg + ';color:' + btnTxt + ';font-size:clamp(22px,2.8vw,34px);font-weight:700;border-radius:6px;text-decoration:none;transition:opacity .2s,transform .2s;letter-spacing:.01em}' +
+    '.' + p + '__btn{display:inline-block;padding:20px 88px;font-size:32px;font-weight:700;border-radius:6px;text-decoration:none;transition:opacity .2s,transform .2s;letter-spacing:.01em}' +
     '.' + p + '__btn:hover{opacity:.85;transform:scale(1.03)}' +
-    '.' + p + '__link{font-size:12px;font-weight:700;color:' + accent + ';text-decoration:underline;text-underline-offset:3px;letter-spacing:.08em;transition:opacity .2s}' +
+    '.' + p + '__link{font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:3px;letter-spacing:.08em;transition:opacity .2s}' +
     '.' + p + '__link:hover{opacity:.6}' +
+    '@media(max-width:900px){' +
+      '.' + p + '__wm-line1,.' + p + '__wm-line2{font-size:80px}' +
+    '}' +
     '@media(max-width:640px){' +
       '.' + p + '__inner{padding:28px 20px 24px}' +
-      '.' + p + '__wm-line1{font-size:clamp(32px,12vw,60px)}' +
-      '.' + p + '__wm-line2{font-size:clamp(28px,10vw,50px)}' +
-      '.' + p + '__sub{margin-bottom:32px}' +
+      '.' + p + '__wm-line1,.' + p + '__wm-line2{font-size:48px}' +
+      '.' + p + '__tagline{font-size:11px}' +
+      '.' + p + '__sub{font-size:13px;margin-bottom:32px}' +
       '.' + p + '__btn{padding:14px 52px;font-size:22px}' +
+    '}' +
+    '@media(max-width:400px){' +
+      '.' + p + '__wm-line1,.' + p + '__wm-line2{font-size:36px}' +
     '}';
 }
 
-/* 5-A  PINK version */
+/* 5-A  PINK version — only #f07ded bg + #bd48ba text, nothing else */
 function crxInitDonateA() {
   var mount = document.querySelector(".crx-donate-a-mount");
   if (!mount) return;
   mount.innerHTML = crxDonateHTML("crx-dna");
   var style = document.createElement("style");
-  style.textContent = crxDonateCSS("crx-dna", "#f07ded", "#bd48ba", "#bd48ba", "#f07ded");
+  style.textContent =
+    '.crx-donate-a-mount{display:block!important;width:100%!important;overflow:visible!important}' +
+    crxDonateBaseCSS("crx-dna") +
+    '.crx-dna__inner{background:#f07ded}' +
+    '.crx-dna__wm-line1,.crx-dna__wm-line2{color:#bd48ba}' +
+    '.crx-dna__tagline{color:#bd48ba}' +
+    '.crx-dna__sub{color:#bd48ba}' +
+    '.crx-dna__btn{background:#bd48ba;color:#f07ded}' +
+    '.crx-dna__link{color:#bd48ba}';
   document.head.appendChild(style);
 }
 
 
 /* ───────────────────────────────────────────────────
    5-B. DONATION SECTION – BLACK + WHITE
-   Same layout as Option A but dark background, white text.
+   Same layout as Option A but #111 bg, white headings,
+   grey body text.
    Mount: <div class="crx-donate-b-mount"></div>
    ─────────────────────────────────────────────────── */
 function crxInitDonateB() {
@@ -978,7 +993,15 @@ function crxInitDonateB() {
   if (!mount) return;
   mount.innerHTML = crxDonateHTML("crx-dnb");
   var style = document.createElement("style");
-  style.textContent = crxDonateCSS("crx-dnb", "#111", "#fff", "#fff", "#111");
+  style.textContent =
+    '.crx-donate-b-mount{display:block!important;width:100%!important;overflow:visible!important}' +
+    crxDonateBaseCSS("crx-dnb") +
+    '.crx-dnb__inner{background:#111}' +
+    '.crx-dnb__wm-line1,.crx-dnb__wm-line2{color:rgba(255,255,255,.12)}' +
+    '.crx-dnb__tagline{color:#fff}' +
+    '.crx-dnb__sub{color:rgba(255,255,255,.55)}' +
+    '.crx-dnb__btn{background:#fff;color:#111}' +
+    '.crx-dnb__link{color:rgba(255,255,255,.5)}';
   document.head.appendChild(style);
 }
 
