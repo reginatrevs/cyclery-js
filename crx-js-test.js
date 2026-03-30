@@ -920,17 +920,14 @@ function crxInitDonateA() {
   mount.innerHTML =
     '<section class="crx-dna">' +
       '<div class="crx-dna__inner">' +
+        '<div class="crx-dna__watermark" aria-hidden="true">Cyclery Racing - Abacus Data</div>' +
         '<div class="crx-dna__content">' +
-          '<p class="crx-dna__kicker">Cyclery Racing &mdash; Abacus Data</p>' +
-          '<h2 class="crx-dna__title">Fuel the next race.</h2>' +
-          '<p class="crx-dna__sub">Support our competitive cycling team. Every contribution goes directly to race entries, travel, equipment, and developing the next generation of Canadian cyclists.</p>' +
+          '<h3 class="crx-dna__tagline">BEHIND EVERY FINISH LINE IS A TEAM THAT BELIEVED.</h3>' +
+          '<p class="crx-dna__sub">The Cyclery Racing is one of Canada\u2019s oldest women\u2019s road programs. Your support keeps Cyclery Racing on the start line at prestigious events like the Tour de Gatineau UCI races, and gives ambitious riders the resources to chase their potential.</p>' +
           '<div class="crx-dna__actions">' +
-            '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="crx-dna__btn crx-dna__btn--primary">Donate now</a>' +
-            '<a href="https://www.thecyclery.ca" class="crx-dna__btn crx-dna__btn--secondary">Visit The Cyclery &rarr;</a>' +
+            '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="crx-dna__btn">Donate</a>' +
+            '<a href="https://www.cycleryracing.ca" target="_blank" rel="noopener" class="crx-dna__link">VISIT CYCLERYRACING.CA</a>' +
           '</div>' +
-        '</div>' +
-        '<div class="crx-dna__accent" aria-hidden="true">' +
-          '<span class="crx-dna__accent-text">RACING</span>' +
         '</div>' +
       '</div>' +
     '</section>';
@@ -938,26 +935,24 @@ function crxInitDonateA() {
   var style = document.createElement("style");
   style.textContent =
     '.crx-donate-a-mount{display:block!important;width:100%!important;overflow:visible!important}' +
-    '.crx-dna{display:block;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
-    '.crx-dna__inner{background:#111;color:#fff;border-radius:6px;padding:56px 48px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto}' +
-    '.crx-dna__content{position:relative;z-index:2;max-width:560px}' +
-    '.crx-dna__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.45;margin:0 0 12px}' +
-    '.crx-dna__title{font-size:clamp(28px,4.5vw,48px);font-weight:900;margin:0 0 16px;line-height:1.05;letter-spacing:-.02em}' +
-    '.crx-dna__sub{font-size:15px;line-height:1.65;opacity:.6;margin:0 0 28px;max-width:480px}' +
-    '.crx-dna__actions{display:flex;gap:12px;flex-wrap:wrap}' +
-    '.crx-dna__btn{display:inline-block;padding:12px 28px;border-radius:999px;font-size:14px;font-weight:800;letter-spacing:.02em;text-decoration:none;transition:opacity .2s,transform .2s}' +
-    '.crx-dna__btn--primary{background:#fff;color:#111}' +
-    '.crx-dna__btn--primary:hover{opacity:.88;transform:scale(1.03)}' +
-    '.crx-dna__btn--secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25)}' +
-    '.crx-dna__btn--secondary:hover{border-color:rgba(255,255,255,.5)}' +
+    '.crx-dna{display:block;padding:0 20px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
+    '.crx-dna__inner{background:#f07ded;border-radius:6px;padding:48px 48px 40px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto;text-align:center}' +
 
-    /* giant watermark text */
-    '.crx-dna__accent{position:absolute;right:-20px;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none}' +
-    '.crx-dna__accent-text{font-size:clamp(100px,18vw,220px);font-weight:900;letter-spacing:-.04em;opacity:.06;line-height:1;white-space:nowrap;color:#fff}' +
+    /* giant watermark behind content */
+    '.crx-dna__watermark{font-size:clamp(48px,10vw,120px);font-weight:900;line-height:1;letter-spacing:-.02em;color:#bd48ba;margin:0 0 16px;pointer-events:none;word-break:break-word}' +
+
+    '.crx-dna__content{position:relative;z-index:2}' +
+    '.crx-dna__tagline{font-size:clamp(13px,1.6vw,16px);font-weight:800;letter-spacing:.06em;color:#bd48ba;margin:0 0 8px;text-transform:uppercase}' +
+    '.crx-dna__sub{font-size:clamp(14px,1.4vw,16px);line-height:1.6;color:#bd48ba;opacity:.85;margin:0 auto 36px;max-width:680px}' +
+    '.crx-dna__actions{display:flex;flex-direction:column;align-items:center;gap:14px}' +
+    '.crx-dna__btn{display:inline-block;padding:16px 64px;background:#bd48ba;color:#f07ded;font-size:clamp(18px,2.4vw,28px);font-weight:700;border-radius:6px;text-decoration:none;transition:opacity .2s,transform .2s;letter-spacing:.01em}' +
+    '.crx-dna__btn:hover{opacity:.88;transform:scale(1.03)}' +
+    '.crx-dna__link{font-size:13px;font-weight:700;color:#bd48ba;text-decoration:underline;text-underline-offset:3px;letter-spacing:.06em;transition:opacity .2s}' +
+    '.crx-dna__link:hover{opacity:.65}' +
 
     '@media(max-width:640px){' +
-      '.crx-dna__inner{padding:36px 24px}' +
-      '.crx-dna__accent{display:none}' +
+      '.crx-dna__inner{padding:32px 20px 28px}' +
+      '.crx-dna__btn{padding:14px 48px;font-size:20px}' +
     '}';
 
   document.head.appendChild(style);
