@@ -937,7 +937,8 @@ function crxInitDonateA() {
 
   var style = document.createElement("style");
   style.textContent =
-    '.crx-dna{padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box}' +
+    '.crx-donate-a-mount{display:block!important;width:100%!important;overflow:visible!important}' +
+    '.crx-dna{display:block;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
     '.crx-dna__inner{background:#111;color:#fff;border-radius:6px;padding:56px 48px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto}' +
     '.crx-dna__content{position:relative;z-index:2;max-width:560px}' +
     '.crx-dna__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.45;margin:0 0 12px}' +
@@ -989,7 +990,8 @@ function crxInitDonateB() {
 
   var style = document.createElement("style");
   style.textContent =
-    '.crx-dnb{padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box}' +
+    '.crx-donate-b-mount{display:block!important;width:100%!important;overflow:visible!important}' +
+    '.crx-dnb{display:block;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
     '.crx-dnb__inner{border:1px solid rgba(0,0,0,.1);border-radius:6px;padding:40px 36px;max-width:640px;margin:0 auto;text-align:center;position:relative}' +
     '.crx-dnb__badge{font-size:28px;margin:0 0 12px;opacity:.18}' +
     '.crx-dnb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.4;margin:0 0 10px}' +
@@ -1043,7 +1045,8 @@ function crxInitDonateC() {
 
   var style = document.createElement("style");
   style.textContent =
-    '.crx-dnc{padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box}' +
+    '.crx-donate-c-mount{display:block!important;width:100%!important;overflow:visible!important}' +
+    '.crx-dnc{display:block;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
     '.crx-dnc__inner{display:flex;align-items:center;gap:48px;max-width:1000px;margin:0 auto;' +
       'background:#fafafa;border:1px solid rgba(0,0,0,.07);border-radius:6px;padding:44px 40px;overflow:hidden}' +
 
