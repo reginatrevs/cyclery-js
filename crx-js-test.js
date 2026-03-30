@@ -913,101 +913,72 @@ function crxInitContactBikeRequest() {
    Feels like a team announcement / race-day energy.
    Mount: <div class="crx-donate-a-mount"></div>
    ─────────────────────────────────────────────────── */
+function crxDonateHTML(prefix) {
+  return '<section class="' + prefix + '">' +
+    '<div class="' + prefix + '__inner">' +
+      '<div class="' + prefix + '__watermark" aria-hidden="true">' +
+        '<span class="' + prefix + '__wm-line1">Cyclery Racing</span>' +
+        '<span class="' + prefix + '__wm-line2">Abacus Data</span>' +
+      '</div>' +
+      '<div class="' + prefix + '__content">' +
+        '<h3 class="' + prefix + '__tagline">BEHIND EVERY FINISH LINE IS A TEAM THAT BELIEVED.</h3>' +
+        '<p class="' + prefix + '__sub">The Cyclery Racing is one of Canada\u2019s oldest women\u2019s road programs. Your support keeps Cyclery Racing on the start line at prestigious events like the Tour de Gatineau UCI races, and gives ambitious riders the resources to chase their potential.</p>' +
+        '<div class="' + prefix + '__actions">' +
+          '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="' + prefix + '__btn">Donate</a>' +
+          '<a href="https://www.cycleryracing.ca" target="_blank" rel="noopener" class="' + prefix + '__link">VISIT CYCLERYRACING.CA</a>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</section>';
+}
+
+function crxDonateCSS(p, bg, accent, btnBg, btnTxt) {
+  return '.crx-donate-' + p.replace('crx-dn','') + '-mount{display:block!important;width:100%!important;overflow:visible!important}' +
+    '.' + p + '{display:block;padding:0 20px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
+    '.' + p + '__inner{background:' + bg + ';border-radius:6px;padding:44px 48px 36px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto;text-align:center}' +
+    '.' + p + '__watermark{pointer-events:none;margin:0 0 10px}' +
+    '.' + p + '__wm-line1,.' + p + '__wm-line2{display:block;font-weight:900;line-height:.92;letter-spacing:-.03em;color:' + accent + ';opacity:.55}' +
+    '.' + p + '__wm-line1{font-size:clamp(42px,9.5vw,130px)}' +
+    '.' + p + '__wm-line2{font-size:clamp(36px,7.5vw,105px)}' +
+    '.' + p + '__content{position:relative;z-index:2}' +
+    '.' + p + '__tagline{font-size:clamp(11px,1.1vw,14px);font-weight:800;letter-spacing:.08em;color:' + accent + ';margin:0 0 6px;text-transform:uppercase}' +
+    '.' + p + '__sub{font-size:clamp(13px,1.15vw,15px);line-height:1.55;color:' + accent + ';opacity:.7;margin:0 auto 48px;max-width:640px}' +
+    '.' + p + '__actions{display:flex;flex-direction:column;align-items:center;gap:12px}' +
+    '.' + p + '__btn{display:inline-block;padding:18px 80px;background:' + btnBg + ';color:' + btnTxt + ';font-size:clamp(22px,2.8vw,34px);font-weight:700;border-radius:6px;text-decoration:none;transition:opacity .2s,transform .2s;letter-spacing:.01em}' +
+    '.' + p + '__btn:hover{opacity:.85;transform:scale(1.03)}' +
+    '.' + p + '__link{font-size:12px;font-weight:700;color:' + accent + ';text-decoration:underline;text-underline-offset:3px;letter-spacing:.08em;transition:opacity .2s}' +
+    '.' + p + '__link:hover{opacity:.6}' +
+    '@media(max-width:640px){' +
+      '.' + p + '__inner{padding:28px 20px 24px}' +
+      '.' + p + '__wm-line1{font-size:clamp(32px,12vw,60px)}' +
+      '.' + p + '__wm-line2{font-size:clamp(28px,10vw,50px)}' +
+      '.' + p + '__sub{margin-bottom:32px}' +
+      '.' + p + '__btn{padding:14px 52px;font-size:22px}' +
+    '}';
+}
+
+/* 5-A  PINK version */
 function crxInitDonateA() {
   var mount = document.querySelector(".crx-donate-a-mount");
   if (!mount) return;
-
-  mount.innerHTML =
-    '<section class="crx-dna">' +
-      '<div class="crx-dna__inner">' +
-        '<div class="crx-dna__watermark" aria-hidden="true">Cyclery Racing - Abacus Data</div>' +
-        '<div class="crx-dna__content">' +
-          '<h3 class="crx-dna__tagline">BEHIND EVERY FINISH LINE IS A TEAM THAT BELIEVED.</h3>' +
-          '<p class="crx-dna__sub">The Cyclery Racing is one of Canada\u2019s oldest women\u2019s road programs. Your support keeps Cyclery Racing on the start line at prestigious events like the Tour de Gatineau UCI races, and gives ambitious riders the resources to chase their potential.</p>' +
-          '<div class="crx-dna__actions">' +
-            '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="crx-dna__btn">Donate</a>' +
-            '<a href="https://www.cycleryracing.ca" target="_blank" rel="noopener" class="crx-dna__link">VISIT CYCLERYRACING.CA</a>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-    '</section>';
-
+  mount.innerHTML = crxDonateHTML("crx-dna");
   var style = document.createElement("style");
-  style.textContent =
-    '.crx-donate-a-mount{display:block!important;width:100%!important;overflow:visible!important}' +
-    '.crx-dna{display:block;padding:0 20px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
-    '.crx-dna__inner{background:#f07ded;border-radius:6px;padding:40px 56px 36px;position:relative;overflow:hidden;max-width:1200px;margin:0 auto;text-align:center}' +
-
-    /* watermark title — single line, scales to fill width */
-    '.crx-dna__watermark{font-size:clamp(36px,7.8vw,108px);font-weight:900;line-height:.95;letter-spacing:-.03em;color:#bd48ba;margin:0 0 4px;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-
-    '.crx-dna__content{position:relative;z-index:2}' +
-    '.crx-dna__tagline{font-size:clamp(11px,1.2vw,14px);font-weight:800;letter-spacing:.08em;color:#bd48ba;margin:0 0 6px;text-transform:uppercase}' +
-    '.crx-dna__sub{font-size:clamp(13px,1.2vw,15px);line-height:1.55;color:#bd48ba;opacity:.75;margin:0 auto 40px;max-width:620px}' +
-    '.crx-dna__actions{display:flex;flex-direction:column;align-items:center;gap:10px}' +
-    '.crx-dna__btn{display:inline-block;padding:18px 72px;background:#bd48ba;color:#f07ded;font-size:clamp(20px,2.6vw,32px);font-weight:700;border-radius:6px;text-decoration:none;transition:opacity .2s,transform .2s;letter-spacing:.01em}' +
-    '.crx-dna__btn:hover{opacity:.88;transform:scale(1.03)}' +
-    '.crx-dna__link{font-size:12px;font-weight:700;color:#bd48ba;text-decoration:underline;text-underline-offset:3px;letter-spacing:.08em;transition:opacity .2s}' +
-    '.crx-dna__link:hover{opacity:.65}' +
-
-    '@media(max-width:900px){' +
-      '.crx-dna__watermark{white-space:normal;font-size:clamp(32px,9vw,72px)}' +
-    '}' +
-    '@media(max-width:640px){' +
-      '.crx-dna__inner{padding:28px 20px 24px}' +
-      '.crx-dna__watermark{font-size:clamp(28px,10vw,52px)}' +
-      '.crx-dna__sub{margin-bottom:28px}' +
-      '.crx-dna__btn{padding:14px 52px;font-size:20px}' +
-    '}';
-
+  style.textContent = crxDonateCSS("crx-dna", "#f07ded", "#bd48ba", "#bd48ba", "#f07ded");
   document.head.appendChild(style);
 }
 
 
 /* ───────────────────────────────────────────────────
-   5-B. DONATION SECTION – MINIMAL CLEAN
-   White background, thin-bordered card, understated.
-   Fits the premium bike-shop aesthetic seamlessly.
+   5-B. DONATION SECTION – BLACK + WHITE
+   Same layout as Option A but dark background, white text.
    Mount: <div class="crx-donate-b-mount"></div>
    ─────────────────────────────────────────────────── */
 function crxInitDonateB() {
   var mount = document.querySelector(".crx-donate-b-mount");
   if (!mount) return;
-
-  mount.innerHTML =
-    '<section class="crx-dnb">' +
-      '<div class="crx-dnb__inner">' +
-        '<div class="crx-dnb__badge" aria-hidden="true">&#9733;</div>' +
-        '<p class="crx-dnb__kicker">Cyclery Racing &mdash; Abacus Data</p>' +
-        '<h2 class="crx-dnb__title">Support our racing team</h2>' +
-        '<p class="crx-dnb__sub">We race at the highest level in Canadian cycling. Your donation funds race entries, travel, and the gear our athletes rely on. Every dollar makes a difference.</p>' +
-        '<div class="crx-dnb__actions">' +
-          '<a href="https://www.zeffy.com/en-CA/donation-form/the-cyclery-racing" target="_blank" rel="noopener" class="crx-dnb__btn crx-dnb__btn--primary">Make a donation</a>' +
-          '<a href="https://www.thecyclery.ca" class="crx-dnb__link">thecyclery.ca &rarr;</a>' +
-        '</div>' +
-      '</div>' +
-    '</section>';
-
+  mount.innerHTML = crxDonateHTML("crx-dnb");
   var style = document.createElement("style");
-  style.textContent =
-    '.crx-donate-b-mount{display:block!important;width:100%!important;overflow:visible!important}' +
-    '.crx-dnb{display:block;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;box-sizing:border-box;width:100%}' +
-    '.crx-dnb__inner{border:1px solid rgba(0,0,0,.1);border-radius:6px;padding:40px 36px;max-width:640px;margin:0 auto;text-align:center;position:relative}' +
-    '.crx-dnb__badge{font-size:28px;margin:0 0 12px;opacity:.18}' +
-    '.crx-dnb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.4;margin:0 0 10px}' +
-    '.crx-dnb__title{font-size:clamp(20px,3.2vw,28px);font-weight:900;margin:0 0 12px;line-height:1.15;color:#111}' +
-    '.crx-dnb__sub{font-size:14px;line-height:1.65;opacity:.55;margin:0 0 24px;color:#333;max-width:480px;display:inline-block}' +
-    '.crx-dnb__actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}' +
-    '.crx-dnb__btn{display:inline-block;padding:11px 26px;border-radius:999px;font-size:14px;font-weight:800;letter-spacing:.02em;text-decoration:none;transition:opacity .2s}' +
-    '.crx-dnb__btn--primary{background:#111;color:#fff}' +
-    '.crx-dnb__btn--primary:hover{opacity:.78}' +
-    '.crx-dnb__link{font-size:13px;font-weight:700;color:#111;text-decoration:underline;text-underline-offset:2px;transition:opacity .2s}' +
-    '.crx-dnb__link:hover{opacity:.55}' +
-
-    '@media(max-width:640px){' +
-      '.crx-dnb__inner{padding:28px 20px}' +
-    '}';
-
+  style.textContent = crxDonateCSS("crx-dnb", "#111", "#fff", "#fff", "#111");
   document.head.appendChild(style);
 }
 
