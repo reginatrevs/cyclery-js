@@ -1073,3 +1073,57 @@ function crxInitDonateC() {
 
   document.head.appendChild(style);
 }
+
+/* ───────────────────────────────────────────────────
+   6. MAURTEN BICARB GUIDE
+   Loads only on pages containing:
+   <div id="bicarb-guide"></div>
+   ─────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", function () {
+  crxInitMaurtenBicarbGuide();
+});
+
+function crxInitMaurtenBicarbGuide() {
+  var mount = document.getElementById("bicarb-guide");
+  if (!mount) return;
+
+  var stylesheet = document.createElement("link");
+  stylesheet.rel = "stylesheet";
+  stylesheet.type = "text/css";
+  stylesheet.href = "https://www.maurten.com/assets/bicarb-guide/css/guide.css";
+  document.head.appendChild(stylesheet);
+
+  var script = document.createElement("script");
+  script.src = "https://www.maurten.com/assets/bicarb-guide/js/guide.js";
+  script.defer = true;
+
+  script.onload = function () {
+    guide.init({
+      wrapperElementId: "#bicarb-guide",
+      language: "EN",
+      products: {
+        bicarb_12: {
+          url: "REPLACE-WITH-BICARB-12-PRODUCT-URL"
+        },
+        bicarb_15: {
+          url: "REPLACE-WITH-BICARB-15-PRODUCT-URL"
+        },
+        bicarb_19: {
+          url: "REPLACE-WITH-BICARB-19-PRODUCT-URL"
+        },
+        bicarb_22: {
+          url: "REPLACE-WITH-BICARB-22-PRODUCT-URL"
+        },
+        bicarb_25: {
+          url: "REPLACE-WITH-BICARB-25-PRODUCT-URL"
+        }
+      }
+    });
+  };
+
+  document.head.appendChild(script);
+}
+
+
+  document.head.appendChild(style);
+}
