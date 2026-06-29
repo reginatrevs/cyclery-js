@@ -1124,6 +1124,3 @@ function crxInitMaurtenBicarbGuide() {
   document.head.appendChild(script);
 }
 
-
-  document.head.appendChild(style);
-}
