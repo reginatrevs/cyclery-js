@@ -1102,20 +1102,20 @@ function crxInitMaurtenBicarbGuide() {
       wrapperElementId: "#bicarb-guide",
       language: "EN",
       products: {
-        bicarb_12: {
-          url: "REPLACE-WITH-BICARB-12-PRODUCT-URL"
-        },
         bicarb_15: {
-          url: "REPLACE-WITH-BICARB-15-PRODUCT-URL"
+          url: "https://www.thecyclery.ca/maurten-bicarb-system.html?id=119035500&quantity=1",
+          description: "Box of 4 servings",
+          text: "The Maurten Bicarb System is an advanced sports fuel designed to help athletes push the boundaries of effort and power during high-intensity exercise."
         },
         bicarb_19: {
-          url: "REPLACE-WITH-BICARB-19-PRODUCT-URL"
+          url: "https://www.thecyclery.ca/maurten-bicarb-system.html?id=119035501&quantity=1",
+          description: "Box of 4 servings",
+          text: "The Maurten Bicarb System is an advanced sports fuel designed to help athletes push the boundaries of effort and power during high-intensity exercise."
         },
         bicarb_22: {
-          url: "REPLACE-WITH-BICARB-22-PRODUCT-URL"
-        },
-        bicarb_25: {
-          url: "REPLACE-WITH-BICARB-25-PRODUCT-URL"
+          url: "https://www.thecyclery.ca/maurten-bicarb-system.html?id=119035499&quantity=1",
+          description: "Box of 4 servings",
+          text: "The Maurten Bicarb System is an advanced sports fuel designed to help athletes push the boundaries of effort and power during high-intensity exercise."
         }
       }
     });
