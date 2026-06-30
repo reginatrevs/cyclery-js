@@ -1176,6 +1176,6 @@ function crxInjectBicarbAccordions(mount) {
       '</div>' +
     '</details>';
 
-  mount.insertAdjacentElement("afterend", wrap);
+  mount.insertAdjacentElement("beforebegin", wrap);
 }
 
