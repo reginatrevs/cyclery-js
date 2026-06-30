@@ -1093,6 +1093,8 @@ function crxInitMaurtenBicarbGuide() {
   stylesheet.href = "https://www.maurten.com/assets/bicarb-guide/css/guide.css";
   document.head.appendChild(stylesheet);
 
+  crxInjectBicarbAccordions(mount);
+
   var script = document.createElement("script");
   script.src = "https://www.maurten.com/assets/bicarb-guide/js/guide.js";
   script.defer = true;
@@ -1122,5 +1124,58 @@ function crxInitMaurtenBicarbGuide() {
   };
 
   document.head.appendChild(script);
+}
+
+function crxInjectBicarbAccordions(mount) {
+  if (document.getElementById("crx-bicarb-acc-styles")) return;
+
+  var style = document.createElement("style");
+  style.id = "crx-bicarb-acc-styles";
+  style.textContent =
+    '.crx-bicarb-acc{max-width:760px;margin:32px auto 16px;font-family:inherit;color:#111}' +
+    '.crx-bicarb-acc__item{border-bottom:1px solid #e5e5e5}' +
+    '.crx-bicarb-acc__item:first-child{border-top:1px solid #e5e5e5}' +
+    '.crx-bicarb-acc__sum{list-style:none;cursor:pointer;padding:18px 8px;font-size:16px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:12px}' +
+    '.crx-bicarb-acc__sum::-webkit-details-marker{display:none}' +
+    '.crx-bicarb-acc__sum::after{content:"+";font-size:22px;font-weight:400;line-height:1;transition:transform .2s ease}' +
+    '.crx-bicarb-acc__item[open] .crx-bicarb-acc__sum::after{content:"–"}' +
+    '.crx-bicarb-acc__body{padding:0 8px 20px;font-size:15px;line-height:1.6;color:#333}' +
+    '.crx-bicarb-acc__body p{margin:0 0 12px}' +
+    '.crx-bicarb-acc__body p:last-child{margin-bottom:0}';
+  document.head.appendChild(style);
+
+  var wrap = document.createElement("section");
+  wrap.className = "crx-bicarb-acc";
+  wrap.innerHTML =
+    '<details class="crx-bicarb-acc__item">' +
+      '<summary class="crx-bicarb-acc__sum">Ingredients</summary>' +
+      '<div class="crx-bicarb-acc__body">' +
+        '<p>Bicarb System is a carbohydrate hydrogel mix with bicarbonate.</p>' +
+        '<p>Sugars (maltodextrin, fructose), sodium bicarbonate, modified starch, hydroxypropyl cellulose, magnesium stearate, flavor, xanthan gum, silicon dioxide.</p>' +
+        '<p><strong>High sodium content. Max 2 servings per week.</strong></p>' +
+      '</div>' +
+    '</details>' +
+    '<details class="crx-bicarb-acc__item">' +
+      '<summary class="crx-bicarb-acc__sum">What is the Maurten Bicarb System?</summary>' +
+      '<div class="crx-bicarb-acc__body">' +
+        '<p>The Maurten Bicarb System combines sodium bicarbonate with a specially formulated hydrogel to support high-intensity performance by helping to buffer the acid produced by active muscles during intense exercise. It is designed to make high bicarbonate doses more tolerable compared to traditional methods.</p>' +
+        '<p>Bicarbonate can be used in training and racing for sports that require intermittent or constant intensity near or above the anaerobic threshold — such as cycling, middle-distance running, rowing, swimming, team sports, and combat sports. It can also be used in threshold (interval) training for all types of endurance sports.</p>' +
+        '<p>During endurance events with periods of intense exercise or when athletes are able to maintain intensities at a high percentage of their maximal aerobic capacity, sodium bicarbonate has the potential to improve performance. This is currently an area of intense and ongoing research.</p>' +
+      '</div>' +
+    '</details>' +
+    '<details class="crx-bicarb-acc__item">' +
+      '<summary class="crx-bicarb-acc__sum">Who is the Bicarb System intended for?</summary>' +
+      '<div class="crx-bicarb-acc__body">' +
+        '<p>It is designed for athletes performing near or above their anaerobic threshold — such as in middle-distance running, rowing, cycling, or intense interval training. It is <strong>not primarily a carbohydrate fuel</strong> but a tool for specific performance demands.</p>' +
+      '</div>' +
+    '</details>' +
+    '<details class="crx-bicarb-acc__item">' +
+      '<summary class="crx-bicarb-acc__sum">How does the Maurten Bicarb System work?</summary>' +
+      '<div class="crx-bicarb-acc__body">' +
+        '<p>Maurten Hydrogel Technology helps with the ingestion of the mini tablets and protects them from dissolving prematurely in the stomach. Because of their small size, the mini tablets are not caught in the stomach like capsules. This results in a more controlled transfer from the stomach to the intestine where they gradually disintegrate, and the sodium bicarbonate is absorbed.</p>' +
+      '</div>' +
+    '</details>';
+
+  mount.insertAdjacentElement("afterend", wrap);
 }
 
