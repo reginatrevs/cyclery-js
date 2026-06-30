@@ -1132,7 +1132,10 @@ function crxInjectBicarbAccordions(mount) {
   var style = document.createElement("style");
   style.id = "crx-bicarb-acc-styles";
   style.textContent =
-    '.crx-bicarb-acc{max-width:760px;margin:32px auto 16px;font-family:inherit;color:#111}' +
+    '.crx-bicarb-acc{max-width:760px;margin:32px 0 16px;font-family:inherit;color:#111;text-align:left}' +
+    '.crx-bicarb-acc__intro{font-size:15px;line-height:1.6;color:#333;margin:0 0 24px}' +
+    '.crx-bicarb-acc__intro p{margin:0 0 12px}' +
+    '.crx-bicarb-acc__intro p:last-child{margin-bottom:0}' +
     '.crx-bicarb-acc__item{border-bottom:1px solid #e5e5e5}' +
     '.crx-bicarb-acc__item:first-child{border-top:1px solid #e5e5e5}' +
     '.crx-bicarb-acc__sum{list-style:none;cursor:pointer;padding:18px 8px;font-size:16px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:12px}' +
@@ -1147,6 +1150,11 @@ function crxInjectBicarbAccordions(mount) {
   var wrap = document.createElement("section");
   wrap.className = "crx-bicarb-acc";
   wrap.innerHTML =
+    '<div class="crx-bicarb-acc__intro">' +
+      '<p>The Maurten Bicarb System does for bicarbonate what Maurten Gel 100 and Drink Mixes did for carbohydrates — use Hydrogel Technology to encapsulate the bicarb and carry it through the stomach to be absorbed.</p>' +
+      '<p>Lactate is not the enemy — it\u2019s a fuel source generated during all-out, high-intensity exercise. It\u2019s the increase in acidity during these efforts that overwhelms the muscles and leads to exhaustion. Large doses of sodium bicarbonate counteract the negative effects of the rising acidity, but there\u2019s always been a catch — stomach issues that cancel out any performance gains.</p>' +
+      '<p>The Bicarb System cracks the code to deliver the smoothest, most effective bicarb experience ever.</p>' +
+    '</div>' +
     '<details class="crx-bicarb-acc__item">' +
       '<summary class="crx-bicarb-acc__sum">Ingredients</summary>' +
       '<div class="crx-bicarb-acc__body">' +
