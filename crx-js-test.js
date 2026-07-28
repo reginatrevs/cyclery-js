@@ -1186,4 +1186,19 @@ function crxInjectBicarbAccordions(mount) {
 
   mount.insertAdjacentElement("beforebegin", wrap);
 }
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.querySelector(".cyclery-mtl26-intro")) return;
 
+  const categoriesButton = document.querySelector(
+    'button[aria-controls="accordion-content-0"]'
+  );
+
+  if (
+    categoriesButton &&
+    categoriesButton.getAttribute("aria-expanded") === "true"
+  ) {
+    categoriesButton.click();
+  }
+});
+</script>
