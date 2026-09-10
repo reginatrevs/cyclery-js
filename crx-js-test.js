@@ -1186,3 +1186,53 @@ function crxInjectBicarbAccordions(mount) {
 
   mount.insertAdjacentElement("beforebegin", wrap);
 }
+
+// MESSAGE BAR JS TO MAKE IT CLICKABLE! 
+document.addEventListener("DOMContentLoaded", () => {
+  const destination =
+    "/bike/tires-tubes/gravel-and-cyclocross-tires/";
+
+  // Look for the element containing the announcement text near the top of the page
+  const candidates = document.querySelectorAll("body *");
+
+  for (const element of candidates) {
+    const text = element.textContent?.trim();
+
+    if (
+      text &&
+      text.length < 150 &&
+      element.getBoundingClientRect().top < 150
+    ) {
+      const style = window.getComputedStyle(element);
+
+      // Ignore hidden elements
+      if (style.display === "none" || style.visibility === "hidden") continue;
+
+      // Find the smallest element containing the announcement
+      const childHasSameText = [...element.children].some(
+        (child) => child.textContent?.trim() === text
+      );
+
+      if (!childHasSameText) {
+        element.style.cursor = "pointer";
+        element.setAttribute("role", "link");
+        element.setAttribute("tabindex", "0");
+
+        const goToPage = () => {
+          window.location.href = destination;
+        };
+
+        element.addEventListener("click", goToPage);
+
+        element.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            goToPage();
+          }
+        });
+
+        break;
+      }
+    }
+  }
+});
