@@ -1236,3 +1236,145 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+/* ───────────────────────────────────────────────────
+   WINTER STORAGE PAGE  (/service/winter-storage/)
+   Mount: <div class="crx-ws-mount"></div>
+   Add  crxInitWinterStorage();  to the DOMContentLoaded list at the top.
+   ─────────────────────────────────────────────────── */
+function crxInitWinterStorage() {
+  const mount = document.querySelector(".crx-ws-mount");
+  if (!mount) return;
+
+  /* ── Edit these ── */
+  const HOURS = "[HOURS]";            // e.g. "Tue–Fri 10–6, Sat 10–5"
+  const PHOTO_URL = "";               // shop photo URL; leave "" to hide the photo
+  const PHONE = "(613) 730-2856";
+  const PHONE_LINK = "tel:+16137302856";
+  const ADDRESS = "1115 Bank Street, Ottawa ON K1S 3X4";
+  const MAPS = "https://maps.google.com/?q=1115+Bank+Street+Ottawa+ON+K1S+3X4";
+
+  /* Fonts: Archivo for headlines, Open Sans 700 for bold */
+  if (!document.querySelector("link[data-crx-ws-fonts]")) {
+    const f = document.createElement("link");
+    f.rel = "stylesheet";
+    f.href = "https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Open+Sans:wght@400;600;700&display=swap";
+    f.setAttribute("data-crx-ws-fonts", "");
+    document.head.appendChild(f);
+  }
+
+  /* Page tweaks: hide the theme's plain title, let the content go full width */
+  const intro = document.querySelector(".text-page__intro h1");
+  if (intro) intro.style.display = "none";
+  const section = mount.closest(".text-page__content");
+  if (section) {
+    section.classList.remove("container", "max-width-sm", "padding-top-lg", "padding-bottom-xl");
+  }
+
+  const tick = `<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B10D0E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg>`;
+  const tuneItems = [
+    "Wheel truing (off bike)",
+    "Brake adjustments",
+    "Gear adjustments",
+    "Chain lubrication",
+    "Safety check of all bolts and quick releases",
+    "Tire inflation",
+    "Bike cleaning",
+    "Drivetrain removed, soaked and cleaned in our parts washer",
+    "Hub adjustment",
+  ];
+
+  const sideTop = PHOTO_URL
+    ? `<div class="crx-ws__photo" role="img" aria-label="A mechanic working on a bike at The Cyclery" style="background-image:url('${PHOTO_URL}')"></div>`
+    : `<div class="crx-ws__note">
+         <h3 class="crx-ws__display">Ready before everyone else.</h3>
+         <p>Skip the spring tune-up rush. Your bike is serviced and waiting when the first nice day hits.</p>
+       </div>`;
+
+  mount.innerHTML = `
+  <div class="crx-ws">
+
+    <section class="crx-ws__wrap crx-ws__hero">
+      <div class="crx-ws__hero-copy">
+        <p class="crx-ws__badge">Winter Storage 2026–27</p>
+        <h1 class="crx-ws__display crx-ws__h1">Hang it up<br>for winter.</h1>
+        <p class="crx-ws__lead">The warm days are behind us. Leave your bike on one of our hooks until April 1 and pick it up tuned, clean and ready to ride.</p>
+        <div class="crx-ws__btns">
+          <a class="crx-ws__btn crx-ws__btn--red" href="#crx-ws-visit">Drop-off info</a>
+          <a class="crx-ws__btn crx-ws__btn--line" href="${PHONE_LINK}">Call ${PHONE}</a>
+        </div>
+      </div>
+      <div class="crx-ws__tag-col" aria-label="Winter storage: $250, Level 2 Tune included, ready by April 1, 2027">
+        <div class="crx-ws__hook" aria-hidden="true"></div>
+        <div class="crx-ws__tag">
+          <div class="crx-ws__tag-hole" aria-hidden="true"></div>
+          <div class="crx-ws__tag-top"><span class="crx-ws__tag-brand">THE CYCLERY</span><span class="crx-ws__tag-hookno">Hook # ____</span></div>
+          <div class="crx-ws__tag-rule"></div>
+          <span class="crx-ws__tag-label">Winter storage</span>
+          <span class="crx-ws__display crx-ws__tag-price">$250</span>
+          <ul class="crx-ws__ticks">
+            <li>${tick}Level 2 Tune included ($150 value)</li>
+            <li>${tick}Stored indoors</li>
+            <li>${tick}Ready by April 1, 2027</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="crx-ws__strip">
+      <div class="crx-ws__wrap crx-ws__strip-grid">
+        <div class="crx-ws__stat"><span class="crx-ws__display crx-ws__stat-big">$250</span><span class="crx-ws__stat-small">One price for the whole season</span></div>
+        <div class="crx-ws__stat"><span class="crx-ws__display crx-ws__stat-big">Tune 2</span><span class="crx-ws__stat-small">Included with your storage</span></div>
+        <div class="crx-ws__stat"><span class="crx-ws__display crx-ws__stat-big">Apr 1</span><span class="crx-ws__stat-small">Pick up, ready to ride</span></div>
+      </div>
+    </section>
+
+    <section class="crx-ws__wrap crx-ws__section">
+      <h2 class="crx-ws__display crx-ws__h2">Your bike's winter, sorted.</h2>
+      <div class="crx-ws__steps">
+        <div class="crx-ws__step crx-ws__step--now"><span class="crx-ws__step-when">Now</span><h3>Drop it off</h3><p>Any time during store hours, no appointment needed. Take off lights, bags and computers first.</p></div>
+        <div class="crx-ws__step"><span class="crx-ws__step-when">Winter</span><h3>It hangs with us</h3><p>Photographed at intake, stored indoors, Level 2 Tune included.</p></div>
+        <div class="crx-ws__step"><span class="crx-ws__step-when">Before pickup</span><h3>We give you a heads-up</h3><p>We contact you 5 days ahead. Your bike gets cleaned, charged and aired up.</p></div>
+        <div class="crx-ws__step"><span class="crx-ws__step-when">By April 1</span><h3>Ride away</h3><p>First nice day of spring, you're ready before everyone else.</p></div>
+      </div>
+    </section>
+
+    <section class="crx-ws__wrap crx-ws__tune-row">
+      <div class="crx-ws__tune">
+        <div class="crx-ws__tune-head">LEVEL 2 TUNE</div>
+        <div class="crx-ws__tune-price"><strong><s>$150.00</s>Included</strong><span>with Winter Storage</span></div>
+        <ul>${tuneItems.map((t) => `<li>${t}</li>`).join("")}</ul>
+      </div>
+      <div class="crx-ws__side">
+        ${sideTop}
+        <div class="crx-ws__addons">
+          <div><h3>Optional add-ons</h3><p class="crx-ws__addons-sub">Ask at drop-off.</p></div>
+          <div class="crx-ws__chips"><span class="crx-ws__chip">Sealant refresh · $40</span><span class="crx-ws__chip">Chain wax · $40</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="crx-ws__wrap">
+      <h2 class="crx-ws__display crx-ws__h2" style="font-size:clamp(28px,5vw,36px)">Good to know</h2>
+      <div class="crx-ws__faq">
+        <div><h3>One price for the season</h3><p>$250 no matter when you drop off or pick up.</p></div>
+        <div><h3>E-bikes</h3><p>For battery safety we accept Specialized, Bosch, Shimano and TQ systems only. No throttle e-bikes.</p></div>
+        <div><h3>Parts</h3><p>If your bike needs parts during the tune, we'll call you for approval first.</p></div>
+        <div><h3>Late pickup</h3><p>Bikes not picked up by April 1, 2027 are charged $10 per day.</p></div>
+      </div>
+    </section>
+
+    <section class="crx-ws__visit" id="crx-ws-visit">
+      <div class="crx-ws__wrap crx-ws__visit-row">
+        <div class="crx-ws__visit-copy">
+          <h2 class="crx-ws__display">Bring it in.</h2>
+          <p>Drop off any time during store hours: ${HOURS}<br>${ADDRESS}<br>Questions? Give us a call before you come in.</p>
+        </div>
+        <div class="crx-ws__btns">
+          <a class="crx-ws__btn crx-ws__btn--red" href="${MAPS}" target="_blank" rel="noopener">Get directions</a>
+          <a class="crx-ws__btn crx-ws__btn--light" href="${PHONE_LINK}">Call ${PHONE}</a>
+        </div>
+      </div>
+    </section>
+
+  </div>`;
+}
