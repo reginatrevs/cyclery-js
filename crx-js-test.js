@@ -1254,13 +1254,15 @@ function crxInitWinterStorage() {
   const ADDRESS = "1115 Bank Street, Ottawa ON K1S 3X4";
   const MAPS = "https://maps.google.com/?q=1115+Bank+Street+Ottawa+ON+K1S+3X4";
 
-  /* Fonts: Archivo for headlines, Open Sans 700 for bold */
+  /* Font: Open Sauce Sans (same family as Canva's Open Sauce) */
   if (!document.querySelector("link[data-crx-ws-fonts]")) {
-    const f = document.createElement("link");
-    f.rel = "stylesheet";
-    f.href = "https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Open+Sans:wght@400;600;700&display=swap";
-    f.setAttribute("data-crx-ws-fonts", "");
-    document.head.appendChild(f);
+    [400, 600, 700, 900].forEach((w) => {
+      const f = document.createElement("link");
+      f.rel = "stylesheet";
+      f.href = `https://cdn.jsdelivr.net/npm/@fontsource/open-sauce-sans@5/${w}.css`;
+      f.setAttribute("data-crx-ws-fonts", "");
+      document.head.appendChild(f);
+    });
   }
 
   /* Page tweaks: hide the theme's plain title, let the content go full width */
@@ -1333,7 +1335,7 @@ function crxInitWinterStorage() {
       <h2 class="crx-ws__display crx-ws__h2">Your bike's winter, sorted.</h2>
       <div class="crx-ws__steps">
         <div class="crx-ws__step crx-ws__step--now"><span class="crx-ws__step-when">Now</span><h3>Drop it off</h3><p>Any time during store hours, no appointment needed. Take off lights, bags and computers first.</p></div>
-        <div class="crx-ws__step"><span class="crx-ws__step-when">Winter</span><h3>It hangs with us</h3><p>Photographed at intake, stored indoors, Level 2 Tune included.</p></div>
+        <div class="crx-ws__step"><span class="crx-ws__step-when">Winter</span><h3>It hangs with us</h3><p>Stored indoors, Level 2 Tune included.</p></div>
         <div class="crx-ws__step"><span class="crx-ws__step-when">Before pickup</span><h3>We give you a heads-up</h3><p>We contact you 5 days ahead. Your bike gets cleaned, charged and aired up.</p></div>
         <div class="crx-ws__step"><span class="crx-ws__step-when">By April 1</span><h3>Ride away</h3><p>First nice day of spring, you're ready before everyone else.</p></div>
       </div>
