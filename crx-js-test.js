@@ -1247,7 +1247,7 @@ function crxInitWinterStorage() {
   if (!mount) return;
 
   /* ── Edit these ── */
-  const HOURS = "[HOURS]";            // e.g. "Tue–Fri 10–6, Sat 10–5"
+  const HOURS = "Mon–Fri 10am–6pm · Sat 10am–5pm · Sun closed";
   const PHOTO_URL = "";               // shop photo URL; leave "" to hide the photo
   const PHONE = "(613) 730-2856";
   const PHONE_LINK = "tel:+16137302856";
@@ -1302,7 +1302,6 @@ function crxInitWinterStorage() {
         <h1 class="crx-ws__display crx-ws__h1">Hang it up<br>for winter.</h1>
         <p class="crx-ws__lead">The warm days are behind us. Leave your bike on one of our hooks until April 1 and pick it up tuned, clean and ready to ride.</p>
         <div class="crx-ws__btns">
-          <a class="crx-ws__btn crx-ws__btn--red" href="#crx-ws-visit">Drop-off info</a>
           <a class="crx-ws__btn crx-ws__btn--line" href="${PHONE_LINK}">Call ${PHONE}</a>
         </div>
       </div>
@@ -1361,7 +1360,6 @@ function crxInitWinterStorage() {
       <div class="crx-ws__faq">
         <div><h3>One price for the season</h3><p>$250 no matter when you drop off or pick up.</p></div>
         <div><h3>E-bikes</h3><p>For battery safety we accept Specialized, Bosch, Shimano and TQ systems only. No throttle e-bikes.</p></div>
-        <div><h3>Parts</h3><p>If your bike needs parts during the tune, we'll call you for approval first.</p></div>
         <div><h3>Late pickup</h3><p>Bikes not picked up by April 1, 2027 are charged $10 per day.</p></div>
       </div>
     </section>
