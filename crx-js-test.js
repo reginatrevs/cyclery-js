@@ -1343,7 +1343,7 @@ function crxInitWinterStorage() {
     <section class="crx-ws__wrap crx-ws__tune-row">
       <div class="crx-ws__tune">
         <div class="crx-ws__tune-head">LEVEL 2 TUNE</div>
-        <div class="crx-ws__tune-price"><strong><s>$150.00</s>Included</strong><span>with Winter Storage</span></div>
+        <div class="crx-ws__tune-price"><s>$150.00</s><strong>Included</strong><span>with Winter Storage</span></div>
         <ul>${tuneItems.map((t) => `<li>${t}</li>`).join("")}</ul>
       </div>
       <div class="crx-ws__side">
