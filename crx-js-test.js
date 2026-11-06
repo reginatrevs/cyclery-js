@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   crxInitDonateB();
   crxInitDonateC();
   crxInitWinterStorage();
+  crxInitHeroLink();
 });
 
 /* ───────────────────────────────────────────────────
