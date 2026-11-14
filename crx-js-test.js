@@ -626,9 +626,8 @@ function crxInitLastRideFirstSki() {
       head: "Winter bike storage. $250.",
       cta: "See details →",
       url: "/service/winter-storage/",
-      img: "PASTE_LIGHTSPEED_URL", // storage-tile.jpg after uploading to Lightspeed
+      img: "https://cdn.shoplightspeed.com/shops/635245/files/78388101/storage-tile.jpg", 
       alt: "Bikes hanging on storage hooks"
-      // graphic: true  // use this instead of img for the black tile with the bike drawing
     },
     {
       tag: "Prep for ski season",
