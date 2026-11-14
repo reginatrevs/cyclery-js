@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   crxInitRequestModal();
   crxInitHomeBikes();
+  crxInitLastRideFirstSki();
   // crxInitHomeBikeAltA(); /* Option A disabled — code kept below for reference */
   crxInitHomeBikeAltB();
   crxInitContactBikeRequest();
@@ -608,6 +609,67 @@ function crxInitHomeBikeAltA() {
 
 
 /* ───────────────────────────────────────────────────
+   3-C. HOMEPAGE: FROM THE LAST RIDE TO THE FIRST SKI
+   Two image tiles: winter bike storage + nordic shop.
+   Styles live in custom.css (search "crx-lrfs").
+   Mount (Content > Homepage, above the brands mount):
+   <div class="crx-lrfs-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitLastRideFirstSki() {
+  var mount = document.querySelector(".crx-lrfs-mount");
+  if (!mount) return;
+
+  /* ── Edit these ── */
+  var TILES = [
+    {
+      tag: "Park it for winter",
+      head: "Winter bike storage. $250.",
+      cta: "See details →",
+      url: "/service/winter-storage/",
+      graphic: true // black tile with the hanging-bike drawing; set img instead to use a photo
+    },
+    {
+      tag: "Prep for ski season",
+      head: "The nordic shop is open.",
+      cta: "Shop ski →",
+      url: "/ski/",
+      img: "https://cdn.shoplightspeed.com/shops/635245/files/27159581/1200x1200x1/ski.jpg",
+      alt: "Nordic skis at The Cyclery"
+    }
+  ];
+
+  /* Bike hanging on storage hooks, drawn in lines (no text) */
+  var STORAGE_SVG =
+    '<svg class="crx-lrfs__graphic" viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M10 8h180" opacity=".35"/>' +
+      '<path d="M60 8v14a5 5 0 0 1-10 0M140 8v14a5 5 0 0 0 10 0" opacity=".6"/>' +
+      '<circle cx="55" cy="60" r="27"/><circle cx="145" cy="60" r="27"/>' +
+      '<path d="M55 60l40 2-12-30h44M95 62l29-30M55 60l28-28M124 32l21 28M118 26h14M76 28h16"/>' +
+      '<circle cx="95" cy="62" r="5"/>' +
+    '</svg>';
+
+  function tileHTML(t) {
+    var media = t.img ? '<img class="crx-lrfs__img" src="' + t.img + '" alt="' + t.alt + '" loading="lazy">'
+              : t.graphic ? STORAGE_SVG : "";
+    return '<a class="crx-lrfs__tile" href="' + t.url + '">' + media +
+      '<span class="crx-lrfs__body">' +
+        '<span class="crx-lrfs__tag">' + t.tag + '</span>' +
+        '<span class="crx-lrfs__head">' + t.head + '</span>' +
+        '<span class="crx-lrfs__cta">' + t.cta + '</span>' +
+      '</span></a>';
+  }
+
+  mount.innerHTML =
+    '<section class="crx-lrfs">' +
+      '<div class="crx-lrfs__header">' +
+        '<h2 class="crx-lrfs__title">From the last ride to the first ski</h2>' +
+        '<p class="crx-lrfs__sub">Store your bike for the winter and pick it up tuned and ready on April 1. Then head over to the nordic side for skis, boots and wax.</p>' +
+      '</div>' +
+      '<div class="crx-lrfs__grid">' + TILES.map(tileHTML).join("") + '</div>' +
+    '</section>';
+}
+
+/* ───────────────────────────────────────────────────
    3-B. HOMEPAGE BRANDS – ALT OPTION B
    Continuous single-row auto-scroll (dark card tiles)
    with visible left/right arrow navigation outside the
@@ -647,7 +709,6 @@ function crxInitHomeBikeAltB() {
   mount.innerHTML =
     '<section class="crx-hbb">' +
       '<div class="crx-hbb__header">' +
-        '<p class="crx-hbb__kicker">Premium Brands</p>' +
         '<h2 class="crx-hbb__title">Built around the brands you ride</h2>' +
         '<p class="crx-hbb__sub">We carry the world\'s most elite cycling brands and build every bike to your exact specification. Don\'t see a model in our catalog? We can source and order it for you — <a href="https://www.thecyclery.ca/service/store-hours/" class="crx-hbb__sub-link">contact us</a> to inquire.</p>' +
       '</div>' +
@@ -671,7 +732,6 @@ function crxInitHomeBikeAltB() {
       'background:#fff;box-sizing:border-box}' +
 
     '.crx-hbb__header{max-width:960px;margin:0 auto 20px;padding:0 20px}' +
-    '.crx-hbb__kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.5;margin:0 0 8px}' +
     '.crx-hbb__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
     '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
     '.crx-hbb__sub-link{color:#111;font-weight:700;text-decoration:underline;text-underline-offset:2px;transition:opacity .2s}' +
@@ -1191,8 +1251,8 @@ function crxInjectBicarbAccordions(mount) {
 
 // MESSAGE BAR JS TO MAKE IT CLICKABLE! 
 document.addEventListener("DOMContentLoaded", () => {
-  const destination =
-    "/bike/tires-tubes/gravel-and-cyclocross-tires/";
+  // Where a click on the red announcement bar goes. Update when the bar text changes.
+  const destination = "/service/winter-storage/";
 
   // Look for the element containing the announcement text near the top of the page
   const candidates = document.querySelectorAll("body *");
