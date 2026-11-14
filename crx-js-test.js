@@ -716,9 +716,6 @@ function crxInitHomeBikeAltB() {
         '<p class="crx-hbb__sub">We carry the world\'s most elite cycling brands and build every bike to your exact specification. Don\'t see a model in our catalog? We can source and order it for you — <a href="https://www.thecyclery.ca/service/store-hours/" class="crx-hbb__sub-link">contact us</a> to inquire.</p>' +
       '</div>' +
       '<div class="crx-hbb__grid">' + brands.map(cardHTML).join("") + moreCard + '</div>' +
-      '<div class="crx-hbb__cta-wrap">' +
-        '<a href="https://www.thecyclery.ca/bike/bicycles/" class="btn btn--primary crx-hbb__cta">Explore our brands &rarr;</a>' +
-      '</div>' +
     '</section>';
 
   var style = document.createElement("style");
@@ -741,9 +738,6 @@ function crxInitHomeBikeAltB() {
     '.crx-hbb .crx-hbb__card--more .crx-hbb__card-name{color:rgba(255,255,255,.85)}' +
     '.crx-hbb .crx-hbb__more-big{font-size:clamp(18px,2vw,24px);font-weight:900;color:#fff}' +
 
-    '.crx-hbb__cta-wrap{margin-top:24px}' +
-    /* CTA uses the theme's own .btn .btn--primary (square, red) */
-    '.crx-hbb .crx-hbb__cta{text-decoration:none}' +
 
     '@media(max-width:1024px){.crx-hbb__grid{grid-template-columns:repeat(4,minmax(0,1fr))}}' +
     '@media(max-width:640px){' +
