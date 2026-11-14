@@ -671,10 +671,9 @@ function crxInitLastRideFirstSki() {
 }
 
 /* ───────────────────────────────────────────────────
-   3-B. HOMEPAGE BRANDS – ALT OPTION B
-   Continuous single-row auto-scroll (dark card tiles)
-   with visible left/right arrow navigation outside the
-   masked area. rAF-driven, pauses on hover & arrows.
+   3-B. HOMEPAGE BRANDS – GRID
+   Static gallery of dark brand cards (no carousel).
+   6 per row on desktop, 4 on tablet, 3 on phones.
    Mount: <div class="crx-homebike-alt-b-mount"></div>
    ─────────────────────────────────────────────────── */
 function crxInitHomeBikeAltB() {
@@ -703,9 +702,12 @@ function crxInitHomeBikeAltB() {
     '</a>';
   }
 
-  /* duplicate set for seamless loop */
-  var singleSet = brands.map(cardHTML).join("");
-  var doubledCards = singleSet + singleSet;
+  /* 12th card fills the grid: 6+6 / 4+4+4 / 3x4 */
+  var moreCard =
+    '<a href="https://www.thecyclery.ca/service/store-hours/" class="crx-hbb__card crx-hbb__card--more">' +
+      '<span class="crx-hbb__more-big">+ More</span>' +
+      '<span class="crx-hbb__card-name">We source any build</span>' +
+    '</a>';
 
   mount.innerHTML =
     '<section class="crx-hbb">' +
@@ -713,206 +715,46 @@ function crxInitHomeBikeAltB() {
         '<h2 class="crx-hbb__title">Built around the brands you ride</h2>' +
         '<p class="crx-hbb__sub">We carry the world\'s most elite cycling brands and build every bike to your exact specification. Don\'t see a model in our catalog? We can source and order it for you — <a href="https://www.thecyclery.ca/service/store-hours/" class="crx-hbb__sub-link">contact us</a> to inquire.</p>' +
       '</div>' +
-      '<div class="crx-hbb__stage">' +
-        '<button class="crx-hbb__arrow crx-hbb__arrow--prev" type="button" aria-label="Scroll left">&#8249;</button>' +
-        '<div class="crx-hbb__marquee">' +
-          '<div class="crx-hbb__track">' + doubledCards + '</div>' +
-        '</div>' +
-        '<button class="crx-hbb__arrow crx-hbb__arrow--next" type="button" aria-label="Scroll right">&#8250;</button>' +
-      '</div>' +
+      '<div class="crx-hbb__grid">' + brands.map(cardHTML).join("") + moreCard + '</div>' +
       '<div class="crx-hbb__cta-wrap">' +
         '<a href="https://www.thecyclery.ca/bike/bicycles/" class="crx-hbb__cta">Explore our brands &rarr;</a>' +
       '</div>' +
     '</section>';
 
-  /* ── inject styles ── */
   var style = document.createElement("style");
   style.textContent =
-    '.crx-hbb{padding:24px 0;text-align:center;overflow:hidden;width:100%;' +
-      'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
-      'background:#fff;box-sizing:border-box}' +
-
-    '.crx-hbb__header{max-width:960px;margin:0 auto 20px;padding:0 20px}' +
-    '.crx-hbb__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111;white-space:nowrap}' +
+    '.crx-hbb{padding:24px 56px 40px;text-align:center;width:100%;box-sizing:border-box;' +
+      'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#fff}' +
+    '.crx-hbb__header{max-width:960px;margin:0 auto 24px}' +
+    '.crx-hbb__title{font-size:clamp(22px,3.6vw,34px);font-weight:900;margin:0 0 12px;line-height:1.1;color:#111}' +
     '.crx-hbb__sub{font-size:15px;line-height:1.55;opacity:.65;margin:0;color:#333}' +
-    '.crx-hbb__sub-link{color:#111;font-weight:700;text-decoration:underline;text-underline-offset:2px;transition:opacity .2s}' +
-    '.crx-hbb__sub-link:hover{opacity:.6}' +
+    '.crx-hbb__sub-link{color:#111;font-weight:700;text-decoration:underline;text-underline-offset:2px}' +
 
-    /* stage: flex row with arrows flanking the marquee */
-    '.crx-hbb__stage{position:relative;display:flex;align-items:center;gap:0;padding:0 56px;max-width:100%;margin:0 auto}' +
-
-    /* navigation arrows — positioned outside the fade mask */
-    '.crx-hbb__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:4;' +
-      'width:44px;height:44px;border-radius:50%;border:1px solid rgba(0,0,0,.12);' +
-      'background:rgba(255,255,255,.95);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);' +
-      'font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;' +
-      'transition:background .2s,color .2s,box-shadow .2s,transform .2s;color:#111;line-height:1;padding:0;' +
-      'box-shadow:0 2px 10px rgba(0,0,0,.12)}' +
-    '.crx-hbb__arrow:hover{background:#111;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.25);transform:translateY(-50%) scale(1.08)}' +
-    '.crx-hbb__arrow:active{transform:translateY(-50%) scale(.96)}' +
-    '.crx-hbb__arrow--prev{left:4px}' +
-    '.crx-hbb__arrow--next{right:4px}' +
-
-    /* marquee with edge fade */
-    '.crx-hbb__marquee{flex:1;overflow:hidden;padding:14px 0;' +
-      '-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%);' +
-      'mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%)}' +
-    '.crx-hbb__track{display:flex;gap:14px;width:max-content;will-change:transform}' +
-
-    /* cards */
-    '.crx-hbb__card{' +
-      'flex:0 0 auto;width:160px;height:200px;' +
-      'background:#000;border:1px solid rgba(255,255,255,.06);border-radius:4px;' +
+    '.crx-hbb__grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;max-width:1328px;margin:0 auto}' +
+    '.crx-hbb .crx-hbb__card{aspect-ratio:4/5;background:#000;border-radius:4px;' +
       'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;' +
-      'text-decoration:none;color:#fff;' +
-      'transition:transform .3s ease,box-shadow .3s ease;' +
-      'cursor:pointer}' +
-    '.crx-hbb__card:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 10px 36px rgba(0,0,0,.35)}' +
+      'text-decoration:none;color:#fff;transition:transform .3s ease,box-shadow .3s ease}' +
+    '.crx-hbb .crx-hbb__card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.3)}' +
+    '.crx-hbb .crx-hbb__card-logo{width:50%;max-width:100px;aspect-ratio:1;height:auto;object-fit:contain;margin:0;opacity:.9}' +
+    '.crx-hbb .crx-hbb__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7);padding:0 8px}' +
+    '.crx-hbb .crx-hbb__card--more{background:#111}' +
+    '.crx-hbb .crx-hbb__more-big{font-size:clamp(18px,2vw,24px);font-weight:900;color:#fff}' +
 
-    '.crx-hbb__card-logo{width:80px;height:80px;object-fit:contain;pointer-events:none;opacity:.9}' +
-    '.crx-hbb__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}' +
+    '.crx-hbb__cta-wrap{margin-top:24px}' +
+    '.crx-hbb .crx-hbb__cta{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
+      'background:#111;color:#fff;text-decoration:none;transition:opacity .2s}' +
+    '.crx-hbb .crx-hbb__cta:hover{opacity:.78}' +
 
-    /* cta */
-    '.crx-hbb__cta-wrap{margin-top:20px}' +
-    '.crx-hbb__cta{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
-      'letter-spacing:.02em;background:#111;color:#fff;text-decoration:none;transition:opacity .2s}' +
-    '.crx-hbb__cta:hover{opacity:.78}' +
-
-    /* reduced motion */
-    '@media(prefers-reduced-motion:reduce){' +
-      '.crx-hbb__marquee{overflow-x:auto;-webkit-overflow-scrolling:touch}' +
-      '.crx-hbb__card:hover{transform:none}' +
-    '}' +
-
-    /* responsive */
+    '@media(max-width:1024px){.crx-hbb__grid{grid-template-columns:repeat(4,minmax(0,1fr))}}' +
     '@media(max-width:640px){' +
-      '.crx-hbb__card{width:130px;height:170px}' +
-      '.crx-hbb__card-logo{width:60px;height:60px}' +
-      '.crx-hbb__stage{padding:0 12px}' +
-      '.crx-hbb__arrow{display:none}' +
-    '}';
+      '.crx-hbb{padding:16px 16px 32px}' +
+      '.crx-hbb__grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}' +
+      '.crx-hbb .crx-hbb__card{gap:6px}' +
+      '.crx-hbb .crx-hbb__card-name{font-size:10px}' +
+    '}' +
+    '@media(prefers-reduced-motion:reduce){.crx-hbb .crx-hbb__card:hover{transform:none}}';
 
   document.head.appendChild(style);
-
-  /* ── rAF-driven continuous scroll with arrow override ── */
-  var track = mount.querySelector(".crx-hbb__track");
-  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reducedMotion) return;
-
-  var speed = 0.4;                       /* px per frame (~24 px/s at 60fps) */
-  var pos = 0;
-  var halfWidth = 0;
-  var paused = false;
-  var arrowBusy = false;
-  var resumeTimer = null;
-
-  function measureHalf() {
-    halfWidth = track.scrollWidth / 2;
-  }
-
-  function tick() {
-    if (!paused && !arrowBusy) {
-      pos -= speed;
-      /* seamless wrap */
-      if (pos <= -halfWidth) pos += halfWidth;
-      if (pos > 0) pos -= halfWidth;
-      track.style.transform = "translateX(" + pos + "px)";
-    }
-    requestAnimationFrame(tick);
-  }
-
-  /* Arrow: smoothly animate one card-width, then resume */
-  function arrowStep(direction) {
-    var cards = track.querySelectorAll(".crx-hbb__card");
-    var step = 176;
-    if (cards.length >= 2) step = cards[1].offsetLeft - cards[0].offsetLeft;
-
-    arrowBusy = true;
-    paused = true;
-    clearTimeout(resumeTimer);
-
-    var startPos = pos;
-    var target = pos + (direction === "next" ? -step : step);
-    var startTime = null;
-    var duration = 500;
-
-    function ease(t) {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-
-    function animate(now) {
-      if (!startTime) startTime = now;
-      var elapsed = now - startTime;
-      var progress = Math.min(elapsed / duration, 1);
-      pos = startPos + (target - startPos) * ease(progress);
-
-      if (pos <= -halfWidth) pos += halfWidth;
-      if (pos > 0) pos -= halfWidth;
-      track.style.transform = "translateX(" + pos + "px)";
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        arrowBusy = false;
-        resumeTimer = setTimeout(function() { paused = false; }, 2500);
-      }
-    }
-    requestAnimationFrame(animate);
-  }
-
-  mount.querySelector(".crx-hbb__arrow--next").addEventListener("click", function() {
-    if (arrowBusy) return;
-    arrowStep("next");
-  });
-  mount.querySelector(".crx-hbb__arrow--prev").addEventListener("click", function() {
-    if (arrowBusy) return;
-    arrowStep("prev");
-  });
-
-  /* Pause on hover over marquee area */
-  var marquee = mount.querySelector(".crx-hbb__marquee");
-  marquee.addEventListener("mouseenter", function() { paused = true; clearTimeout(resumeTimer); });
-  marquee.addEventListener("mouseleave", function() {
-    if (!arrowBusy) {
-      resumeTimer = setTimeout(function() { paused = false; }, 400);
-    }
-  });
-
-  /* Touch swipe support for mobile — drag to scroll, pause then resume */
-  var touchStartX = 0;
-  var touchLastX = 0;
-  var isTouching = false;
-
-  marquee.addEventListener("touchstart", function(e) {
-    isTouching = true;
-    paused = true;
-    clearTimeout(resumeTimer);
-    touchStartX = e.touches[0].clientX;
-    touchLastX = touchStartX;
-  }, { passive: true });
-
-  marquee.addEventListener("touchmove", function(e) {
-    if (!isTouching) return;
-    var currentX = e.touches[0].clientX;
-    var delta = currentX - touchLastX;
-    touchLastX = currentX;
-    pos += delta;
-    /* seamless wrap */
-    if (pos <= -halfWidth) pos += halfWidth;
-    if (pos > 0) pos -= halfWidth;
-    track.style.transform = "translateX(" + pos + "px)";
-  }, { passive: true });
-
-  marquee.addEventListener("touchend", function() {
-    isTouching = false;
-    /* pause 3s so user can tap a card, then resume */
-    resumeTimer = setTimeout(function() { paused = false; }, 3000);
-  });
-
-  /* Init */
-  measureHalf();
-  window.addEventListener("resize", measureHalf);
-  tick();
 }
 
 
