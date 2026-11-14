@@ -717,7 +717,7 @@ function crxInitHomeBikeAltB() {
       '</div>' +
       '<div class="crx-hbb__grid">' + brands.map(cardHTML).join("") + moreCard + '</div>' +
       '<div class="crx-hbb__cta-wrap">' +
-        '<a href="https://www.thecyclery.ca/bike/bicycles/" class="crx-hbb__cta">Explore our brands &rarr;</a>' +
+        '<a href="https://www.thecyclery.ca/bike/bicycles/" class="btn btn--primary crx-hbb__cta">Explore our brands &rarr;</a>' +
       '</div>' +
     '</section>';
 
@@ -737,13 +737,13 @@ function crxInitHomeBikeAltB() {
     '.crx-hbb .crx-hbb__card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.3)}' +
     '.crx-hbb .crx-hbb__card-logo{width:50%;max-width:100px;aspect-ratio:1;height:auto;object-fit:contain;margin:0;opacity:.9}' +
     '.crx-hbb .crx-hbb__card-name{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7);padding:0 8px}' +
-    '.crx-hbb .crx-hbb__card--more{background:#111}' +
+    '.crx-hbb .crx-hbb__card--more{background:#A41314}' +
+    '.crx-hbb .crx-hbb__card--more .crx-hbb__card-name{color:rgba(255,255,255,.85)}' +
     '.crx-hbb .crx-hbb__more-big{font-size:clamp(18px,2vw,24px);font-weight:900;color:#fff}' +
 
     '.crx-hbb__cta-wrap{margin-top:24px}' +
-    '.crx-hbb .crx-hbb__cta{display:inline-block;padding:12px 30px;border-radius:999px;font-size:14px;font-weight:800;' +
-      'background:#111;color:#fff;text-decoration:none;transition:opacity .2s}' +
-    '.crx-hbb .crx-hbb__cta:hover{opacity:.78}' +
+    /* CTA uses the theme's own .btn .btn--primary (square, red) */
+    '.crx-hbb .crx-hbb__cta{text-decoration:none}' +
 
     '@media(max-width:1024px){.crx-hbb__grid{grid-template-columns:repeat(4,minmax(0,1fr))}}' +
     '@media(max-width:640px){' +
