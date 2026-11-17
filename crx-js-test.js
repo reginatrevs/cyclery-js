@@ -1312,7 +1312,7 @@ function crxInitSaleBadges() {
              crossed-out price; if there isn't one, no tag shows). */
   var TAGS = [
     /* Bont demo for Vince: on now */
-    { slug: "bont-riot-g-mtb-shoe", label: "Bont 20% off", start: "2026-11-17T00:00:00-05:00", end: BF_END }
+    { slug: "bont-riot-g-mtb-shoe", label: "Black Friday −{pct}%", start: "2026-11-17T00:00:00-05:00", end: BF_END }
 
     /* Black Friday products: add one line per product, e.g.
     ,{ slug: "wahoo-kickr-core-2-w-zwift-cogo", label: "Black Friday −{pct}%", start: BF_START, end: BF_END } */
@@ -1322,7 +1322,9 @@ function crxInitSaleBadges() {
      on these products (only sizes with backorders on show it). */
   var SPECIAL_ORDER = {
     match: /^bont-/,
+    stock: "Not in stock · Special order",
     text: "Special order: ready for pickup or ships in 2–4 weeks (by mid-December). Sale price guaranteed.",
+    cart: "Special order: ready in 2–4 weeks (by mid-December). We'll email you when it's in.",
     end: BF_END
   };
 
@@ -1415,23 +1417,92 @@ function crxInitSaleBadges() {
       "font-size:11px;letter-spacing:.06em;text-transform:uppercase;line-height:1.2}" +
     ".crx-bf-badge--sold{background:#111 !important}" +
     ".crx-bf-badge--page{display:inline-block;padding:6px 10px;margin:0 0 10px;font-size:12px}" +
-    ".crx-so-note{display:block;background:#FBE9E9;border-left:3px solid #A41314;color:#5A0A0B;" +
-      "padding:10px 12px;font-size:14px;font-weight:600;line-height:1.4}";
+    ".crx-so-note{background:#FBE9E9;border-left:3px solid #A41314;color:#5A0A0B;" +
+      "padding:10px 12px;margin:0 0 12px;font-size:14px;font-weight:600;line-height:1.4}" +
+    ".out-of-stock[data-crx-so]{color:#A41314;font-weight:700}" +
+    ".crx-so-cart{margin:6px 0 0;font-size:12px;font-weight:700;color:#A41314;line-height:1.35}";
   document.head.appendChild(style);
+
+  /* Remembers which cart items are special orders (this browser only) */
+  var SO_KEY = "crxSpecialOrders";
+  function soLoad() { try { return JSON.parse(localStorage.getItem(SO_KEY) || "[]"); } catch (e) { return []; } }
+  function soSave(list) { try { localStorage.setItem(SO_KEY, JSON.stringify(list.slice(-20))); } catch (e) {} }
 
   function doSpecialOrderNote() {
     if (!document.querySelector(".product__price-wrapper")) return;
     if (!SPECIAL_ORDER.match.test(slugOf(location.pathname))) return;
     if (!preview && Date.now() >= Date.parse(SPECIAL_ORDER.end)) return;
-    var els = document.querySelectorAll(".out-of-stock");
-    Array.prototype.forEach.call(els, function (el) {
-      if (!/on backorder/i.test(el.textContent)) return;
-      if (el.querySelector(".crx-so-note")) return;
-      el.innerHTML = '<span class="crx-so-note">' + SPECIAL_ORDER.text + "</span>";
+
+    var stock = null;
+    Array.prototype.forEach.call(document.querySelectorAll(".out-of-stock"), function (el) {
+      if (el.getAttribute("data-crx-so") || /on backorder/i.test(el.textContent)) stock = el;
+    });
+    var note = document.querySelector(".crx-so-note");
+    if (!stock) { if (note) note.parentNode.removeChild(note); return; }
+
+    /* 1. Stock line */
+    if (!stock.getAttribute("data-crx-so")) {
+      stock.setAttribute("data-crx-so", "1");
+      stock.textContent = SPECIAL_ORDER.stock;
+    }
+
+    /* 2. Note right above the Add to cart button */
+    var btn = document.querySelector(".btn--add-to-cart");
+    if (btn && !note) {
+      note = document.createElement("div");
+      note.className = "crx-so-note";
+      note.textContent = SPECIAL_ORDER.text;
+      var row = btn.parentElement;
+      row.parentNode.insertBefore(note, row);
+    }
+
+    /* 3. Remember this variant when it's added to the cart */
+    var form = document.getElementById("product_configure_form");
+    if (form && !form.getAttribute("data-crx-so")) {
+      form.setAttribute("data-crx-so", "1");
+      form.addEventListener("submit", function () {
+        var m = (form.action || "").match(/cart\/add\/(\d+)/);
+        if (!m) return;
+        var parts = Array.prototype.map.call(form.querySelectorAll("select"), function (sel) {
+          var lab = form.querySelector('label[for="' + sel.id + '"]');
+          var name = lab ? lab.textContent.replace(/[*:]/g, "").trim() : "";
+          return name + ": " + (sel.options[sel.selectedIndex] || {}).text;
+        });
+        var list = soLoad().filter(function (x) { return x.id !== m[1]; });
+        list.push({ id: m[1], slug: slugOf(location.pathname), parts: parts });
+        soSave(list);
+      });
+    }
+  }
+
+  /* Adds the special-order line under those items in the cart page and cart drawer */
+  function doCartNotes() {
+    var list = soLoad();
+    if (!list.length) return;
+    function addNote(container) {
+      if (!container || container.querySelector(".crx-so-cart")) return;
+      var p = document.createElement("p");
+      p.className = "crx-so-cart";
+      p.textContent = SPECIAL_ORDER.cart;
+      container.appendChild(p);
+    }
+    list.forEach(function (item) {
+      /* Cart page: product link carries ?id=<variant> */
+      Array.prototype.forEach.call(document.querySelectorAll('.gui-table a.gui-bold[href*="id=' + item.id + '"]'), function (a) {
+        if (/[?&]id=(\d+)/.exec(a.href)[1] === item.id) addNote(a.closest("td"));
+      });
+      /* Cart drawer: match product + all chosen options */
+      Array.prototype.forEach.call(document.querySelectorAll(".dr-cart__product"), function (li) {
+        var a = li.querySelector('h2 a[href*="' + item.slug + '.html"]');
+        var opts = li.querySelector("p");
+        if (!a || !opts) return;
+        var ok = item.parts.every(function (part) { return opts.textContent.indexOf(part) !== -1; });
+        if (ok) addNote(opts.parentElement);
+      });
     });
   }
 
-  function run() { doCards(); doProductPage(); doSpecialOrderNote(); }
+  function run() { doCards(); doProductPage(); doSpecialOrderNote(); doCartNotes(); }
   run();
 
   /* Re-run when the theme swaps prices (size picked) or loads more products */
