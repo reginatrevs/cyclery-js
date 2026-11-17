@@ -1293,27 +1293,40 @@ function crxInitHeroLink() {
 }
 
 /* ───────────────────────────────────────────────────
-   7. BLACK FRIDAY BADGES (product cards + product pages)
-   Renames Lightspeed's "Sale" badge and adds one on product pages.
-   - RULES: % off is worked out from the old price vs the sale price.
-   - DOOR_CRASHERS: one-off bikes get "DOOR CRASHER · ONLY 1 · size", or SOLD.
-   Dates are Toronto time. To preview before a start date, add
-   ?crxbf=preview to any page URL (only you see it).
+   7. SALE / BLACK FRIDAY TAGS (product cards + product pages)
+   Only products listed below get a custom tag. Everything else
+   keeps Lightspeed's normal "Sale" badge.
+   Works anywhere a product card shows: homepage featured products,
+   categories, search, the Black Friday page.
+   Dates are Toronto time. To preview a tag before its start date,
+   add ?crxbf=preview to the page URL (only you see it).
    ─────────────────────────────────────────────────── */
 function crxInitSaleBadges() {
   var BF_START = "2026-11-20T00:00:00-05:00";
   var BF_END   = "2026-12-01T00:00:00-05:00";
 
-  /* ── Edit these ── */
-  var RULES = [
-    /* Bont: on now (matches product links starting with "bont-") */
-    { match: /^bont-/, label: "Black Friday −{pct}%", start: "2026-11-17T00:00:00-05:00", end: BF_END },
-    /* Every other product with a crossed-out price, during Black Friday */
-    { match: /.*/,     label: "Black Friday −{pct}%", start: BF_START, end: BF_END }
+  /* ── Edit these ──
+     slug  = end of the product link without ".html"
+             thecyclery.ca/bont-riot-g-mtb-shoe.html → "bont-riot-g-mtb-shoe"
+     label = tag text. "{pct}" is replaced by the real % off (needs a
+             crossed-out price; if there isn't one, no tag shows). */
+  var TAGS = [
+    /* Bont demo for Vince: on now */
+    { slug: "bont-riot-g-mtb-shoe", label: "Bont 20% off", start: "2026-11-17T00:00:00-05:00", end: BF_END }
+
+    /* Black Friday products: add one line per product, e.g.
+    ,{ slug: "wahoo-kickr-core-2-w-zwift-cogo", label: "Black Friday −{pct}%", start: BF_START, end: BF_END } */
   ];
 
-  /* slug = the end of the product link, without ".html"
-     e.g. thecyclery.ca/3t-exploro-grx.html → "3t-exploro-grx" */
+  /* Special-order note: replaces Lightspeed's plain "On backorder" text
+     on these products (only sizes with backorders on show it). */
+  var SPECIAL_ORDER = {
+    match: /^bont-/,
+    text: "Special order: ready for pickup or ships in 2–4 weeks (by mid-December). Sale price guaranteed.",
+    end: BF_END
+  };
+
+  /* One-off bikes. sold: true shows SOLD in black. */
   var DOOR_CRASHERS = [
     { slug: "", size: "", sold: false }, /* S-Works SL8, Dura-Ace build */
     { slug: "", size: "", sold: false }, /* 3T Exploro, GRX */
@@ -1330,7 +1343,7 @@ function crxInitSaleBadges() {
     return preview || (now >= Date.parse(start) && now < Date.parse(end));
   }
   function slugOf(href) {
-    return (href || "").split("?")[0].split("/").pop().replace(/\.html$/, "");
+    return (href || "").split("?")[0].split("#")[0].split("/").pop().replace(/\.html$/, "");
   }
   function num(el) {
     if (!el) return 0;
@@ -1339,25 +1352,24 @@ function crxInitSaleBadges() {
 
   /* Returns {text, sold} or null */
   function labelFor(slug, oldEl, newEl) {
-    for (var i = 0; i < DOOR_CRASHERS.length; i++) {
+    var i;
+    for (i = 0; i < DOOR_CRASHERS.length; i++) {
       var d = DOOR_CRASHERS[i];
       if (d.slug && d.slug === slug && live(BF_START, BF_END)) {
         if (d.sold) return { text: "Sold", sold: true };
         return { text: "Door crasher · Only 1" + (d.size ? " · " + d.size : ""), sold: false };
       }
     }
-    var was = num(oldEl), is = num(newEl);
-    if (!was || !is || is >= was) return null;
-    var pct = Math.round((1 - is / was) * 100);
-    for (var j = 0; j < RULES.length; j++) {
-      var r = RULES[j];
-      if (r.match.test(slug) && live(r.start, r.end)) {
-        return { text: r.label.replace("{pct}", pct), sold: false };
-      }
+    for (i = 0; i < TAGS.length; i++) {
+      var t = TAGS[i];
+      if (t.slug !== slug || !live(t.start, t.end)) continue;
+      if (t.label.indexOf("{pct}") === -1) return { text: t.label, sold: false };
+      var was = num(oldEl), is = num(newEl);
+      if (!was || !is || is >= was) return null;
+      return { text: t.label.replace("{pct}", Math.round((1 - is / was) * 100)), sold: false };
     }
     return null;
   }
-
   function paint(badge, lab) {
     if (badge.textContent !== lab.text) badge.textContent = lab.text; /* avoid re-triggering the observer */
     badge.classList.add("crx-bf-badge");
@@ -1402,10 +1414,24 @@ function crxInitSaleBadges() {
     ".crx-bf-badge{background:#A41314 !important;color:#fff !important;font-weight:800;" +
       "font-size:11px;letter-spacing:.06em;text-transform:uppercase;line-height:1.2}" +
     ".crx-bf-badge--sold{background:#111 !important}" +
-    ".crx-bf-badge--page{display:inline-block;padding:6px 10px;margin:0 0 10px;font-size:12px}";
+    ".crx-bf-badge--page{display:inline-block;padding:6px 10px;margin:0 0 10px;font-size:12px}" +
+    ".crx-so-note{display:block;background:#FBE9E9;border-left:3px solid #A41314;color:#5A0A0B;" +
+      "padding:10px 12px;font-size:14px;font-weight:600;line-height:1.4}";
   document.head.appendChild(style);
 
-  function run() { doCards(); doProductPage(); }
+  function doSpecialOrderNote() {
+    if (!document.querySelector(".product__price-wrapper")) return;
+    if (!SPECIAL_ORDER.match.test(slugOf(location.pathname))) return;
+    if (!preview && Date.now() >= Date.parse(SPECIAL_ORDER.end)) return;
+    var els = document.querySelectorAll(".out-of-stock");
+    Array.prototype.forEach.call(els, function (el) {
+      if (!/on backorder/i.test(el.textContent)) return;
+      if (el.querySelector(".crx-so-note")) return;
+      el.innerHTML = '<span class="crx-so-note">' + SPECIAL_ORDER.text + "</span>";
+    });
+  }
+
+  function run() { doCards(); doProductPage(); doSpecialOrderNote(); }
   run();
 
   /* Re-run when the theme swaps prices (size picked) or loads more products */
