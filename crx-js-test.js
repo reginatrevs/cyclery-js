@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   crxInitDonateC();
   crxInitWinterStorage();
   crxInitHeroLink();
+  crxInitSaleBadges();
 });
 
 /* ───────────────────────────────────────────────────
@@ -1289,4 +1290,128 @@ function crxInitHeroLink() {
   a.style.cssText = "position:absolute;inset:0;z-index:5;";
   hero.style.position = "relative";
   hero.appendChild(a);
+}
+
+/* ───────────────────────────────────────────────────
+   7. BLACK FRIDAY BADGES (product cards + product pages)
+   Renames Lightspeed's "Sale" badge and adds one on product pages.
+   - RULES: % off is worked out from the old price vs the sale price.
+   - DOOR_CRASHERS: one-off bikes get "DOOR CRASHER · ONLY 1 · size", or SOLD.
+   Dates are Toronto time. To preview before a start date, add
+   ?crxbf=preview to any page URL (only you see it).
+   ─────────────────────────────────────────────────── */
+function crxInitSaleBadges() {
+  var BF_START = "2026-11-20T00:00:00-05:00";
+  var BF_END   = "2026-12-01T00:00:00-05:00";
+
+  /* ── Edit these ── */
+  var RULES = [
+    /* Bont: on now (matches product links starting with "bont-") */
+    { match: /^bont-/, label: "Black Friday −{pct}%", start: "2026-11-17T00:00:00-05:00", end: BF_END },
+    /* Every other product with a crossed-out price, during Black Friday */
+    { match: /.*/,     label: "Black Friday −{pct}%", start: BF_START, end: BF_END }
+  ];
+
+  /* slug = the end of the product link, without ".html"
+     e.g. thecyclery.ca/3t-exploro-grx.html → "3t-exploro-grx" */
+  var DOOR_CRASHERS = [
+    { slug: "", size: "", sold: false }, /* S-Works SL8, Dura-Ace build */
+    { slug: "", size: "", sold: false }, /* 3T Exploro, GRX */
+    { slug: "", size: "", sold: false }, /* Bianchi Sprint, 105 Di2 */
+    { slug: "", size: "", sold: false }, /* Look Blade 2 frameset */
+    { slug: "", size: "", sold: false }, /* Bianchi Specialissima, Miami Drip */
+    { slug: "", size: "", sold: false }, /* ENVE Melee frameset */
+    { slug: "", size: "", sold: false }  /* OPEN U.P. frameset */
+  ];
+
+  var preview = /[?&]crxbf=preview/.test(location.search);
+  var now = Date.now();
+  function live(start, end) {
+    return preview || (now >= Date.parse(start) && now < Date.parse(end));
+  }
+  function slugOf(href) {
+    return (href || "").split("?")[0].split("/").pop().replace(/\.html$/, "");
+  }
+  function num(el) {
+    if (!el) return 0;
+    return parseFloat(el.textContent.replace(/[^0-9.]/g, "")) || 0;
+  }
+
+  /* Returns {text, sold} or null */
+  function labelFor(slug, oldEl, newEl) {
+    for (var i = 0; i < DOOR_CRASHERS.length; i++) {
+      var d = DOOR_CRASHERS[i];
+      if (d.slug && d.slug === slug && live(BF_START, BF_END)) {
+        if (d.sold) return { text: "Sold", sold: true };
+        return { text: "Door crasher · Only 1" + (d.size ? " · " + d.size : ""), sold: false };
+      }
+    }
+    var was = num(oldEl), is = num(newEl);
+    if (!was || !is || is >= was) return null;
+    var pct = Math.round((1 - is / was) * 100);
+    for (var j = 0; j < RULES.length; j++) {
+      var r = RULES[j];
+      if (r.match.test(slug) && live(r.start, r.end)) {
+        return { text: r.label.replace("{pct}", pct), sold: false };
+      }
+    }
+    return null;
+  }
+
+  function paint(badge, lab) {
+    if (badge.textContent !== lab.text) badge.textContent = lab.text; /* avoid re-triggering the observer */
+    badge.classList.add("crx-bf-badge");
+    badge.classList.toggle("crx-bf-badge--sold", lab.sold);
+  }
+
+  function doCards() {
+    var cards = document.querySelectorAll(".prod-card");
+    Array.prototype.forEach.call(cards, function (card) {
+      var link = card.querySelector('a[href$=".html"]');
+      if (!link) return;
+      var lab = labelFor(slugOf(link.href), card.querySelector(".prod-card__old-price"), card.querySelector(".prod-card__price"));
+      if (!lab) return;
+      var badge = card.querySelector(".prod-card__badge");
+      if (!badge) {
+        badge = document.createElement("span");
+        badge.className = "prod-card__badge";
+        card.insertBefore(badge, card.firstChild);
+      }
+      paint(badge, lab);
+    });
+  }
+
+  function doProductPage() {
+    var wrap = document.querySelector(".product__price-wrapper");
+    if (!wrap) return;
+    var slug = slugOf(location.pathname);
+    var badge = document.querySelector(".crx-bf-badge--page");
+    var lab = labelFor(slug, wrap.querySelector(".product__price--old"), wrap.querySelector(".product__price"));
+    if (!lab) { if (badge) badge.style.display = "none"; return; }
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.className = "crx-bf-badge crx-bf-badge--page";
+      wrap.parentNode.insertBefore(badge, wrap);
+    }
+    badge.style.display = "";
+    paint(badge, lab);
+  }
+
+  var style = document.createElement("style");
+  style.textContent =
+    ".crx-bf-badge{background:#A41314 !important;color:#fff !important;font-weight:800;" +
+      "font-size:11px;letter-spacing:.06em;text-transform:uppercase;line-height:1.2}" +
+    ".crx-bf-badge--sold{background:#111 !important}" +
+    ".crx-bf-badge--page{display:inline-block;padding:6px 10px;margin:0 0 10px;font-size:12px}";
+  document.head.appendChild(style);
+
+  function run() { doCards(); doProductPage(); }
+  run();
+
+  /* Re-run when the theme swaps prices (size picked) or loads more products */
+  var t = null;
+  new MutationObserver(function () {
+    clearTimeout(t);
+    t = setTimeout(run, 150);
+  }).observe(document.body, { childList: true, subtree: true, characterData: true });
 }
