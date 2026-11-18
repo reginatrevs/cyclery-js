@@ -1586,7 +1586,20 @@ function crxInitProductRows() {
       ".crx-hpr__grid{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}" +
       ".crx-hpr__grid .prod-card{position:relative;margin:0}" +
       "@media(max-width:1024px){.crx-hpr__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}" +
-      "@media(max-width:640px){.crx-hpr{padding:28px 16px 16px}.crx-hpr__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}";
+      /* fewer than 4 products: spread across the full width */
+      "@media(min-width:641px){.crx-hpr__grid--n1{grid-template-columns:minmax(0,1fr)}" +
+        ".crx-hpr__grid--n2{grid-template-columns:repeat(2,minmax(0,1fr))}" +
+        ".crx-hpr__grid--n3{grid-template-columns:repeat(3,minmax(0,1fr))}}" +
+      /* phones: one swipeable row, next card peeking in */
+      "@media(max-width:640px){.crx-hpr{padding:28px 0 16px}" +
+        ".crx-hpr__head{padding:0 16px;margin-bottom:16px}" +
+        ".crx-hpr .crx-hpr__sub{font-size:14px}" +
+        ".crx-hpr__grid{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:68%;" +
+          "gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 8px;scroll-padding:0 16px;" +
+          "-webkit-overflow-scrolling:touch;scrollbar-width:none}" +
+        ".crx-hpr__grid::-webkit-scrollbar{display:none}" +
+        ".crx-hpr__grid .prod-card{scroll-snap-align:start}" +
+        ".crx-hpr__grid .crx-bf-badge{font-size:10px;letter-spacing:.04em;padding:5px 7px;max-width:calc(100% - 20px)}}";
     document.head.appendChild(style);
   }
 
@@ -1616,10 +1629,7 @@ function crxInitProductRows() {
             '<div class="crx-hpr__grid"></div>' +
           '</section>';
         var grid = mount.querySelector(".crx-hpr__grid");
-        if (cards.length < 4 && window.innerWidth > 640) {
-          /* fewer than 4 products: spread them across the full width */
-          grid.style.gridTemplateColumns = "repeat(" + cards.length + ",minmax(0,1fr))";
-        }
+        if (cards.length < 4) grid.className += " crx-hpr__grid--n" + cards.length;
         cards.slice(0, 8).forEach(function (card) {
           grid.appendChild(document.importNode(card, true));
         });
