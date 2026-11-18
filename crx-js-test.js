@@ -1555,7 +1555,7 @@ function crxInitProductRows() {
       kicker: "Black Friday · Bont",
       title: "Bont shoes, 20% off",
       sub: "Every size, Standard and Wide. Not on the shelf? Special-order it by Nov 30.",
-      cta: { text: "Shop Bont", url: "/search/bont/" }
+      cta: null                         /* no button: these are the only Bont shoes */
     },
     {
       mount: ".crx-hp-dc-mount",
@@ -1617,10 +1617,8 @@ function crxInitProductRows() {
           '</section>';
         var grid = mount.querySelector(".crx-hpr__grid");
         if (cards.length < 4 && window.innerWidth > 640) {
-          /* fewer than 4 products: shrink the row so cards keep their size */
+          /* fewer than 4 products: spread them across the full width */
           grid.style.gridTemplateColumns = "repeat(" + cards.length + ",minmax(0,1fr))";
-          grid.style.maxWidth = (cards.length * 330) + "px";
-          mount.querySelector(".crx-hpr__head").style.maxWidth = grid.style.maxWidth;
         }
         cards.slice(0, 8).forEach(function (card) {
           grid.appendChild(document.importNode(card, true));
