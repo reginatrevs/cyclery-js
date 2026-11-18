@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   crxInitWinterStorage();
   crxInitHeroLink();
   crxInitSaleBadges();
+  crxInitProductRows();
 });
 
 /* ───────────────────────────────────────────────────
@@ -1312,7 +1313,9 @@ function crxInitSaleBadges() {
              crossed-out price; if there isn't one, no tag shows). */
   var TAGS = [
     /* Bont demo for Vince: on now */
-    { slug: "bont-riot-g-mtb-shoe", label: "Black Friday −{pct}%", start: "2026-11-17T00:00:00-05:00", end: BF_END }
+    { slug: "bont-riot-g-mtb-shoe",     label: "Black Friday −{pct}%", start: "2026-11-17T00:00:00-05:00", end: BF_END },
+    { slug: "bont-riot-24-road-shoe",   label: "Black Friday −{pct}%", start: "2026-11-17T00:00:00-05:00", end: BF_END },
+    { slug: "bont-vaypor-sl-road-shoe", label: "Black Friday −{pct}%", start: "2026-11-17T00:00:00-05:00", end: BF_END }
 
     /* Black Friday products: add one line per product, e.g.
     ,{ slug: "wahoo-kickr-core-2-w-zwift-cogo", label: "Black Friday −{pct}%", start: BF_START, end: BF_END } */
@@ -1323,21 +1326,25 @@ function crxInitSaleBadges() {
   var SPECIAL_ORDER = {
     match: /^bont-/,
     stock: "Not in stock · Special order",
-    text: "Special order: ready for pickup or ships in 2–4 weeks (by mid-December). Sale price guaranteed.",
-    cart: "Special order: ready in 2–4 weeks (by mid-December). We'll email you when it's in.",
+    text: "Special order · Final sale. We order your size in early December; it's ready for pickup or shipped no later than December 24. Special orders can't be returned, refunded or exchanged.",
+    cart: "Special order · Final sale. Ready or shipped by December 24. We'll email you when it's in.",
     end: BF_END
   };
 
   /* One-off bikes. sold: true shows SOLD in black. */
   var DOOR_CRASHERS = [
-    { slug: "", size: "", sold: false }, /* S-Works SL8, Dura-Ace build */
-    { slug: "", size: "", sold: false }, /* 3T Exploro, GRX */
-    { slug: "", size: "", sold: false }, /* Bianchi Sprint, 105 Di2 */
-    { slug: "", size: "", sold: false }, /* Look Blade 2 frameset */
-    { slug: "", size: "", sold: false }, /* Bianchi Specialissima, Miami Drip */
-    { slug: "", size: "", sold: false }, /* ENVE Melee frameset */
-    { slug: "", size: "", sold: false }  /* OPEN U.P. frameset */
+    { slug: "25-specialized-tarmac-sl8-sw-di2-sildst-dovgry-blk", size: "56", sold: false },
+    { slug: "", size: "", sold: false }, /* 3T Exploro GRX: not on eCom yet */
+    { slug: "26-bianchi-sprint-105-di2", size: "", sold: false },
+    { slug: "look-795-blade-2-road-frame", size: "", sold: false },
+    { slug: "bianchi-specialissima-rc-frameset-miami-drip", size: "", sold: false },
+    { slug: "enve-melee-frameset", size: "", sold: false },
+    { slug: "open-up-frameset", size: "", sold: false }
   ];
+
+  var DC_START = "2026-11-17T00:00:00-05:00";
+  var DC_LABEL = "Black Friday · Only 1 · Final sale";
+  var DC_NOTE = "Black Friday · Final sale. Only one available. No returns, refunds or exchanges.";
 
   var preview = /[?&]crxbf=preview/.test(location.search);
   var now = Date.now();
@@ -1357,9 +1364,9 @@ function crxInitSaleBadges() {
     var i;
     for (i = 0; i < DOOR_CRASHERS.length; i++) {
       var d = DOOR_CRASHERS[i];
-      if (d.slug && d.slug === slug && live(BF_START, BF_END)) {
+      if (d.slug && d.slug === slug && live(DC_START, BF_END)) {
         if (d.sold) return { text: "Sold", sold: true };
-        return { text: "Door crasher · Only 1" + (d.size ? " · " + d.size : ""), sold: false };
+        return { text: DC_LABEL, sold: false };
       }
     }
     for (i = 0; i < TAGS.length; i++) {
@@ -1502,7 +1509,24 @@ function crxInitSaleBadges() {
     });
   }
 
-  function run() { doCards(); doProductPage(); doSpecialOrderNote(); doCartNotes(); }
+  /* Final sale note above Add to cart on door crasher pages */
+  function doDoorCrasherNote() {
+    if (!document.querySelector(".product__price-wrapper")) return;
+    var slug = slugOf(location.pathname), hit = null;
+    for (var i = 0; i < DOOR_CRASHERS.length; i++) {
+      if (DOOR_CRASHERS[i].slug && DOOR_CRASHERS[i].slug === slug) hit = DOOR_CRASHERS[i];
+    }
+    if (!hit || hit.sold || !live(DC_START, BF_END)) return;
+    var btn = document.querySelector(".btn--add-to-cart");
+    if (!btn || document.querySelector(".crx-dc-note")) return;
+    var note = document.createElement("div");
+    note.className = "crx-so-note crx-dc-note";
+    note.textContent = DC_NOTE;
+    var row = btn.parentElement;
+    row.parentNode.insertBefore(note, row);
+  }
+
+  function run() { doCards(); doProductPage(); doSpecialOrderNote(); doDoorCrasherNote(); doCartNotes(); }
   run();
 
   /* Re-run when the theme swaps prices (size picked) or loads more products */
@@ -1511,4 +1535,97 @@ function crxInitSaleBadges() {
     clearTimeout(t);
     t = setTimeout(run, 150);
   }).observe(document.body, { childList: true, subtree: true, characterData: true });
+}
+
+/* ───────────────────────────────────────────────────
+   8. HOMEPAGE PRODUCT ROWS (Bont on sale, door crashers)
+   Pulls real product cards from a Lightspeed page (search or
+   category), so prices, stock and tags stay live.
+   Mounts (Content > Homepage, where you want each row):
+     <div class="crx-hp-bont-mount"></div>
+     <div class="crx-hp-dc-mount"></div>
+   ─────────────────────────────────────────────────── */
+function crxInitProductRows() {
+  /* ── Edit these ── */
+  var ROWS = [
+    {
+      mount: ".crx-hp-bont-mount",
+      source: "/search/bont/",          /* page to pull cards from */
+      match: /^bont-/,                  /* keep only product links starting with "bont-" */
+      kicker: "Black Friday · Bont",
+      title: "Bont shoes, 20% off",
+      sub: "Every size, Standard and Wide. Not on the shelf? Special-order it by Nov 30.",
+      cta: { text: "Shop Bont", url: "/search/bont/" }
+    },
+    {
+      mount: ".crx-hp-dc-mount",
+      source: "",                       /* e.g. "/black-friday/door-crashers/" once the category exists */
+      match: /.*/,
+      kicker: "Door crashers · Only one of each",
+      title: "One-off frames & bikes",
+      sub: "When it's gone, it's gone. We ship across Canada.",
+      cta: { text: "See all door crashers", url: "" }
+    }
+  ];
+
+  function slugOf(href) {
+    return (href || "").split("?")[0].split("#")[0].split("/").pop().replace(/\.html$/, "");
+  }
+
+  if (!document.getElementById("crx-hp-rows-css")) {
+    var style = document.createElement("style");
+    style.id = "crx-hp-rows-css";
+    style.textContent =
+      ".crx-hpr{padding:40px 56px 24px;box-sizing:border-box;width:100%;" +
+        "font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif}" +
+      ".crx-hpr__head{max-width:1328px;margin:0 auto 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;text-align:left}" +
+      ".crx-hpr .crx-hpr__kicker{margin:0 0 6px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#A41314}" +
+      ".crx-hpr .crx-hpr__title{margin:0;font-size:clamp(22px,3vw,32px);font-weight:900;line-height:1.1;color:#111}" +
+      ".crx-hpr .crx-hpr__sub{margin:6px 0 0;font-size:15px;line-height:1.5;color:#555}" +
+      ".crx-hpr .crx-hpr__cta{flex-shrink:0;text-decoration:none}" +
+      ".crx-hpr__grid{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}" +
+      ".crx-hpr__grid .prod-card{position:relative;margin:0}" +
+      "@media(max-width:1024px){.crx-hpr__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}" +
+      "@media(max-width:640px){.crx-hpr{padding:28px 16px 16px}.crx-hpr__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}";
+    document.head.appendChild(style);
+  }
+
+  ROWS.forEach(function (row) {
+    var mount = document.querySelector(row.mount);
+    if (!mount || !row.source) return;
+
+    fetch(row.source, { credentials: "same-origin" })
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var cards = Array.prototype.filter.call(doc.querySelectorAll(".prod-card"), function (card) {
+          var a = card.querySelector('a[href$=".html"]');
+          return a && row.match.test(slugOf(a.href));
+        });
+        if (!cards.length) return;
+
+        var cta = row.cta && row.cta.url
+          ? '<a class="btn btn--primary crx-hpr__cta" href="' + row.cta.url + '">' + row.cta.text + ' &rarr;</a>' : "";
+        mount.innerHTML =
+          '<section class="crx-hpr">' +
+            '<div class="crx-hpr__head"><div>' +
+              '<p class="crx-hpr__kicker">' + row.kicker + '</p>' +
+              '<h2 class="crx-hpr__title">' + row.title + '</h2>' +
+              '<p class="crx-hpr__sub">' + row.sub + '</p>' +
+            '</div>' + cta + '</div>' +
+            '<div class="crx-hpr__grid"></div>' +
+          '</section>';
+        var grid = mount.querySelector(".crx-hpr__grid");
+        if (cards.length < 4 && window.innerWidth > 640) {
+          /* fewer than 4 products: shrink the row so cards keep their size */
+          grid.style.gridTemplateColumns = "repeat(" + cards.length + ",minmax(0,1fr))";
+          grid.style.maxWidth = (cards.length * 330) + "px";
+          mount.querySelector(".crx-hpr__head").style.maxWidth = grid.style.maxWidth;
+        }
+        cards.slice(0, 8).forEach(function (card) {
+          grid.appendChild(document.importNode(card, true));
+        });
+      })
+      .catch(function () { /* leave the mount empty if the page can't load */ });
+  });
 }
