@@ -1392,6 +1392,7 @@ function crxInitSaleBadges() {
       if (!link) return;
       var lab = labelFor(slugOf(link.href), card.querySelector(".prod-card__old-price"), card.querySelector(".prod-card__price"));
       if (!lab) return;
+      if (!lab.sold && card.className.indexOf("crx-bf-card") === -1) card.className += " crx-bf-card";
       var badge = card.querySelector(".prod-card__badge");
       if (!badge) {
         badge = document.createElement("span");
@@ -1416,6 +1417,7 @@ function crxInitSaleBadges() {
     }
     badge.style.display = "";
     paint(badge, lab);
+    if (!lab.sold && wrap.className.indexOf("crx-bf-price") === -1) wrap.className += " crx-bf-price";
   }
 
   var style = document.createElement("style");
@@ -1423,6 +1425,9 @@ function crxInitSaleBadges() {
     ".crx-bf-badge{background:#A41314 !important;color:#fff !important;font-weight:800;" +
       "font-size:11px;letter-spacing:.06em;text-transform:uppercase;line-height:1.2}" +
     ".crx-bf-badge--sold{background:#111 !important}" +
+    /* sale price bold red, old price grey */
+    ".crx-bf-card .prod-card__price,.crx-bf-price .product__price{color:#A41314 !important;font-weight:800 !important}" +
+    ".crx-bf-card .prod-card__old-price,.crx-bf-price .product__price--old{color:#888 !important;font-weight:400 !important}" +
     ".crx-bf-badge--page{display:inline-block;padding:6px 10px;margin:0 0 10px;font-size:12px}" +
     ".crx-so-note{background:#FBE9E9;border-left:3px solid #A41314;color:#5A0A0B;" +
       "padding:10px 12px;margin:0 0 12px;font-size:14px;font-weight:600;line-height:1.4}" +
