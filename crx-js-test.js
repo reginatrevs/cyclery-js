@@ -1552,7 +1552,7 @@ function crxInitProductRows() {
       mount: ".crx-hp-bont-mount",
       source: "/search/bont/",          /* page to pull cards from */
       match: /^bont-/,                  /* keep only product links starting with "bont-" */
-      kicker: "Black Friday · Bont",
+      kicker: "Black Friday Sale",
       title: "Bont shoes, 20% off",
       sub: "Every size, Standard and Wide. Not on the shelf? Special-order it by Nov 30.",
       cta: null                         /* no button: these are the only Bont shoes */
@@ -1578,7 +1578,7 @@ function crxInitProductRows() {
     style.textContent =
       ".crx-hpr{padding:40px 56px 24px;box-sizing:border-box;width:100%;" +
         "font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif}" +
-      ".crx-hpr__head{max-width:1328px;margin:0 auto 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;text-align:left}" +
+      ".crx-hpr__head{max-width:1328px;margin:0 auto 24px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}" +
       ".crx-hpr .crx-hpr__kicker{margin:0 0 6px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#A41314}" +
       ".crx-hpr .crx-hpr__title{margin:0;font-size:clamp(22px,3vw,32px);font-weight:900;line-height:1.1;color:#111}" +
       ".crx-hpr .crx-hpr__sub{margin:6px 0 0;font-size:15px;line-height:1.5;color:#555}" +
