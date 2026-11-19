@@ -1654,6 +1654,8 @@ function crxInitProductRows() {
 
 
 
+
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1718,6 +1720,9 @@ function crxInitBlackFriday() {
     { tag: "Helmets & clothing", head: "Black Friday prices.", cta: "Shop the deals →", url: PAGE + "#helmets",
       img: CDN + "31781707/1200x1200x1/clothing.jpg" }
   ];
+
+  /* Lightspeed "No image available" placeholders uploaded as product photos */
+  var NO_IMAGE = [58993200, 58994769, 58994776, 58995352];
 
   var HERO_IMG = CDN + "75960329/1600x900x1/cyclery-racing-2026-team.jpg";
   var isHome = location.pathname === "/" || location.pathname === "";
@@ -1792,7 +1797,7 @@ function crxInitBlackFriday() {
       ".crx-bfp-kick{grid-column:1/-1;font-size:12px;margin-bottom:10px}",
       ".crx-bfp-head h1{margin:0;font-size:clamp(56px,8vw,112px);color:#000}",
       ".crx-bfp-lead{margin:0 0 10px;font-size:17px;line-height:1.45;font-weight:600;max-width:460px}",
-      ".crx-bf-count--light{margin:0 0 12px}.crx-bf-count--light div{background:#000;border-color:#000}",
+      ".crx-bf-count--light{margin:0 0 12px}.crx-bf-count--light div{background:#000;border-color:#000}.crx-bf-count--light span{color:#fff}",
       ".crx-bfp-jump{position:sticky;top:0;z-index:20;background:#000}",
       ".crx-bfp-jump__in{max-width:1328px;margin:0 auto;padding:0 56px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}",
       ".crx-bfp-jump__in::-webkit-scrollbar{display:none}",
@@ -1896,6 +1901,8 @@ function crxInitBlackFriday() {
           if (!p || seen[p.id]) return;
           if (s.keep && !s.keep.test(p.title || "")) return;
           if (s.drop && s.drop.test(p.title || "")) return;
+          if (!p.image || NO_IMAGE.indexOf(p.image) > -1) return;           /* no photo: leave it off */
+          if ((s.tag === true || s.tag === "plain") && !(p.price && p.price.price_old > p.price.price)) return; /* not actually discounted */
           if (s.min && !(p.price && p.price.price_old > 0 && 1 - p.price.price / p.price.price_old >= s.min - 0.005)) return;
           if (s.skip && s.skip.test(slug)) return;
           if (s.id !== "door-crashers" && DC[slug]) return;
