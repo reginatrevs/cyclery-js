@@ -1669,6 +1669,7 @@ function crxInitProductRows() {
 
 
 
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1827,9 +1828,10 @@ function crxInitBlackFriday() {
       ".crx-bfp-sub{margin:10px auto 0;max-width:620px;color:#555;font-size:15px;line-height:1.5}",
       ".crx-bfp-n{margin:6px 0 0;color:#888;font-size:13px}",
       ".crx-bfp-note{max-width:820px;margin:0 auto 26px;border:2px solid #000;padding:14px 18px;font-size:15px;line-height:1.5;text-align:center}",
-      ".crx-bfp-pkg{margin:0 0 32px}.crx-bfp-pkg__kick{text-align:center;font-size:12px;color:#555;margin:0 0 14px}",
+
       ".crx-bfp-promo{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:16px}",
-      ".crx-bfp-rules{margin:4px 0 0;padding:0 0 0 18px;font-size:14px;line-height:1.5}.crx-bfp-rules li{margin:0 0 4px}",
+      ".crx-bfp-howp{margin:6px 0 0;font-size:15px;line-height:1.5}.crx-bfp-fine{margin:4px 0 0;font-size:13px;line-height:1.45;opacity:.75}",
+      ".crx-bfp-pkg{margin:0 0 56px;padding-bottom:48px;border-bottom:1px solid #eee}",
       ".crx-bfp-promo .crx-bfp-promo__t--neon b{font-size:15px;font-weight:800}",
       ".crx-bfp-promo__t--neon a.crx-bfp-promo__go{color:#000!important;text-decoration:none!important}",
       "@media(max-width:1024px){.crx-bfp-promo{grid-template-columns:1fr 1fr}}",
@@ -1857,6 +1859,7 @@ function crxInitBlackFriday() {
       ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile{aspect-ratio:21/8}",
       ".crx-hpr .crx-hpr__kicker{display:inline-block;background:#000;color:#E4FF3A;font-family:'Archivo',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.14em;padding:6px 10px;margin:0 0 12px}",
       ".crx-lrfs-mount .crx-lrfs .crx-lrfs__tile:first-child .crx-lrfs__tag{background:#fff;color:#000}",
+      "@media(min-width:1025px){.crx-hpr__grid.crx-hpr__grid--n3{max-width:1000px}}",
       /* homepage tiles */
       ".crx-bf-tiles{width:100vw;margin-left:calc(50% - 50vw);padding:24px 56px 40px}",
       ".crx-bf-tiles__in{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}",
@@ -1882,7 +1885,7 @@ function crxInitBlackFriday() {
         ".crx-bfp-jump{position:static}.crx-bfp-jump__in{flex-wrap:wrap;overflow:visible;padding:10px 12px;gap:6px}",
         ".crx-bfp-jump a{flex:1 1 calc(50% - 6px);font-size:13px;padding:9px 10px;border:1px solid #333;border-bottom:1px solid #333}",
         ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile{aspect-ratio:16/10}",
-        ".crx-bfp-pkg{margin:0 16px 24px}.crx-bfp-promo{grid-template-columns:1fr 1fr;gap:10px}.crx-bfp-promo__t--neon{grid-column:1/-1}.crx-bfp-promo__t{min-height:0;padding:22px}.crx-bfp-promo__t--dark .crx-d{font-size:56px}.crx-bfp-promo__t--dark b{font-size:16px}.crx-bfp-promo__img{min-height:140px}",
+        ".crx-bfp-pkg{margin:0 0 32px;padding-bottom:32px}.crx-bfp-pkg .crx-bfp-promo{margin:0 16px}.crx-bfp-promo{grid-template-columns:1fr 1fr;gap:10px}.crx-bfp-promo__t--neon{grid-column:1/-1}.crx-bfp-promo__t{min-height:0;padding:22px}.crx-bfp-promo__t--dark .crx-d{font-size:56px}.crx-bfp-promo__t--dark b{font-size:16px}.crx-bfp-promo__img{min-height:140px}",
         ".crx-bfp-sec{padding:40px 0 4px}.crx-bfp-sec__head{padding:0 16px}.crx-bfp-note{margin:0 16px 20px;font-size:14px}",
         ".crx-bfp-grid{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:62%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 8px;scrollbar-width:none}",
         ".crx-bfp-grid::-webkit-scrollbar{display:none}.crx-bfp-grid .prod-card{scroll-snap-align:start}",
@@ -1994,6 +1997,17 @@ function crxInitBlackFriday() {
     }, 1000);
   }
 
+  var PKG = '<div class="crx-bfp-pkg"><div class="crx-bfp-sec__head"><span class="crx-l crx-bfp-up">Early season ski package sale</span>' +
+    '<h2 class="crx-d">Ski packages</h2><p class="crx-bfp-sub">Nov 20–30, in store and online.</p></div>' +
+    '<div class="crx-bfp-promo">' +
+    '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">30%</span><b>off full packages</b><span>Skis + boots + poles.</span></div>' +
+    '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">20%</span><b>off any combo</b><span>Any 2 of the 3, like skis + boots or skis + poles.</span></div>' +
+    '<div class="crx-bfp-promo__t crx-bfp-promo__t--neon"><span class="crx-l">Ordering online?</span>' +
+      '<p class="crx-bfp-howp">Add your skis, boots and poles to the cart and check out at the regular price. Once your order is in, we apply your package discount and refund the difference to your card.</p>' +
+      '<p class="crx-bfp-fine">Club discounts don\'t stack. Single items don\'t qualify.</p>' +
+      '<a class="crx-bfp-promo__go" href="/ski/">Shop all ski →</a></div>' +
+    '</div></div>';
+
   /* ── landing page (no hero: label + jump bar, then one row per deal) ── */
   if (pageMount) {
     var secs = live ? SECTIONS : SECTIONS.filter(function (s) { return s.id !== "wahoo"; }); /* Wahoo joins Nov 20 */
@@ -2007,20 +2021,11 @@ function crxInitBlackFriday() {
       '<nav class="crx-bfp-jump"><div class="crx-bfp-jump__in">' + secs.map(function (s) {
         return '<a href="#' + s.id + '">' + esc(s.nav || s.title) + '<span data-crx-bf-up="' + s.id + '"></span></a>'; }).join("") + "</div></nav>" +
       secs.map(function (s) {
-        return '<section class="crx-bfp-sec" id="' + s.id + '"><div class="crx-bfp-sec__head">' +
+        return '<section class="crx-bfp-sec" id="' + s.id + '">' + (s.promo ? PKG : "") + '<div class="crx-bfp-sec__head">' +
           '<span class="crx-l crx-bfp-up" data-crx-bf-up2="' + s.id + '"></span>' +
           '<h2 class="crx-d">' + esc(s.title) + '</h2><p class="crx-bfp-sub">' + esc(s.sub).replace(/\n/g, "<br>") + '</p>' +
           '<p class="crx-bfp-n" data-crx-bf-n2="' + s.id + '"></p></div>' +
-          (s.promo ? '<div class="crx-bfp-pkg">' +
-            '<p class="crx-l crx-bfp-pkg__kick">Early season ski package sale</p>' +
-            '<div class="crx-bfp-promo">' +
-            '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">30%</span><b>off full packages</b><span>Skis + boots + poles.</span></div>' +
-            '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">20%</span><b>off any combo</b><span>Any 2 of the 3, like skis + boots or skis + poles.</span></div>' +
-            '<div class="crx-bfp-promo__t crx-bfp-promo__t--neon"><span class="crx-l">How it works</span><ul class="crx-bfp-rules">' +
-              '<li><b>Online:</b> pay the regular price, we refund the discount after.</li>' +
-              '<li>Sale items count too.</li><li>Club discounts don\'t stack.</li><li>Single items don\'t qualify.</li></ul>' +
-              '<a class="crx-bfp-promo__go" href="/ski/">Shop all ski →</a></div>' +
-            '</div></div>' : "") +
+
           '<div class="crx-bfp-grid"></div></section>';
       }).join("") +
       '<div class="crx-bfp-foot">All sale and Black Friday items are final sale. Free pickup at 1115 Bank Street, Ottawa, or we ship across Canada. ' +
@@ -2120,18 +2125,18 @@ function crxInitBlackFriday() {
       if (cdh) countdown(cdh);
     }
     var bfHero = document.querySelector(".crx-bf-hero--home");
-    if (live && bfHero) {
+    if (bfHero) {
       var dcs = SECTIONS[0];
       bfHero.insertAdjacentHTML("afterend",
         '<div class="crx-bf crx-bf-homedc"><section class="crx-hpr" id="crx-bf-home-dc"><div class="crx-hpr__head"><div>' +
         '<p class="crx-hpr__kicker">One-off frames &amp; bikes<span data-crx-bf-dcup></span></p><h2 class="crx-hpr__title">Door crashers</h2>' +
         '</div></div><div class="crx-hpr__grid"></div>' +
         '<a class="crx-bfp-more crx-bfp-more--link" href="' + PAGE + '#door-crashers">See all door crashers →</a></section></div>' +
-        '<section class="crx-bf crx-bf-tiles"><div class="crx-bf-tiles__in">' + TILES.map(function (t, i) {
+        (live ? '<section class="crx-bf crx-bf-tiles"><div class="crx-bf-tiles__in">' + TILES.map(function (t, i) {
           return '<a class="crx-bf-tile' + (t.dark ? " crx-bf-tile--dark" : "") + '" href="' + t.url + '"' + (t.img ? ' style="background-image:url(' + t.img + ')"' : "") + '>' +
             (t.product && !t.img ? '<div class="crx-bf-tile__prod" data-crx-bf-prod="' + i + '"></div>' : "") +
             '<span class="crx-l">' + esc(t.tag) + '</span><span class="crx-d" data-crx-bf-tile="' + i + '">' + esc(t.head) + '</span><span class="crx-bf-go">' + esc(t.cta) + "</span></a>";
-        }).join("") + "</div></section>");
+        }).join("") + "</div></section>" : ""));
       loadSection(dcs).then(function (items) {
         var g = document.querySelector("#crx-bf-home-dc .crx-hpr__grid");
         var up = 0;
@@ -2140,7 +2145,7 @@ function crxInitBlackFriday() {
         if (!items.length) { document.getElementById("crx-bf-home-dc").style.display = "none"; return; }
         g.innerHTML = items.slice(0, 4).map(function (p) { return card(p, dcs.tag); }).join("");
       });
-      TILES.forEach(function (t, i) {
+      if (live) TILES.forEach(function (t, i) {
         if (t.product && !t.img) getJSON("/" + t.product + ".html").then(function (d) {
           var el = document.querySelector('[data-crx-bf-prod="' + i + '"]');
           if (el && d.product && d.product.image) el.style.backgroundImage = "url(" + CDN + d.product.image + "/600x600x1/image.jpg)";
@@ -2153,7 +2158,7 @@ function crxInitBlackFriday() {
         });
       });
       /* winter storage tile goes big on its own; the ski tile is covered above */
-      var lr = document.querySelector(".crx-lrfs-mount");
+      var lr = live && document.querySelector(".crx-lrfs-mount");
       if (lr) {
         lr.className += " crx-lrfs--solo";
         var lt = lr.querySelector(".crx-lrfs__title"); if (lt) lt.textContent = "Winter bike storage";
