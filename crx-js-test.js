@@ -1656,6 +1656,8 @@ function crxInitProductRows() {
 
 
 
+
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1705,8 +1707,8 @@ function crxInitBlackFriday() {
     { id: "shoes", title: "Cycling shoes", sub: "Road and mountain shoes at Black Friday prices.",
       sources: ["/sale/shoes/"], skip: /^bont-/, tag: true },
     { id: "ski", title: "Nordic ski", sub: "Skis, boots and poles at 20% off or more.",
-      sources: ["/sale/xc-ski/"], min: 0.20, tag: true, pin: ["salomon-s-max-carbon-skate-mv-boot"],
-      note: "<b>30% off full ski packages</b> (skis + boots + poles), in store. Featured: Salomon S/Max skate boots, <b>$325</b> (reg. $520), even less in a package." },
+      sources: ["/sale/xc-ski/"], slugs: ["salomon-s-max-carbon-skate-mv-boot"], min: 0.20, tag: true, pin: ["salomon-s-max-carbon-skate-mv-boot"],
+      promo: true },
     { id: "bikes", title: "Bikes, frames & wheels", sub: "Complete bikes, framesets and wheels.",
       sources: ["/sale/bikes-and-wheels/", "/sale/framesets/"], min: 0.15, tag: "plain" }
   ];
@@ -1811,6 +1813,21 @@ function crxInitBlackFriday() {
       ".crx-bfp-sub{margin:10px auto 0;max-width:620px;color:#555;font-size:15px;line-height:1.5}",
       ".crx-bfp-n{margin:6px 0 0;color:#888;font-size:13px}",
       ".crx-bfp-note{max-width:820px;margin:0 auto 26px;border:2px solid #000;padding:14px 18px;font-size:15px;line-height:1.5;text-align:center}",
+      ".crx-bfp-promo{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:20px;margin:0 0 32px}",
+      ".crx-bfp-promo__t{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:28px;min-height:240px;text-decoration:none!important;color:inherit!important}",
+      ".crx-bfp-promo__t b{font-size:20px;line-height:1.25}",
+      ".crx-bfp-promo__t span{font-size:14px;line-height:1.45}",
+      ".crx-bfp-promo__t--dark{background:#000;color:#fff!important}",
+      ".crx-bfp-promo__t--dark .crx-d{font-size:96px;color:var(--neon);line-height:.85;margin-bottom:6px}",
+      ".crx-bfp-promo__t--feat{background:#f4f4f4;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:20px}",
+      ".crx-bfp-promo__t--feat>div{display:flex;flex-direction:column;gap:6px}",
+      ".crx-bfp-promo__img{height:100%;min-height:190px;background:#fff center/contain no-repeat}",
+      ".crx-bfp-promo__t--feat .crx-l{font-size:11px;color:var(--red)}",
+      ".crx-bfp-promo__t--feat ins{text-decoration:none;color:var(--red);font-weight:900;font-size:30px;font-family:'Archivo',Arial,sans-serif}",
+      ".crx-bfp-promo__t--feat del{color:#888;font-size:16px}",
+      ".crx-bfp-promo__t--neon{background:var(--neon);color:#000!important}",
+      ".crx-bfp-promo__t--neon .crx-l{font-size:11px}",
+      ".crx-bfp-promo__go{margin-top:8px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px!important;border-bottom:2px solid #000;align-self:flex-start}",
       ".crx-bfp-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}",
       ".crx-bfp-grid .prod-card{position:relative;margin:0}",
       ".crx-bfp-more{display:block;margin:28px auto 40px;background:#000;color:#fff;border:0;height:50px;padding:0 30px;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}",
@@ -1838,6 +1855,7 @@ function crxInitBlackFriday() {
         ".crx-bf-foot{padding:20px 16px 40px}",
         ".crx-bfp-head__in{grid-template-columns:1fr;padding:28px 16px 22px}.crx-bfp-lead{font-size:15px;margin-top:10px}",
         ".crx-bfp-jump__in{padding:0 8px}.crx-bfp-jump a{font-size:13px;padding:12px 10px}",
+        ".crx-bfp-promo{grid-template-columns:1fr;gap:12px;margin:0 16px 24px}.crx-bfp-promo__t{min-height:0;padding:22px}.crx-bfp-promo__t--dark .crx-d{font-size:72px}.crx-bfp-promo__img{min-height:140px}",
         ".crx-bfp-sec{padding:40px 0 4px}.crx-bfp-sec__head{padding:0 16px}.crx-bfp-note{margin:0 16px 20px;font-size:14px}",
         ".crx-bfp-grid{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:62%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 8px;scrollbar-width:none}",
         ".crx-bfp-grid::-webkit-scrollbar{display:none}.crx-bfp-grid .prod-card{scroll-snap-align:start}",
@@ -1963,7 +1981,12 @@ function crxInitBlackFriday() {
           '<span class="crx-l crx-bfp-up" data-crx-bf-up2="' + s.id + '"></span>' +
           '<h2 class="crx-d">' + esc(s.title) + '</h2><p class="crx-bfp-sub">' + esc(s.sub) + '</p>' +
           '<p class="crx-bfp-n" data-crx-bf-n2="' + s.id + '"></p></div>' +
-          (s.note ? '<div class="crx-bfp-note">' + s.note + "</div>" : "") +
+          (s.promo ? '<div class="crx-bfp-promo">' +
+            '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">30%</span><b>off full ski packages</b><span>Skis + boots + poles, in store.</span></div>' +
+            '<a class="crx-bfp-promo__t crx-bfp-promo__t--feat" href="/salomon-s-max-carbon-skate-mv-boot.html"><div class="crx-bfp-promo__img" data-crx-bf-smax></div>' +
+              '<div><span class="crx-l">Featured</span><b>Salomon S/Max skate boots</b><span><ins>$325</ins> <del>$520</del></span><span>Even less in a package.</span></div></a>' +
+            '<a class="crx-bfp-promo__t crx-bfp-promo__t--neon" href="/ski/"><span class="crx-l">Need a hand?</span><b>Get fitted in store.</b><span>1115 Bank St. Bring your ski size or come try boots on.</span><span class="crx-bfp-promo__go">Shop all ski →</span></a>' +
+            '</div>' : "") +
           '<div class="crx-bfp-grid"></div></section>';
       }).join("") +
       '<div class="crx-bfp-foot">All sale and Black Friday items are final sale. Free pickup at 1115 Bank Street, Ottawa, or we ship across Canada. ' +
@@ -1974,6 +1997,11 @@ function crxInitBlackFriday() {
     var head = box && box.previousElementSibling;
     if (head && head.tagName === "SECTION" && head.querySelector("h1")) head.style.display = "none";
     if (box) { box.style.paddingTop = "0"; box.style.maxWidth = "none"; }
+
+    var smax = pageMount.querySelector("[data-crx-bf-smax]");
+    if (smax) getJSON("/salomon-s-max-carbon-skate-mv-boot.html").then(function (d) {
+      if (d.product && d.product.image) smax.style.backgroundImage = "url(" + CDN + d.product.image + "/600x600x1/image.jpg)";
+    }).catch(function () {});
 
     secs.forEach(function (s) {
       var sec = pageMount.querySelector("#" + s.id), grid = sec.querySelector(".crx-bfp-grid");
