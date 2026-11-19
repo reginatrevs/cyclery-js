@@ -1663,6 +1663,10 @@ function crxInitProductRows() {
 
 
 
+
+
+
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1702,13 +1706,13 @@ function crxInitBlackFriday() {
       slugs: (window.CRX_DOOR_CRASHERS || []).map(function (d) { return d.slug; }).filter(Boolean), tag: "dc" },
     { id: "bont", title: "Bont shoes", sub: "Every size, Standard and Wide.\nNot on the shelf? Special-order it by Nov 30.",
       sources: ["/brands/bont-cycling/"], tag: true, early: true },
-    { id: "wahoo", title: "Wahoo trainers & computers", sub: "KICKR trainers and ELEMNT computers at Black Friday prices.",
+    { id: "wahoo", title: "Wahoo trainers & computers", nav: "Wahoo", sub: "KICKR trainers and ELEMNT computers at Black Friday prices.",
       sources: ["/brands/wahoo/"], keep: /kickr|elemnt|bolt|roam|rollr|\bace\b/i,
       drop: /freehub|feet|floor mat/i, tag: false },
     { id: "ski", title: "Nordic ski", sub: "Skis, boots and poles at 20% off or more.",
       sources: ["/sale/xc-ski/"], slugs: ["salomon-s-max-carbon-skate-mv-boot"], min: 0.20, tag: true, pin: ["salomon-s-max-carbon-skate-mv-boot"],
       promo: true },
-    { id: "bikes", title: "Bikes, frames & wheels", sub: "Complete bikes, framesets and wheels.",
+    { id: "bikes", title: "Bikes, frames & wheels", nav: "Bikes & frames", sub: "Complete bikes, framesets and wheels.",
       sources: ["/sale/bikes-and-wheels/", "/sale/framesets/"], min: 0.15, tag: true },
     { id: "helmets", title: "Helmets", sub: "Black Friday prices on helmets from POC, Specialized, Kask and more.",
       sources: ["/sale/helmets/", "/sale/poc-helmet-clearance/"], tag: true },
@@ -1720,12 +1724,12 @@ function crxInitBlackFriday() {
 
   /* Homepage tiles (shown under the door crashers / Bont rows) */
   var TILES = [
-    { tag: "Wahoo", head: "Trainers & computers.", cta: "Shop Wahoo →", url: PAGE + "#wahoo",
+    { tag: "Wahoo", head: "Smart trainers & computers.", cta: "Shop Wahoo →", url: PAGE + "#wahoo",
       img: "", product: "wahoo-kickr-core-2-w-zwift-cogo", dark: true },
-    { tag: "Nordic ski · was $520", head: "Salomon S/Max skate boots. $325.", cta: "Shop boots →", url: "/salomon-s-max-carbon-skate-mv-boot.html",
+    { tag: "Early season ski", head: "Ski packages, up to 30% off.", cta: "How it works →", url: PAGE + "#ski",
       img: CDN + "27159581/1200x1200x1/ski.jpg" },
-    { tag: "Helmets & clothing", head: "Black Friday prices.", cta: "Shop the deals →", url: PAGE + "#helmets",
-      img: CDN + "31781707/1200x1200x1/clothing.jpg" }
+    { tag: "Clothing", head: "The clothing sale.", cta: "Shop clothing →", url: PAGE + "#clothing",
+      img: CDN + "31781707/1200x1200x1/clothing.jpg", up: "clothing" }
   ];
 
   /* Lightspeed "No image available" placeholders uploaded as product photos */
@@ -1735,7 +1739,7 @@ function crxInitBlackFriday() {
   var isHome = location.pathname === "/" || location.pathname === "";
   var pageMount = document.querySelector(".crx-bfp-mount");
   var live = crxBFLive();
-  if (!pageMount && !live) return;
+  if (!pageMount && !live && !isHome) return;
 
   var DC = {};
   (window.CRX_DOOR_CRASHERS || []).forEach(function (d) { if (d.slug) DC[d.slug] = d; });
@@ -1808,7 +1812,7 @@ function crxInitBlackFriday() {
       ".crx-bfp-head h1{margin:0;font-size:clamp(56px,8vw,112px);color:#000}",
       ".crx-bfp-lead{margin:0 0 10px;font-size:17px;line-height:1.45;font-weight:600;max-width:460px}",
       ".crx-bf-count--light{margin:0 0 12px}.crx-bf-count--light div{background:#000;border-color:#000}.crx-bf-count--light span{color:#fff}",
-      ".crx-bfp-jump{position:sticky;top:0;z-index:20;background:#000}",
+      ".crx-bfp-jump{position:sticky;top:0;z-index:2;background:#000}",
       ".crx-bfp-jump__in{max-width:1328px;margin:0 auto;padding:0 56px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}",
       ".crx-bfp-jump__in::-webkit-scrollbar{display:none}",
       ".crx-bfp-jump a{flex-shrink:0;color:#fff!important;text-decoration:none!important;font-weight:700;font-size:14px;padding:14px 14px;border-bottom:3px solid transparent}",
@@ -1821,7 +1825,11 @@ function crxInitBlackFriday() {
       ".crx-bfp-sub{margin:10px auto 0;max-width:620px;color:#555;font-size:15px;line-height:1.5}",
       ".crx-bfp-n{margin:6px 0 0;color:#888;font-size:13px}",
       ".crx-bfp-note{max-width:820px;margin:0 auto 26px;border:2px solid #000;padding:14px 18px;font-size:15px;line-height:1.5;text-align:center}",
-      ".crx-bfp-promo{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:20px;margin:0 0 32px}",
+      ".crx-bfp-pkg{margin:0 0 32px}.crx-bfp-pkg__kick{text-align:center;font-size:12px;color:#555;margin:0 0 14px}",
+      ".crx-bfp-promo{display:grid;grid-template-columns:1fr 1fr 1.3fr 1.2fr;gap:16px}",
+      ".crx-bfp-promo .crx-bfp-promo__t--neon b{font-size:15px;font-weight:800}",
+      ".crx-bfp-promo__t--neon a.crx-bfp-promo__go{color:#000!important;text-decoration:none!important}",
+      "@media(max-width:1024px){.crx-bfp-promo{grid-template-columns:1fr 1fr}}",
       ".crx-bfp-promo__t{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:28px;min-height:240px;text-decoration:none!important;color:inherit!important}",
       ".crx-bfp-promo__t b{font-size:20px;line-height:1.25}",
       ".crx-bfp-promo__t span{font-size:14px;line-height:1.45}",
@@ -1840,6 +1848,10 @@ function crxInitBlackFriday() {
       ".crx-bfp-grid .prod-card{position:relative;margin:0}",
       ".crx-bfp-more{display:block;margin:28px auto 40px;background:#000;color:#fff;border:0;height:50px;padding:0 30px;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}",
       ".crx-bfp-foot{max-width:1328px;margin:0 auto;padding:32px 56px 56px;color:#555;font-size:14px;line-height:1.6}",
+      ".crx-bfp-more--link{display:table;line-height:50px;height:auto;color:#fff!important;text-decoration:none!important;margin:28px auto 8px}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__grid{grid-template-columns:1fr}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile:nth-child(2){display:none}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile{aspect-ratio:21/8}",
       /* homepage tiles */
       ".crx-bf-tiles{width:100vw;margin-left:calc(50% - 50vw);padding:24px 56px 40px}",
       ".crx-bf-tiles__in{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}",
@@ -1847,7 +1859,7 @@ function crxInitBlackFriday() {
       ".crx-bf-tile::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.55) 40%,rgba(0,0,0,0) 75%)}",
       ".crx-bf-tile--dark{background:#0b0b0b}",
       ".crx-bf-tile--dark::before{background:none}",
-      ".crx-bf-tile__prod{position:absolute;left:8%;right:8%;top:6%;height:44%;background:#fff center/contain no-repeat;border-radius:10px}",
+      ".crx-bf-tile__prod{position:absolute;left:8%;right:8%;top:6%;height:38%;background:#fff center/contain no-repeat;border-radius:10px}",
       ".crx-bf-tile>*{position:relative}",
       ".crx-bf-tile .crx-l{align-self:flex-start;background:var(--neon);color:#000;font-size:11px;padding:5px 9px}",
       ".crx-bf-tile .crx-d{margin-top:12px;font-size:clamp(28px,2.6vw,40px);color:var(--neon)}",
@@ -1862,8 +1874,10 @@ function crxInitBlackFriday() {
         ".crx-bf-grid .crx-bf-badge{font-size:10px;letter-spacing:.04em;padding:5px 7px;max-width:calc(100% - 16px)}",
         ".crx-bf-foot{padding:20px 16px 40px}",
         ".crx-bfp-head__in{grid-template-columns:1fr;padding:28px 16px 22px}.crx-bfp-lead{font-size:15px;margin-top:10px}",
-        ".crx-bfp-jump__in{padding:0 8px}.crx-bfp-jump a{font-size:13px;padding:12px 10px}",
-        ".crx-bfp-promo{grid-template-columns:1fr;gap:12px;margin:0 16px 24px}.crx-bfp-promo__t{min-height:0;padding:22px}.crx-bfp-promo__t--dark .crx-d{font-size:72px}.crx-bfp-promo__img{min-height:140px}",
+        ".crx-bfp-jump{position:static}.crx-bfp-jump__in{flex-wrap:wrap;overflow:visible;padding:10px 12px;gap:6px}",
+        ".crx-bfp-jump a{flex:1 1 calc(50% - 6px);font-size:13px;padding:9px 10px;border:1px solid #333;border-bottom:1px solid #333}",
+        ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile{aspect-ratio:16/10}",
+        ".crx-bfp-pkg{margin:0 16px 24px}.crx-bfp-promo{grid-template-columns:1fr 1fr;gap:10px}.crx-bfp-promo__t--feat,.crx-bfp-promo__t--neon{grid-column:1/-1}.crx-bfp-promo__t{min-height:0;padding:22px}.crx-bfp-promo__t--dark .crx-d{font-size:56px}.crx-bfp-promo__t--dark b{font-size:16px}.crx-bfp-promo__img{min-height:140px}",
         ".crx-bfp-sec{padding:40px 0 4px}.crx-bfp-sec__head{padding:0 16px}.crx-bfp-note{margin:0 16px 20px;font-size:14px}",
         ".crx-bfp-grid{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:62%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 8px;scrollbar-width:none}",
         ".crx-bfp-grid::-webkit-scrollbar{display:none}.crx-bfp-grid .prod-card{scroll-snap-align:start}",
@@ -1950,12 +1964,11 @@ function crxInitBlackFriday() {
         '</span><span class="crx-bf-n" data-crx-bf-n="' + s.id + '"></span></a></li>';
     }).join("");
     var body = live
-      ? '<p class="crx-bf-lead">In store and online.<br>Prices we won\'t repeat.</p>' +
-        '<div class="crx-bf-btns"><a class="crx-bf-btn crx-bf-btn--neon" href="' + (onPage ? "#door-crashers" : PAGE) + '">Shop the deals</a>' +
-        '<a class="crx-bf-btn crx-bf-btn--ghost" href="' + (onPage ? "" : PAGE) + '#door-crashers">Door crashers</a></div>'
-      : '<p class="crx-bf-lead">Starts Friday, Nov 20 at 12 am, in store and online. Bont is already on.</p>' +
-        '<div class="crx-bf-count" data-crx-bf-count></div>' +
-        '<div class="crx-bf-btns"><a class="crx-bf-btn crx-bf-btn--neon" href="#bont">Shop Bont now</a></div>';
+      ? '<p class="crx-bf-lead">In store and online.</p>' +
+        '<div class="crx-bf-btns"><a class="crx-bf-btn crx-bf-btn--neon" href="' + PAGE + '">Shop the deals</a>' +
+        '<a class="crx-bf-btn crx-bf-btn--ghost" href="' + PAGE + '#door-crashers">Door crashers</a></div>'
+      : '<p class="crx-bf-lead">Starts Friday at 12 am, in store and online.</p>' +
+        '<div class="crx-bf-count" data-crx-bf-count></div>';
     return '<section class="crx-bf crx-bf-hero' + (onPage ? "" : " crx-bf-hero--home") + '"><div class="crx-bf-hero__img" style="background-image:url(' + HERO_IMG + ')"></div><div class="crx-bf-hero__fade"></div>' +
       '<div class="crx-bf-hero__in"><div><div class="crx-l crx-bf-kick">Nov 20–30 · All final sale</div><h1 class="crx-d">Black<br>Friday.</h1>' + body + "</div>" +
       (onPage ? '<div class="crx-bf-sl"><div class="crx-bf-sl__band crx-l"><span>Start list</span><span>' + SECTIONS.length + " categories</span></div><ol>" + startList + "</ol></div>" : "") +
@@ -1969,7 +1982,11 @@ function crxInitBlackFriday() {
       var parts = [[Math.floor(s / 86400), "days"], [Math.floor(s % 86400 / 3600), "hrs"], [Math.floor(s % 3600 / 60), "min"], [s % 60, "sec"]];
       el.innerHTML = parts.map(function (p) { return "<div><b>" + pad(p[0]) + "</b><span>" + p[1] + "</span></div>"; }).join("");
     }
-    tick(); setInterval(tick, 1000);
+    tick();
+    var iv = setInterval(function () {
+      tick();
+      if (Date.now() >= t && !live) { clearInterval(iv); setTimeout(function () { location.reload(); }, 1500); }
+    }, 1000);
   }
 
   /* ── landing page (no hero: label + jump bar, then one row per deal) ── */
@@ -1980,22 +1997,28 @@ function crxInitBlackFriday() {
       '<header class="crx-bfp-head"><div class="crx-bfp-head__in">' +
         '<div class="crx-l crx-bfp-kick">' + (live ? "Nov 20–30 · In store &amp; online" : "Starts Friday, Nov 20 · In store &amp; online") + '</div>' +
         '<h1 class="crx-d">Black Friday</h1>' +
-        (live ? '<p class="crx-bfp-lead">Prices we won\'t repeat.<br>All Black Friday items are final sale.</p>'
+        (live ? '<p class="crx-bfp-lead">All Black Friday items are final sale.</p>'
               : '<div class="crx-bf-count crx-bf-count--light" data-crx-bf-count></div><p class="crx-bfp-lead">Bont is already on. Everything else drops Friday at 12 am.</p>') +
       '</div></header>' +
       (live ? '<nav class="crx-bfp-jump"><div class="crx-bfp-jump__in">' + SECTIONS.map(function (s) {
-        return '<a href="#' + s.id + '">' + esc(s.title.split(" · ")[0]) + '<span data-crx-bf-up="' + s.id + '"></span></a>'; }).join("") + "</div></nav>" : "") +
+        return '<a href="#' + s.id + '">' + esc(s.nav || s.title) + '<span data-crx-bf-up="' + s.id + '"></span></a>'; }).join("") + "</div></nav>" : "") +
       secs.map(function (s) {
         return '<section class="crx-bfp-sec" id="' + s.id + '"><div class="crx-bfp-sec__head">' +
           '<span class="crx-l crx-bfp-up" data-crx-bf-up2="' + s.id + '"></span>' +
           '<h2 class="crx-d">' + esc(s.title) + '</h2><p class="crx-bfp-sub">' + esc(s.sub).replace(/\n/g, "<br>") + '</p>' +
           '<p class="crx-bfp-n" data-crx-bf-n2="' + s.id + '"></p></div>' +
-          (s.promo ? '<div class="crx-bfp-promo">' +
-            '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">30%</span><b>off full ski packages</b><span>Skis + boots + poles, in store.</span></div>' +
+          (s.promo ? '<div class="crx-bfp-pkg">' +
+            '<p class="crx-l crx-bfp-pkg__kick">Early season ski package sale</p>' +
+            '<div class="crx-bfp-promo">' +
+            '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">30%</span><b>off full packages</b><span>Skis + boots + poles.</span></div>' +
+            '<div class="crx-bfp-promo__t crx-bfp-promo__t--dark"><span class="crx-d">20%</span><b>off any combo</b><span>Any 2 of the 3, like skis + boots or skis + poles.</span></div>' +
             '<a class="crx-bfp-promo__t crx-bfp-promo__t--feat" href="/salomon-s-max-carbon-skate-mv-boot.html"><div class="crx-bfp-promo__img" data-crx-bf-smax></div>' +
               '<div><span class="crx-l">Featured</span><b>Salomon S/Max skate boots</b><span><ins>$325</ins> <del>$520</del></span></div></a>' +
-            '<a class="crx-bfp-promo__t crx-bfp-promo__t--neon" href="/ski/"><span class="crx-l">Need a hand?</span><b>Get fitted in store.</b><span>1115 Bank St. Bring your ski size or come try boots on.</span><span class="crx-bfp-promo__go">Shop all ski →</span></a>' +
-            '</div>' : "") +
+            '<div class="crx-bfp-promo__t crx-bfp-promo__t--neon"><span class="crx-l">How it works</span>' +
+              '<span><b>Ordering online?</b> Check out at the regular price. We\'ll apply your package discount after and refund the difference.</span>' +
+              '<span>Works on sale items too. Club discounts don\'t stack. Single items aren\'t eligible.</span>' +
+              '<a class="crx-bfp-promo__go" href="/ski/">Shop all ski →</a></div>' +
+            '</div></div>' : "") +
           '<div class="crx-bfp-grid"></div></section>';
       }).join("") +
       '<div class="crx-bfp-foot">All sale and Black Friday items are final sale. Free pickup at 1115 Bank Street, Ottawa, or we ship across Canada. ' +
@@ -2084,18 +2107,29 @@ function crxInitBlackFriday() {
     if (msg) { msg.textContent = "BLACK FRIDAY · NOV 20–30 · SHOP THE DEALS →"; msg.style.fontWeight = "800"; msg.style.letterSpacing = ".06em"; }
   }
 
-  /* ── homepage takeover ── */
-  if (isHome && live) {
+  /* ── homepage: Black Friday hero now (countdown), the rest from Nov 20 ── */
+  if (isHome) {
     var slide = document.querySelector(".hero-slideshow");
     var hero = slide && (slide.closest("section") || slide);
     if (hero) {
+      hero.insertAdjacentHTML("beforebegin", heroHTML(false));
+      hero.style.display = "none";
+      var cdh = document.querySelector(".crx-bf-hero--home [data-crx-bf-count]");
+      if (cdh) countdown(cdh);
+    }
+    var bfHero = document.querySelector(".crx-bf-hero--home");
+    if (live && bfHero) {
       var dcs = SECTIONS[0];
-      hero.insertAdjacentHTML("beforebegin", heroHTML(false) +
+      bfHero.insertAdjacentHTML("afterend",
         '<div class="crx-bf crx-bf-homedc"><section class="crx-hpr" id="crx-bf-home-dc"><div class="crx-hpr__head"><div>' +
         '<p class="crx-hpr__kicker">Black Friday · One-off frames &amp; bikes</p><h2 class="crx-hpr__title">Door crashers<span data-crx-bf-dcup></span></h2>' +
-        '<p class="crx-hpr__sub">Only one of each.</p></div></div>' +
-        '<div class="crx-hpr__grid"></div><a class="crx-bf-all" href="' + PAGE + '#door-crashers">See all door crashers →</a></section></div>');
-      hero.style.display = "none";
+        '</div></div><div class="crx-hpr__grid"></div>' +
+        '<a class="crx-bfp-more crx-bfp-more--link" href="' + PAGE + '#door-crashers">See all door crashers →</a></section></div>' +
+        '<section class="crx-bf crx-bf-tiles"><div class="crx-bf-tiles__in">' + TILES.map(function (t, i) {
+          return '<a class="crx-bf-tile' + (t.dark ? " crx-bf-tile--dark" : "") + '" href="' + t.url + '"' + (t.img ? ' style="background-image:url(' + t.img + ')"' : "") + '>' +
+            (t.product ? '<div class="crx-bf-tile__prod" data-crx-bf-prod="' + i + '"></div>' : "") +
+            '<span class="crx-l">' + esc(t.tag) + '</span><span class="crx-d" data-crx-bf-tile="' + i + '">' + esc(t.head) + '</span><span class="crx-bf-go">' + esc(t.cta) + "</span></a>";
+        }).join("") + "</div></section>");
       loadSection(dcs).then(function (items) {
         var g = document.querySelector("#crx-bf-home-dc .crx-hpr__grid");
         var up = 0;
@@ -2104,21 +2138,25 @@ function crxInitBlackFriday() {
         if (!items.length) { document.getElementById("crx-bf-home-dc").style.display = "none"; return; }
         g.innerHTML = items.slice(0, 4).map(function (p) { return card(p, dcs.tag); }).join("");
       });
-    }
-    var after = document.querySelector(".crx-hp-dc-mount") || document.querySelector(".crx-hp-bont-mount") || document.querySelector(".crx-lrfs-mount");
-    if (after) {
-      after.insertAdjacentHTML("afterend", '<section class="crx-bf crx-bf-tiles"><div class="crx-bf-tiles__in">' + TILES.map(function (t, i) {
-        return '<a class="crx-bf-tile' + (t.dark ? " crx-bf-tile--dark" : "") + '" href="' + t.url + '"' + (t.img ? ' style="background-image:url(' + t.img + ')"' : "") + '>' +
-          (t.product ? '<div class="crx-bf-tile__prod" data-crx-bf-prod="' + i + '"></div>' : "") +
-          '<span class="crx-l">' + esc(t.tag) + '</span><span class="crx-d">' + esc(t.head) + '</span><span class="crx-bf-go">' + esc(t.cta) + "</span></a>";
-      }).join("") + "</div></section>");
       TILES.forEach(function (t, i) {
-        if (!t.product) return;
-        getJSON("/" + t.product + ".html").then(function (d) {
+        if (t.product) getJSON("/" + t.product + ".html").then(function (d) {
           var el = document.querySelector('[data-crx-bf-prod="' + i + '"]');
           if (el && d.product && d.product.image) el.style.backgroundImage = "url(" + CDN + d.product.image + "/600x600x1/image.jpg)";
         }).catch(function () {});
+        if (t.up) loadSection(SECTIONS.filter(function (x) { return x.id === t.up; })[0]).then(function (items) {
+          var up = 0;
+          items.forEach(function (p) { var o = p.price.price_old, v = p.price.price; if (o > v) up = Math.max(up, Math.round((1 - v / o) * 100)); });
+          var h = document.querySelector('[data-crx-bf-tile="' + i + '"]');
+          if (h && up > 20) h.textContent = "Clothing, up to " + up + "% off.";
+        });
       });
+      /* winter storage tile goes big on its own; the ski tile is covered above */
+      var lr = document.querySelector(".crx-lrfs-mount");
+      if (lr) {
+        lr.className += " crx-lrfs--solo";
+        var lt = lr.querySelector(".crx-lrfs__title"); if (lt) lt.textContent = "Winter bike storage";
+        var ls = lr.querySelector(".crx-lrfs__sub"); if (ls) ls.textContent = "Store your bike for the winter and pick it up tuned and ready on April 1.";
+      }
     }
   }
 }
