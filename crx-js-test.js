@@ -1287,8 +1287,8 @@ function crxInitHeroLink() {
   const hero = document.querySelector("section.hero");
   if (!hero) return;
   const a = document.createElement("a");
-  a.href = "/service/winter-storage/";
-  a.setAttribute("aria-label", "Winter bike storage");
+  a.href = "/giftcard/";                       /* bottom banner = gift cards */
+  a.setAttribute("aria-label", "Gift cards");
   a.style.cssText = "position:absolute;inset:0;z-index:5;";
   hero.style.position = "relative";
   hero.appendChild(a);
