@@ -1670,6 +1670,7 @@ function crxInitProductRows() {
 
 
 
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1802,7 +1803,9 @@ function crxInitBlackFriday() {
       ".crx-bf-sec .crx-bf-n{font-size:13px;color:#777;white-space:nowrap;padding-bottom:6px}",
       ".crx-bf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}",
       ".crx-bf-grid .prod-card{position:relative;margin:0}",
-      ".crx-bf-homedc{width:100vw;margin-left:calc(50% - 50vw)}.crx-bf-homedc .crx-hpr{padding:48px 56px 16px}",
+      ".crx-bf-homedc{width:100vw;margin-left:calc(50% - 50vw)}",
+      "@media(min-width:641px){.crx-bf-homedc .crx-hpr{padding:48px 56px 16px}}",
+      "@media(max-width:640px){.crx-hpr .crx-hpr__kicker{font-size:11px;letter-spacing:.1em}}",
       ".crx-bf .crx-bf-all{display:table;margin:26px auto 0;border:2px solid var(--ink);padding:14px 26px;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)!important;text-decoration:none!important}",
       ".crx-bf-more{display:block;margin:26px auto 0;background:none;border:2px solid var(--ink);height:48px;padding:0 26px;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}",
       ".crx-bf-empty{color:#777;font-size:15px;padding:12px 0 24px}",
