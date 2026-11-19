@@ -1671,6 +1671,9 @@ function crxInitProductRows() {
 
 
 
+
+
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1728,11 +1731,11 @@ function crxInitBlackFriday() {
 
   /* Homepage tiles (shown under the door crashers / Bont rows) */
   var TILES = [
-    { tag: "Wahoo", head: "Smart trainers & computers.", cta: "Shop Wahoo →", url: PAGE + "#wahoo",
-      img: "" /* paste your photo link here, e.g. CDN + "12345678/image.jpg" */, product: "wahoo-kickr-core-2-w-zwift-cogo", dark: true },
-    { tag: "Early season ski", head: "Ski packages, up to 30% off.", cta: "How it works →", url: PAGE + "#ski",
+    { tag: "Black Friday prices", big: "Wahoo", line: "KICKR trainers & ELEMNT computers.", cta: "Shop Wahoo →", url: PAGE + "#wahoo",
+      img: CDN + "78452444/wahoo.png" },
+    { tag: "Early season ski", big: "−30%", line: "Full ski packages. 20% off any 2 of the 3.", cta: "How it works →", url: PAGE + "#ski",
       img: CDN + "27159581/1200x1200x1/ski.jpg" },
-    { tag: "Clothing", head: "The clothing sale.", cta: "Shop clothing →", url: PAGE + "#clothing",
+    { tag: "Clothing & helmets", big: "−70%", line: "Kit, base layers, winter gear and helmets.", cta: "Shop clothing →", url: PAGE + "#clothing",
       img: CDN + "31781707/1200x1200x1/clothing.jpg", up: "clothing" }
   ];
 
@@ -1863,6 +1866,31 @@ function crxInitBlackFriday() {
       ".crx-hpr .crx-hpr__kicker{display:inline-block;background:#000;color:#E4FF3A;font-family:'Archivo',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.14em;padding:6px 10px;margin:0 0 12px}",
       ".crx-lrfs-mount .crx-lrfs .crx-lrfs__tile:first-child .crx-lrfs__tag{background:#fff;color:#000}",
       "@media(min-width:1025px){.crx-hpr__grid.crx-hpr__grid--n3{max-width:1000px}}",
+      /* modern homepage rows: left header, See all link, grey square cards */
+      ".crx-hpr .crx-hpr__head{flex-direction:row!important;justify-content:space-between!important;align-items:flex-end!important;text-align:left!important;border-bottom:2px solid #111;padding-bottom:16px;margin:0 auto 24px!important;gap:20px}",
+      ".crx-hpr .crx-hpr__title{font-family:'Archivo',Arial,sans-serif!important;font-weight:900!important;font-style:italic;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(30px,3.4vw,44px)!important;line-height:.95!important}",
+      ".crx-hpr .crx-hpr__sub{margin-top:8px!important}",
+      ".crx-hpr__all{flex-shrink:0;font-family:'Archivo',Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#111!important;text-decoration:none!important;border-bottom:2px solid #111;padding-bottom:3px;margin-bottom:6px}",
+      ".crx-hpr .prod-card .media-wrapper{position:relative;height:0;padding-bottom:100%!important;background:#F2F2EF!important;overflow:hidden}",
+      ".crx-hpr .prod-card .media-wrapper img{position:absolute;inset:0;width:100%!important;height:100%!important;object-fit:contain!important;padding:9%;mix-blend-mode:multiply}",
+      ".crx-hpr .prod-card .padding-sm{text-align:left!important;padding-left:0!important;padding-right:0!important}",
+      ".crx-hpr-info{text-align:left;background:#000;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;padding:28px;aspect-ratio:1/1}",
+      ".crx-hpr-info .crx-l{color:#E4FF3A;font-family:'Archivo',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}",
+      ".crx-hpr-info b{font-size:19px;line-height:1.3}.crx-hpr-info span:last-child{font-size:14px;opacity:.7}",
+      /* deal bar under the hero */
+      ".crx-bf-deals{width:100vw;margin-left:calc(50% - 50vw);background:#111}",
+      ".crx-bf-deals__in{display:flex}",
+      ".crx-bf-deals a{flex:1;display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-right:1px solid #2a2a2a;color:#fff!important;text-decoration:none!important}",
+      ".crx-bf-deals a:hover{background:#1c1c1c}",
+      ".crx-bf-deals b{font-size:14px}.crx-bf-deals .crx-l{font-size:11px;color:var(--neon);min-height:13px}",
+      /* winter storage as a split banner, photo darkened */
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs__header{display:none}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile{aspect-ratio:auto!important;height:400px}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile::after{display:none}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__img{width:52%;right:auto;filter:grayscale(.35) brightness(.62)}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__body{left:52%;right:0;top:0;bottom:0;background:#000;justify-content:center;padding:48px 56px;gap:14px}",
+      ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__head{max-width:none;font-size:clamp(34px,4vw,60px);text-transform:uppercase}",
+      ".crx-lrfs__more{font-size:17px;line-height:1.5;opacity:.85;max-width:440px}",
       /* homepage tiles */
       ".crx-bf-tiles{width:100vw;margin-left:calc(50% - 50vw);padding:24px 56px 40px}",
       ".crx-bf-tiles__in{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}",
@@ -1874,6 +1902,8 @@ function crxInitBlackFriday() {
       ".crx-bf-tile>*{position:relative}",
       ".crx-bf-tile .crx-l{align-self:flex-start;background:var(--neon);color:#000;font-size:11px;padding:5px 9px}",
       ".crx-bf-tile .crx-d{margin-top:12px;font-size:clamp(28px,2.6vw,40px);color:var(--neon)}",
+      ".crx-bf-tile .crx-bf-tile__big{font-size:clamp(48px,5vw,76px);line-height:.9}",
+      ".crx-bf-tile__line{margin-top:10px;font-size:17px;font-weight:700;line-height:1.35;max-width:320px}",
       ".crx-bf-tile span.crx-bf-go{margin-top:14px;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid var(--neon);align-self:flex-start;padding-bottom:2px}",
       /* tablet / phone */
       "@media(max-width:1024px){.crx-bf-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.crx-bf-hero__in{grid-template-columns:1fr}.crx-bf-hero__img{width:100%;opacity:.45}}",
@@ -1895,7 +1925,14 @@ function crxInitBlackFriday() {
         ".crx-bfp-grid--all{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible}",
         ".crx-bfp-grid .crx-bf-badge{font-size:10px;letter-spacing:.04em;padding:5px 7px;max-width:calc(100% - 16px)}",
         ".crx-bfp-more{margin:20px auto 32px}.crx-bfp-foot{padding:24px 16px 40px}",
-        ".crx-bf-tiles{padding:16px 16px 28px}.crx-bf-tiles__in{grid-template-columns:1fr;gap:12px}.crx-bf-tile{aspect-ratio:16/10;padding:20px}.crx-bf-tile--dark{aspect-ratio:1/1}.crx-bf-hero--home .crx-bf-sl{display:none}}"
+        ".crx-bf-tiles{padding:16px 16px 28px}.crx-bf-tiles__in{grid-template-columns:1fr;gap:12px}.crx-bf-tile{aspect-ratio:4/3;padding:20px}.crx-bf-hero--home .crx-bf-sl{display:none}",
+        ".crx-hpr .crx-hpr__head{margin:0 16px 16px!important;padding:0 0 12px!important;flex-direction:column!important;align-items:flex-start!important;gap:10px}",
+        ".crx-hpr .crx-hpr__title{font-size:30px!important}.crx-hpr .crx-hpr__kicker{font-size:10px!important}.crx-hpr__all{font-size:11px;margin:0}",
+        ".crx-hpr-info{aspect-ratio:auto;padding:22px}",
+        ".crx-bf-deals__in{display:grid;grid-template-columns:1fr 1fr}.crx-bf-deals a{border-bottom:1px solid #2a2a2a;padding:12px 16px}",
+        ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__tile{height:auto;display:flex;flex-direction:column}",
+        ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__img{position:relative;width:100%;height:220px}",
+        ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__body{position:relative;left:auto;top:auto;bottom:auto;right:auto;padding:24px 20px}}"
     ].join("");
     document.head.appendChild(css);
   }
@@ -2117,28 +2154,56 @@ function crxInitBlackFriday() {
     if (msg) { msg.textContent = "BLACK FRIDAY · NOV 20–30 · SHOP THE DEALS →"; msg.style.fontWeight = "800"; msg.style.letterSpacing = ".06em"; }
   }
 
+  /* ── homepage rows (Bont): header link + special-order card, once the row has loaded ── */
+  function polishBont() {
+    var m = document.querySelector(".crx-hp-bont-mount");
+    var h = m && m.querySelector(".crx-hpr__head");
+    if (!h) return false;
+    if (!h.querySelector(".crx-hpr__all")) h.insertAdjacentHTML("beforeend", '<a class="crx-hpr__all" href="' + PAGE + '#bont">Shop Bont →</a>');
+    var g = m.querySelector(".crx-hpr__grid");
+    if (g && !g.querySelector(".crx-hpr-info")) {
+      g.className = g.className.replace(/\s*crx-hpr__grid--n\d/g, "");
+      g.insertAdjacentHTML("beforeend", '<div class="crx-hpr-info"><span class="crx-l">Special order</span>' +
+        '<b>Every size, Standard and Wide. Not on the shelf? Order it by Nov 30.</b><span>Ready or shipped by Dec 24. Final sale.</span></div>');
+    }
+    return true;
+  }
+  if (isHome) { var pb = 0, pbt = setInterval(function () { if (polishBont() || ++pb > 40) clearInterval(pbt); }, 250); }
+
   /* ── homepage: Black Friday hero now (countdown), the rest from Nov 20 ── */
   if (isHome) {
     var slide = document.querySelector(".hero-slideshow");
     var hero = slide && (slide.closest("section") || slide);
     if (hero) {
-      hero.insertAdjacentHTML("beforebegin", heroHTML(false));
+      var dealSecs = SECTIONS.filter(function (x) { return live || x.id !== "wahoo"; });
+      hero.insertAdjacentHTML("beforebegin", heroHTML(false) +
+        '<nav class="crx-bf crx-bf-deals"><div class="crx-bf-deals__in">' + dealSecs.map(function (x) {
+          return '<a href="' + PAGE + '#' + x.id + '"><b>' + esc(x.nav || x.title) + '</b><span class="crx-l" data-crx-bf-deal="' + x.id + '">' +
+            (x.tag === false ? "BF prices" : "") + '</span></a>'; }).join("") + '</div></nav>');
+      dealSecs.forEach(function (x) {
+        if (x.tag === false) return;
+        loadSection(x).then(function (items) {
+          var up = 0;
+          items.forEach(function (p) { var o = p.price.price_old, v = p.price.price; if (o > v) up = Math.max(up, Math.round((1 - v / o) * 100)); });
+          var el = document.querySelector('[data-crx-bf-deal="' + x.id + '"]');
+          if (el && up) el.textContent = (x.id === "bont" ? up + "% off" : "Up to " + (x.id === "clothing" ? Math.floor(up / 10) * 10 : up) + "% off");
+        });
+      });
       hero.style.display = "none";
       var cdh = document.querySelector(".crx-bf-hero--home [data-crx-bf-count]");
       if (cdh) countdown(cdh);
     }
-    var bfHero = document.querySelector(".crx-bf-hero--home");
+    var bfHero = document.querySelector(".crx-bf-deals") || document.querySelector(".crx-bf-hero--home");
     if (bfHero) {
       var dcs = SECTIONS[0];
       bfHero.insertAdjacentHTML("afterend",
         '<div class="crx-bf crx-bf-homedc"><section class="crx-hpr" id="crx-bf-home-dc"><div class="crx-hpr__head"><div>' +
         '<p class="crx-hpr__kicker">One-off frames &amp; bikes<span data-crx-bf-dcup></span></p><h2 class="crx-hpr__title">Door crashers</h2>' +
-        '</div></div><div class="crx-hpr__grid"></div>' +
-        '<a class="crx-bfp-more crx-bfp-more--link" href="' + PAGE + '#door-crashers">See all door crashers →</a></section></div>' +
+        '</div><a class="crx-hpr__all" href="' + PAGE + '#door-crashers">See all →</a></div><div class="crx-hpr__grid"></div></section></div>' +
         (live ? '<section class="crx-bf crx-bf-tiles"><div class="crx-bf-tiles__in">' + TILES.map(function (t, i) {
-          return '<a class="crx-bf-tile' + (t.dark ? " crx-bf-tile--dark" : "") + '" href="' + t.url + '"' + (t.img ? ' style="background-image:url(' + t.img + ')"' : "") + '>' +
-            (t.product && !t.img ? '<div class="crx-bf-tile__prod" data-crx-bf-prod="' + i + '"></div>' : "") +
-            '<span class="crx-l">' + esc(t.tag) + '</span><span class="crx-d" data-crx-bf-tile="' + i + '">' + esc(t.head) + '</span><span class="crx-bf-go">' + esc(t.cta) + "</span></a>";
+          return '<a class="crx-bf-tile" href="' + t.url + '" style="background-image:url(' + t.img + ')">' +
+            '<span class="crx-l">' + esc(t.tag) + '</span><span class="crx-d crx-bf-tile__big" data-crx-bf-tile="' + i + '">' + esc(t.big) + '</span>' +
+            '<span class="crx-bf-tile__line">' + esc(t.line) + '</span><span class="crx-bf-go">' + esc(t.cta) + "</span></a>";
         }).join("") + "</div></section>" : ""));
       loadSection(dcs).then(function (items) {
         var g = document.querySelector("#crx-bf-home-dc .crx-hpr__grid");
@@ -2149,7 +2214,7 @@ function crxInitBlackFriday() {
         g.innerHTML = items.slice(0, 4).map(function (p) { return card(p, dcs.tag); }).join("");
       });
       if (live) TILES.forEach(function (t, i) {
-        if (t.product && !t.img) getJSON("/" + t.product + ".html").then(function (d) {
+        if (false) getJSON("/" + t.product + ".html").then(function (d) {
           var el = document.querySelector('[data-crx-bf-prod="' + i + '"]');
           if (el && d.product && d.product.image) el.style.backgroundImage = "url(" + CDN + d.product.image + "/600x600x1/image.jpg)";
         }).catch(function () {});
@@ -2157,7 +2222,7 @@ function crxInitBlackFriday() {
           var up = 0;
           items.forEach(function (p) { var o = p.price.price_old, v = p.price.price; if (o > v) up = Math.max(up, Math.round((1 - v / o) * 100)); });
           var h = document.querySelector('[data-crx-bf-tile="' + i + '"]');
-          if (h && up > 20) h.textContent = "Clothing, up to " + Math.floor(up / 10) * 10 + "% off.";
+          if (h && up > 20) h.textContent = "−" + Math.floor(up / 10) * 10 + "%";
         });
       });
       /* winter storage tile goes big on its own; the ski tile is covered above */
@@ -2166,6 +2231,8 @@ function crxInitBlackFriday() {
         lr.className += " crx-lrfs--solo";
         var lt = lr.querySelector(".crx-lrfs__title"); if (lt) lt.textContent = "Winter bike storage";
         var ls = lr.querySelector(".crx-lrfs__sub"); if (ls) ls.textContent = "Store your bike for the winter and pick it up tuned and ready on April 1.";
+        var lb = lr.querySelector(".crx-lrfs__tile .crx-lrfs__body"), lc = lb && lb.querySelector(".crx-lrfs__cta");
+        if (lc && !lb.querySelector(".crx-lrfs__more")) lc.insertAdjacentHTML("beforebegin", '<span class="crx-lrfs__more">Level 2 Tune included. Pick it up tuned and ready on April 1.</span>');
       }
     }
   }
