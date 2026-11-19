@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   crxInitHeroLink();
   crxInitSaleBadges();
   crxInitProductRows();
+  crxInitBlackFriday();
 });
 
 /* ───────────────────────────────────────────────────
@@ -1091,7 +1092,7 @@ function crxInjectBicarbAccordions(mount) {
 // MESSAGE BAR JS TO MAKE IT CLICKABLE! 
 document.addEventListener("DOMContentLoaded", () => {
   // Where a click on the red announcement bar goes. Update when the bar text changes.
-  const destination = "/service/winter-storage/";
+  const destination = (typeof crxBFLive === "function" && crxBFLive()) ? "/service/black-friday/" : "/service/winter-storage/";
 
   // Look for the element containing the announcement text near the top of the page
   const candidates = document.querySelectorAll("body *");
@@ -1333,18 +1334,21 @@ function crxInitSaleBadges() {
 
   /* One-off bikes. sold: true shows SOLD in black. */
   var DOOR_CRASHERS = [
-    { slug: "25-specialized-tarmac-sl8-sw-di2-sildst-dovgry-blk", size: "56", sold: false },
-    { slug: "", size: "", sold: false }, /* 3T Exploro GRX: not on eCom yet */
-    { slug: "26-bianchi-sprint-105-di2", size: "", sold: false },
-    { slug: "look-795-blade-2-road-frame", size: "", sold: false },
-    { slug: "bianchi-specialissima-rc-frameset-miami-drip", size: "", sold: false },
-    { slug: "enve-melee-frameset", size: "", sold: false },
-    { slug: "open-up-frameset", size: "", sold: false }
+    /* one: true = only one left, tag says "Only 1" */
+    { slug: "25-specialized-tarmac-sl8-sw-di2-sildst-dovgry-blk", one: true,  sold: false }, /* 56 */
+    { slug: "",                                                 one: true,  sold: false }, /* 3T Exploro GRX, 56: not on eCom yet */
+    { slug: "26-bianchi-sprint-105-di2",                        one: false, sold: false }, /* 53, 55 */
+    { slug: "look-795-blade-2-road-frame",                      one: false, sold: false }, /* S, M */
+    { slug: "bianchi-specialissima-rc-frameset-miami-drip",     one: true,  sold: false }, /* 50 */
+    { slug: "enve-melee-frameset",                              one: false, sold: false }, /* 52, 54, 56 */
+    { slug: "open-up-frameset",                                 one: true,  sold: false }  /* XL */
   ];
+  window.CRX_DOOR_CRASHERS = DOOR_CRASHERS; /* shared with the Black Friday page */
 
   var DC_START = "2026-11-17T00:00:00-05:00";
   var DC_LABEL = "Black Friday · Only 1 · Final sale";
-  var DC_NOTE = "Black Friday · Final sale. Only one available. No returns, refunds or exchanges.";
+  var DC_LABEL_FEW = "Black Friday · Final sale";
+  var DC_NOTE = "Black Friday · Final sale. Limited stock. No returns, refunds or exchanges.";
 
   var preview = /[?&]crxbf=preview/.test(location.search);
   var now = Date.now();
@@ -1366,7 +1370,7 @@ function crxInitSaleBadges() {
       var d = DOOR_CRASHERS[i];
       if (d.slug && d.slug === slug && live(DC_START, BF_END)) {
         if (d.sold) return { text: "Sold", sold: true };
-        return { text: DC_LABEL, sold: false };
+        return { text: d.one ? DC_LABEL : DC_LABEL_FEW, sold: false };
       }
     }
     for (i = 0; i < TAGS.length; i++) {
@@ -1566,7 +1570,7 @@ function crxInitProductRows() {
       mount: ".crx-hp-dc-mount",
       source: "",                       /* e.g. "/black-friday/door-crashers/" once the category exists */
       match: /.*/,
-      kicker: "Door crashers · Only one of each",
+      kicker: "Black Friday Sale",
       title: "One-off frames & bikes",
       sub: "When it's gone, it's gone. We ship across Canada.",
       cta: { text: "See all door crashers", url: "" }
@@ -1641,4 +1645,431 @@ function crxInitProductRows() {
       })
       .catch(function () { /* leave the mount empty if the page can't load */ });
   });
+}
+
+
+
+
+
+
+
+
+/* ───────────────────────────────────────────────────
+   9. BLACK FRIDAY  (homepage takeover + landing page)
+   Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
+   Nothing to paste on the homepage on Friday: the code adds the
+   Black Friday hero and tiles and hides the normal hero.
+
+   Landing page: eCom > Content > Pages > new page
+     Title: Black Friday   ·   URL: black-friday
+     Content (HTML view):  <div class="crx-bfp-mount"></div>
+   Before Nov 20 the page shows a "starts Friday" teaser
+   (with the Bont deal, which is already on).
+
+   Preview everything now (only you see it): add ?crxbf=preview
+     thecyclery.ca/?crxbf=preview
+     thecyclery.ca/service/black-friday/?crxbf=preview
+   ─────────────────────────────────────────────────── */
+function crxBFLive() {
+  var START = Date.parse("2026-11-20T00:00:00-05:00");
+  var END = Date.parse("2026-12-01T00:00:00-05:00");
+  if (/[?&]crxbf=preview/.test(location.search)) return true;
+  var now = Date.now();
+  return now >= START && now < END;
+}
+
+function crxInitBlackFriday() {
+  var PAGE = "/service/black-friday/";
+  var CDN = "https://cdn.shoplightspeed.com/shops/635245/files/";
+
+  /* ── Edit these: the sections of the Black Friday page, in order ──
+     sources = category/brand pages to pull products from
+     slugs   = exact products (used for door crashers)
+     keep    = only keep products whose name matches (optional)
+     skip    = drop products whose link matches (optional)
+     tag     = true: cards get "Black Friday −X%"  ·  false: no tag (Wahoo) */
+  var SECTIONS = [
+    { id: "door-crashers", title: "Door crashers", sub: "One-off frames and bikes. When it's gone, it's gone.",
+      slugs: (window.CRX_DOOR_CRASHERS || []).map(function (d) { return d.slug; }).filter(Boolean), tag: "dc" },
+    { id: "bont", title: "Bont shoes", sub: "Every size, Standard and Wide. Not on the shelf? Special-order it by Nov 30.",
+      sources: ["/brands/bont-cycling/"], tag: true, early: true },
+    { id: "wahoo", title: "Wahoo trainers & computers", sub: "KICKR trainers and ELEMNT computers at Black Friday prices.",
+      sources: ["/brands/wahoo/"], keep: /kickr|elemnt|bolt|roam|rollr|\bace\b/i,
+      drop: /freehub|feet|floor mat/i, tag: false },
+    { id: "helmets", title: "Helmets", sub: "Black Friday prices on helmets from POC, Specialized, Kask and more.",
+      sources: ["/sale/helmets/", "/sale/poc-helmet-clearance/"], tag: true },
+    { id: "clothing", title: "Clothing", sub: "Men's and women's kit, base layers and winter gear.",
+      sources: ["/sale/mens-clothing/", "/sale/womens-clothing/"], tag: true },
+    { id: "shoes", title: "Cycling shoes", sub: "Road and mountain shoes at Black Friday prices.",
+      sources: ["/sale/shoes/"], skip: /^bont-/, tag: true },
+    { id: "ski", title: "Nordic ski", sub: "Skis, boots and poles at 20% off or more.",
+      sources: ["/sale/xc-ski/"], min: 0.20, tag: true, pin: ["salomon-s-max-carbon-skate-mv-boot"],
+      note: "<b>30% off full ski packages</b> (skis + boots + poles), in store. Featured: Salomon S/Max skate boots, <b>$325</b> (reg. $520), even less in a package." },
+    { id: "bikes", title: "Bikes, frames & wheels", sub: "Complete bikes, framesets and wheels.",
+      sources: ["/sale/bikes-and-wheels/", "/sale/framesets/"], min: 0.15, tag: "plain" }
+  ];
+
+  /* Homepage tiles (shown under the door crashers / Bont rows) */
+  var TILES = [
+    { tag: "Wahoo", head: "Trainers & computers.", cta: "Shop Wahoo →", url: PAGE + "#wahoo",
+      img: "", product: "wahoo-kickr-core-2-w-zwift-cogo", dark: true },
+    { tag: "Nordic ski · was $520", head: "Salomon S/Max skate boots. $325.", cta: "Shop boots →", url: "/salomon-s-max-carbon-skate-mv-boot.html",
+      img: CDN + "27159581/1200x1200x1/ski.jpg" },
+    { tag: "Helmets & clothing", head: "Black Friday prices.", cta: "Shop the deals →", url: PAGE + "#helmets",
+      img: CDN + "31781707/1200x1200x1/clothing.jpg" }
+  ];
+
+  var HERO_IMG = CDN + "75960329/1600x900x1/cyclery-racing-2026-team.jpg";
+  var isHome = location.pathname === "/" || location.pathname === "";
+  var pageMount = document.querySelector(".crx-bfp-mount");
+  var live = crxBFLive();
+  if (!pageMount && !live) return;
+
+  var DC = {};
+  (window.CRX_DOOR_CRASHERS || []).forEach(function (d) { if (d.slug) DC[d.slug] = d; });
+
+  /* ── styles ── */
+  if (!document.getElementById("crx-bf-css")) {
+    var css = document.createElement("style");
+    css.id = "crx-bf-css";
+    css.textContent = [
+      "@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,800;0,900;1,900&display=swap');",
+      ".crx-bf{--neon:#E4FF3A;--red:#A41314;--ink:#111;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink)}",
+      ".crx-bf *{box-sizing:border-box}",
+      ".crx-bf .crx-d{font-family:'Archivo',Arial,sans-serif;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:-.03em;line-height:.88}",
+      ".crx-bf .crx-l{font-family:'Archivo',Arial,sans-serif;font-weight:800;letter-spacing:.14em;text-transform:uppercase}",
+      /* hero */
+      ".crx-bf-hero{position:relative;background:#000;color:#fff;overflow:hidden;width:100vw;margin-left:calc(50% - 50vw)}",
+      ".crx-bf-hero__img{position:absolute;right:0;top:0;bottom:0;width:60%;background-size:auto 180%;background-position:center top;filter:grayscale(1) contrast(1.1)}",
+      ".crx-bf-hero__fade{position:absolute;inset:0;background:linear-gradient(90deg,#000 42%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.1))}",
+      ".crx-bf-hero__in{position:relative;max-width:1328px;margin:0 auto;padding:64px 56px;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}",
+      ".crx-bf-hero .crx-bf-kick{color:#fff;opacity:.85;font-size:13px}",
+      ".crx-bf-hero h1{margin:14px 0 0;color:var(--neon);font-size:clamp(64px,9vw,148px)}",
+      ".crx-bf-hero .crx-bf-lead{margin:18px 0 0;font-size:20px;line-height:1.4;font-weight:600;max-width:520px;color:#fff}",
+      ".crx-bf-hero .crx-bf-btns{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}",
+      ".crx-bf-btn{display:inline-flex;align-items:center;height:52px;padding:0 28px;font-weight:800;font-size:14px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none!important}",
+      ".crx-bf-btn--neon{background:var(--neon);color:#000!important}",
+      ".crx-bf-btn--ghost{border:2px solid #fff;color:#fff!important}",
+      ".crx-bf-count{display:flex;gap:10px;margin-top:26px}",
+      ".crx-bf-count div{background:#111;border:1px solid #333;padding:10px 14px;min-width:78px;text-align:center}",
+      ".crx-bf-count b{display:block;font-family:'Archivo',Arial,sans-serif;font-size:34px;font-weight:900;color:var(--neon);line-height:1}",
+      ".crx-bf-count span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.7}",
+      /* start list */
+      ".crx-bf-sl{background:#fff;color:var(--ink);border-radius:14px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.45);position:relative}",
+      ".crx-bf-sl__band{background:var(--red);color:#fff;display:flex;justify-content:space-between;padding:14px 22px;font-size:12px}",
+      ".crx-bf-sl ol{list-style:none;margin:0;padding:6px 0}",
+      ".crx-bf-sl li a{display:grid;grid-template-columns:46px 1fr auto;align-items:center;gap:14px;padding:9px 22px;color:var(--ink)!important;text-decoration:none!important;border-bottom:1px dashed #e2e2e2}",
+      ".crx-bf-sl li:last-child a{border-bottom:0}",
+      ".crx-bf-sl li a:hover{background:#f6f6f6}",
+      ".crx-bf-sl .crx-bf-no{background:#000;color:var(--neon);font-family:'Archivo',Arial,sans-serif;font-weight:900;font-size:17px;text-align:center;padding:5px 0}",
+      ".crx-bf-sl .crx-bf-nm{font-weight:700;font-size:15px}",
+      ".crx-bf-sl .crx-bf-n{font-size:12px;color:#777;white-space:nowrap}",
+      /* sticky chips */
+      ".crx-bf-chips{position:sticky;top:0;z-index:20;background:#000;width:100vw;margin-left:calc(50% - 50vw)}",
+      ".crx-bf-chips__in{max-width:1328px;margin:0 auto;padding:10px 56px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}",
+      ".crx-bf-chips__in::-webkit-scrollbar{display:none}",
+      ".crx-bf-chips a{flex-shrink:0;display:inline-flex;gap:8px;align-items:center;color:#fff!important;text-decoration:none!important;border:1px solid #333;padding:7px 12px;font-size:13px;font-weight:700}",
+      ".crx-bf-chips a b{color:var(--neon);font-family:'Archivo',Arial,sans-serif}",
+      /* sections */
+      ".crx-bf-sec{max-width:1328px;margin:0 auto;padding:56px 56px 8px;scroll-margin-top:60px}",
+      ".crx-bf-sec__head{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:end;border-bottom:3px solid var(--ink);padding-bottom:16px;margin-bottom:24px}",
+      ".crx-bf-bib{position:relative;width:96px;height:78px;background:var(--neon);display:flex;align-items:center;justify-content:center;border-radius:6px}",
+      ".crx-bf-bib b{font-family:'Archivo',Arial,sans-serif;font-weight:900;font-size:44px;color:#000;letter-spacing:-.04em}",
+      ".crx-bf-bib i{position:absolute;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 2px #00000033}",
+      ".crx-bf-sec h2{margin:0;font-size:clamp(30px,4vw,52px);color:var(--ink)}",
+      ".crx-bf-sec p.crx-bf-sub{margin:8px 0 0;color:#555;font-size:15px;line-height:1.5}",
+      ".crx-bf-sec .crx-bf-n{font-size:13px;color:#777;white-space:nowrap;padding-bottom:6px}",
+      ".crx-bf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}",
+      ".crx-bf-grid .prod-card{position:relative;margin:0}",
+      ".crx-bf-sec .crx-bf-all{display:table;margin:26px auto 0;border:2px solid var(--ink);padding:14px 26px;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)!important;text-decoration:none!important}",
+      ".crx-bf-more{display:block;margin:26px auto 0;background:none;border:2px solid var(--ink);height:48px;padding:0 26px;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}",
+      ".crx-bf-empty{color:#777;font-size:15px;padding:12px 0 24px}",
+      ".crx-bf-foot{max-width:1328px;margin:40px auto 0;padding:24px 56px 56px;color:#555;font-size:14px;line-height:1.6;border-top:1px solid #e4e4e4}",
+      /* landing page */
+      ".crx-bfp{width:100vw;margin-left:calc(50% - 50vw);background:#fff}",
+      ".crx-bfp-head{background:var(--neon);color:#000}",
+      ".crx-bfp-head__in{max-width:1328px;margin:0 auto;padding:40px 56px 34px;display:grid;grid-template-columns:auto 1fr;column-gap:40px;align-items:end}",
+      ".crx-bfp-kick{grid-column:1/-1;font-size:12px;margin-bottom:10px}",
+      ".crx-bfp-head h1{margin:0;font-size:clamp(56px,8vw,112px);color:#000}",
+      ".crx-bfp-lead{margin:0 0 10px;font-size:17px;line-height:1.45;font-weight:600;max-width:460px}",
+      ".crx-bf-count--light{margin:0 0 12px}.crx-bf-count--light div{background:#000;border-color:#000}",
+      ".crx-bfp-jump{position:sticky;top:0;z-index:20;background:#000}",
+      ".crx-bfp-jump__in{max-width:1328px;margin:0 auto;padding:0 56px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}",
+      ".crx-bfp-jump__in::-webkit-scrollbar{display:none}",
+      ".crx-bfp-jump a{flex-shrink:0;color:#fff!important;text-decoration:none!important;font-weight:700;font-size:14px;padding:14px 14px;border-bottom:3px solid transparent}",
+      ".crx-bfp-jump a:hover{border-bottom-color:var(--neon)}",
+      ".crx-bfp-jump a span{color:var(--neon);margin-left:6px;font-weight:800}",
+      ".crx-bfp-sec{max-width:1328px;margin:0 auto;padding:60px 56px 8px;scroll-margin-top:56px;border-bottom:1px solid #eee}",
+      ".crx-bfp-sec__head{text-align:center;margin-bottom:26px}",
+      ".crx-bfp-up{display:inline-block;background:#000;color:var(--neon);font-size:12px;padding:6px 10px;margin-bottom:12px}",
+      ".crx-bfp-sec h2{margin:0;font-size:clamp(30px,3.6vw,46px);color:var(--ink)}",
+      ".crx-bfp-sub{margin:10px auto 0;max-width:620px;color:#555;font-size:15px;line-height:1.5}",
+      ".crx-bfp-n{margin:6px 0 0;color:#888;font-size:13px}",
+      ".crx-bfp-note{max-width:820px;margin:0 auto 26px;border:2px solid #000;padding:14px 18px;font-size:15px;line-height:1.5;text-align:center}",
+      ".crx-bfp-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}",
+      ".crx-bfp-grid .prod-card{position:relative;margin:0}",
+      ".crx-bfp-more{display:block;margin:28px auto 40px;background:#000;color:#fff;border:0;height:50px;padding:0 30px;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}",
+      ".crx-bfp-foot{max-width:1328px;margin:0 auto;padding:32px 56px 56px;color:#555;font-size:14px;line-height:1.6}",
+      /* homepage tiles */
+      ".crx-bf-tiles{width:100vw;margin-left:calc(50% - 50vw);padding:24px 56px 40px}",
+      ".crx-bf-tiles__in{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}",
+      ".crx-bf-tile{position:relative;text-align:left;aspect-ratio:4/5;overflow:hidden;background:#111 center/cover no-repeat;display:flex;flex-direction:column;justify-content:flex-end;padding:28px;text-decoration:none!important;color:#fff!important}",
+      ".crx-bf-tile::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.55) 40%,rgba(0,0,0,0) 75%)}",
+      ".crx-bf-tile--dark{background:#0b0b0b}",
+      ".crx-bf-tile--dark::before{background:none}",
+      ".crx-bf-tile__prod{position:absolute;left:8%;right:8%;top:6%;height:44%;background:#fff center/contain no-repeat;border-radius:10px}",
+      ".crx-bf-tile>*{position:relative}",
+      ".crx-bf-tile .crx-l{align-self:flex-start;background:var(--neon);color:#000;font-size:11px;padding:5px 9px}",
+      ".crx-bf-tile .crx-d{margin-top:12px;font-size:clamp(28px,2.6vw,40px);color:var(--neon)}",
+      ".crx-bf-tile span.crx-bf-go{margin-top:14px;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid var(--neon);align-self:flex-start;padding-bottom:2px}",
+      /* tablet / phone */
+      "@media(max-width:1024px){.crx-bf-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.crx-bf-hero__in{grid-template-columns:1fr}.crx-bf-hero__img{width:100%;opacity:.45}}",
+      "@media(max-width:640px){.crx-bf-hero__in{padding:40px 16px 32px;gap:28px}.crx-bf-hero .crx-bf-lead{font-size:17px}",
+        ".crx-bf-chips__in{padding:8px 16px}",
+        ".crx-bf-sec{padding:40px 16px 4px}.crx-bf-sec__head{grid-template-columns:auto 1fr;gap:14px}.crx-bf-sec .crx-bf-n{display:none}",
+        ".crx-bf-bib{width:64px;height:54px}.crx-bf-bib b{font-size:30px}",
+        ".crx-bf-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}",
+        ".crx-bf-grid .crx-bf-badge{font-size:10px;letter-spacing:.04em;padding:5px 7px;max-width:calc(100% - 16px)}",
+        ".crx-bf-foot{padding:20px 16px 40px}",
+        ".crx-bfp-head__in{grid-template-columns:1fr;padding:28px 16px 22px}.crx-bfp-lead{font-size:15px;margin-top:10px}",
+        ".crx-bfp-jump__in{padding:0 8px}.crx-bfp-jump a{font-size:13px;padding:12px 10px}",
+        ".crx-bfp-sec{padding:40px 0 4px}.crx-bfp-sec__head{padding:0 16px}.crx-bfp-note{margin:0 16px 20px;font-size:14px}",
+        ".crx-bfp-grid{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:62%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 8px;scrollbar-width:none}",
+        ".crx-bfp-grid::-webkit-scrollbar{display:none}.crx-bfp-grid .prod-card{scroll-snap-align:start}",
+        ".crx-bfp-grid--all{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible}",
+        ".crx-bfp-grid .crx-bf-badge{font-size:10px;letter-spacing:.04em;padding:5px 7px;max-width:calc(100% - 16px)}",
+        ".crx-bfp-more{margin:20px auto 32px}.crx-bfp-foot{padding:24px 16px 40px}",
+        ".crx-bf-tiles{padding:16px 16px 28px}.crx-bf-tiles__in{grid-template-columns:1fr;gap:12px}.crx-bf-tile{aspect-ratio:16/10;padding:20px}.crx-bf-tile--dark{aspect-ratio:1/1}.crx-bf-hero--home .crx-bf-sl{display:none}}"
+    ].join("");
+    document.head.appendChild(css);
+  }
+
+  /* ── helpers ── */
+  function money(n) { return "C$" + Number(n).toLocaleString("en-CA", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function esc(s) { return String(s || "").replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function slugOf(u) { return String(u || "").split("?")[0].split("/").pop().replace(/\.html$/, ""); }
+  function list(x) { return Array.isArray(x) ? x : Object.keys(x || {}).map(function (k) { return x[k]; }); }
+  function getJSON(url) {
+    return fetch(url + (url.indexOf("?") < 0 ? "?" : "&") + "format=json", { credentials: "same-origin" })
+      .then(function (r) { return r.json(); });
+  }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function bib(no) { return '<div class="crx-bf-bib"><i style="left:7px;top:7px"></i><i style="right:7px;top:7px"></i><i style="left:7px;bottom:7px"></i><i style="right:7px;bottom:7px"></i><b>' + no + "</b></div>"; }
+
+  function card(p, tag) {
+    var price = p.price || {}, now = price.price, old = price.price_old;
+    var slug = slugOf(p.url), url = "/" + p.url;
+    var img = p.image ? CDN + p.image + "/300x400x1/image.jpg" : "";
+    var img2 = p.image ? CDN + p.image + "/600x800x1/image.jpg" : "";
+    var badge = "", cls = "prod-card";
+    if (tag === "dc" && DC[slug]) {
+      badge = DC[slug].sold ? "Sold" : (DC[slug].one ? "Black Friday · Only 1 · Final sale" : "Black Friday · Final sale");
+      cls += DC[slug].sold ? "" : " crx-bf-card";
+    } else if (tag && old > now) {
+      badge = tag === "plain" ? "Black Friday" : "Black Friday −" + Math.round((1 - now / old) * 100) + "%";
+      cls += " crx-bf-card";
+    }
+    return '<div class="' + cls + '">' +
+      (badge ? '<span class="prod-card__badge crx-bf-badge' + (DC[slug] && DC[slug].sold ? " crx-bf-badge--sold" : "") + '">' + esc(badge) + "</span>" : "") +
+      '<div class="prod-card__img-wrapper"><a href="' + url + '" class="prod-card__img-link" aria-label="' + esc(p.title) + '">' +
+      '<figure class="media-wrapper media-wrapper--3:4 bg-contrast-lower">' +
+      (img ? '<img src="' + img + '" srcset="' + img + " 300w, " + img2 + ' 600w" sizes="(min-width: 400px) 300px, 150px" alt="' + esc(p.title) + '" loading="lazy">' : "") +
+      "</figure></a></div>" +
+      '<div class="padding-sm text-center"><h3 class="text-base margin-bottom-xs"><a href="' + url + '" class="product-card__title">' + esc(p.title) + "</a></h3>" +
+      '<div class="margin-bottom-xs"><ins class="prod-card__price">' + money(now) + "</ins>" +
+      (old > now ? ' <del class="prod-card__old-price">' + money(old) + "</del>" : "") + "</div></div></div>";
+  }
+
+  function loadSection(s) {
+    var jobs = [];
+    (s.sources || []).forEach(function (src) {
+      jobs.push(getJSON(src + "?limit=100").then(function (d) { return list(d.collection && d.collection.products); }).catch(function () { return []; }));
+    });
+    (s.slugs || []).forEach(function (slug) {
+      jobs.push(getJSON("/" + slug + ".html").then(function (d) { return d.product ? [d.product] : []; }).catch(function () { return []; }));
+    });
+    return Promise.all(jobs).then(function (lists) {
+      var seen = {}, out = [];
+      lists.forEach(function (l) {
+        l.forEach(function (p) {
+          var slug = slugOf(p.url);
+          if (!p || seen[p.id]) return;
+          if (s.keep && !s.keep.test(p.title || "")) return;
+          if (s.drop && s.drop.test(p.title || "")) return;
+          if (s.min && !(p.price && p.price.price_old > 0 && 1 - p.price.price / p.price.price_old >= s.min - 0.005)) return;
+          if (s.skip && s.skip.test(slug)) return;
+          if (s.id !== "door-crashers" && DC[slug]) return;
+          seen[p.id] = 1; out.push(p);
+        });
+      });
+      if (s.tag) out.sort(function (a, b) { return (b.price.price_old ? 1 - b.price.price / b.price.price_old : 0) - (a.price.price_old ? 1 - a.price.price / a.price.price_old : 0); });
+      (s.pin || []).slice().reverse().forEach(function (slug) {
+        for (var k = 0; k < out.length; k++) if (slugOf(out[k].url) === slug) { out.unshift(out.splice(k, 1)[0]); break; }
+      });
+      return out;
+    });
+  }
+
+  function heroHTML(onPage) {
+    var startList = SECTIONS.map(function (s, i) {
+      return '<li><a href="' + (onPage ? "" : PAGE) + "#" + s.id + '"><span class="crx-bf-no">' + pad(i + 1) + '</span><span class="crx-bf-nm">' + esc(s.title.split(" · ")[0]) +
+        '</span><span class="crx-bf-n" data-crx-bf-n="' + s.id + '"></span></a></li>';
+    }).join("");
+    var body = live
+      ? '<p class="crx-bf-lead">On now until Nov 30, in store and online. Prices we won\'t repeat.</p>' +
+        '<div class="crx-bf-btns"><a class="crx-bf-btn crx-bf-btn--neon" href="' + (onPage ? "#door-crashers" : PAGE) + '">Shop the deals</a>' +
+        '<a class="crx-bf-btn crx-bf-btn--ghost" href="' + (onPage ? "" : PAGE) + '#door-crashers">Door crashers</a></div>'
+      : '<p class="crx-bf-lead">Starts Friday, Nov 20 at 12 am, in store and online. Bont is already on.</p>' +
+        '<div class="crx-bf-count" data-crx-bf-count></div>' +
+        '<div class="crx-bf-btns"><a class="crx-bf-btn crx-bf-btn--neon" href="#bont">Shop Bont now</a></div>';
+    return '<section class="crx-bf crx-bf-hero' + (onPage ? "" : " crx-bf-hero--home") + '"><div class="crx-bf-hero__img" style="background-image:url(' + HERO_IMG + ')"></div><div class="crx-bf-hero__fade"></div>' +
+      '<div class="crx-bf-hero__in"><div><div class="crx-l crx-bf-kick">The Cyclery · Ottawa · Nov 20–30</div><h1 class="crx-d">Black<br>Friday.</h1>' + body + "</div>" +
+      '<div class="crx-bf-sl"><div class="crx-bf-sl__band crx-l"><span>Start list</span><span>' + SECTIONS.length + " categories</span></div><ol>" + startList + "</ol></div>" +
+      "</div></section>";
+  }
+
+  function countdown(el) {
+    var t = Date.parse("2026-11-20T00:00:00-05:00");
+    function tick() {
+      var s = Math.max(0, Math.floor((t - Date.now()) / 1000));
+      var parts = [[Math.floor(s / 86400), "days"], [Math.floor(s % 86400 / 3600), "hrs"], [Math.floor(s % 3600 / 60), "min"], [s % 60, "sec"]];
+      el.innerHTML = parts.map(function (p) { return "<div><b>" + pad(p[0]) + "</b><span>" + p[1] + "</span></div>"; }).join("");
+    }
+    tick(); setInterval(tick, 1000);
+  }
+
+  /* ── landing page (no hero: label + jump bar, then one row per deal) ── */
+  if (pageMount) {
+    var secs = live ? SECTIONS : SECTIONS.filter(function (s) { return s.early; });
+    pageMount.innerHTML =
+      '<div class="crx-bf crx-bfp">' +
+      '<header class="crx-bfp-head"><div class="crx-bfp-head__in">' +
+        '<div class="crx-l crx-bfp-kick">' + (live ? "On now · Nov 20–30 · In store &amp; online" : "Starts Friday, Nov 20 · In store &amp; online") + '</div>' +
+        '<h1 class="crx-d">Black Friday</h1>' +
+        (live ? '<p class="crx-bfp-lead">Prices we won\'t repeat. All Black Friday items are final sale.</p>'
+              : '<div class="crx-bf-count crx-bf-count--light" data-crx-bf-count></div><p class="crx-bfp-lead">Bont is already on. Everything else drops Friday at 12 am.</p>') +
+      '</div></header>' +
+      (live ? '<nav class="crx-bfp-jump"><div class="crx-bfp-jump__in">' + SECTIONS.map(function (s) {
+        return '<a href="#' + s.id + '">' + esc(s.title.split(" · ")[0]) + '<span data-crx-bf-up="' + s.id + '"></span></a>'; }).join("") + "</div></nav>" : "") +
+      secs.map(function (s) {
+        return '<section class="crx-bfp-sec" id="' + s.id + '"><div class="crx-bfp-sec__head">' +
+          '<span class="crx-l crx-bfp-up" data-crx-bf-up2="' + s.id + '"></span>' +
+          '<h2 class="crx-d">' + esc(s.title) + '</h2><p class="crx-bfp-sub">' + esc(s.sub) + '</p>' +
+          '<p class="crx-bfp-n" data-crx-bf-n2="' + s.id + '"></p></div>' +
+          (s.note ? '<div class="crx-bfp-note">' + s.note + "</div>" : "") +
+          '<div class="crx-bfp-grid"></div></section>';
+      }).join("") +
+      '<div class="crx-bfp-foot">All sale and Black Friday items are final sale. Free pickup at 1115 Bank Street, Ottawa, or we ship across Canada. ' +
+      'Questions? <a href="mailto:sales@thecyclery.ca">sales@thecyclery.ca</a> · (613) 730-2856</div></div>';
+    var cd = pageMount.querySelector("[data-crx-bf-count]");
+    if (cd) countdown(cd);
+    var box = pageMount.closest(".text-page__content");
+    var head = box && box.previousElementSibling;
+    if (head && head.tagName === "SECTION" && head.querySelector("h1")) head.style.display = "none";
+    if (box) { box.style.paddingTop = "0"; box.style.maxWidth = "none"; }
+
+    secs.forEach(function (s) {
+      var sec = pageMount.querySelector("#" + s.id), grid = sec.querySelector(".crx-bfp-grid");
+      loadSection(s).then(function (items) {
+        var n = items.length;
+        var up = 0;
+        items.forEach(function (p) { var o = p.price.price_old, v = p.price.price; if (o > v) up = Math.max(up, Math.round((1 - v / o) * 100)); });
+        var upTxt = s.tag === "dc" ? "Only one of each" : up ? "Up to " + up + "% off" : s.tag === false ? "Black Friday prices" : "";
+        var u1 = pageMount.querySelector('[data-crx-bf-up="' + s.id + '"]'); if (u1) u1.textContent = up ? " −" + up + "%" : "";
+        var u2 = sec.querySelector("[data-crx-bf-up2]"); if (upTxt) u2.textContent = upTxt; else u2.remove();
+        sec.querySelector("[data-crx-bf-n2]").textContent = n ? n + (n === 1 ? " item" : " items") : "";
+        if (!n) { grid.outerHTML = '<p class="crx-bf-empty">New deals going up. Check back soon, or ask us in store.</p>'; return; }
+        var SHOW = 8;
+        grid.innerHTML = items.slice(0, SHOW).map(function (p) { return card(p, s.tag); }).join("");
+        if (n > SHOW || window.innerWidth <= 640 && n > 2) {
+          var btn = document.createElement("button");
+          btn.className = "crx-bfp-more"; btn.type = "button"; btn.textContent = "Show all " + n + " →";
+          btn.onclick = function () {
+            grid.insertAdjacentHTML("beforeend", items.slice(SHOW).map(function (p) { return card(p, s.tag); }).join(""));
+            grid.className += " crx-bfp-grid--all"; btn.remove();
+          };
+          grid.after(btn);
+        }
+      });
+    });
+  }
+
+  /* ── site-wide: tag the same products on every page (categories, search, product pages) ── */
+  function paintAll(map) {
+    Array.prototype.forEach.call(document.querySelectorAll(".prod-card:not(.crx-bf-card)"), function (c) {
+      var a = c.querySelector('a[href$=".html"]'); if (!a) return;
+      var t = map[slugOf(a.getAttribute("href"))]; if (!t) return;
+      var b = c.querySelector(".prod-card__badge");
+      if (!b) { b = document.createElement("span"); b.className = "prod-card__badge"; c.insertBefore(b, c.firstChild); }
+      b.textContent = t; b.className += " crx-bf-badge"; b.style.display = "";
+      c.className += " crx-bf-card";
+    });
+    var w = document.querySelector(".product__price-wrapper");
+    var t2 = map[slugOf(location.pathname)];
+    if (w && t2 && !document.querySelector(".crx-bf-badge--page")) {
+      var pb = document.createElement("span"); pb.className = "crx-bf-badge crx-bf-badge--page"; pb.textContent = t2;
+      w.parentNode.insertBefore(pb, w); w.className += " crx-bf-price";
+    }
+  }
+  if (live && !pageMount) {
+    var KEY = "crxBFmap1", cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(KEY) || "null"); } catch (e) {}
+    var ready = cached && Date.now() - cached.t < 30 * 60 * 1000 ? Promise.resolve(cached.m) :
+      Promise.all(SECTIONS.filter(function (s) { return s.tag && s.tag !== "dc"; }).map(function (s) {
+        return loadSection(s).then(function (items) { return items.map(function (p) {
+          var o = p.price.price_old, n = p.price.price;
+          return [slugOf(p.url), !(o > n) ? "" : s.tag === "plain" ? "Black Friday" : "Black Friday −" + Math.round((1 - n / o) * 100) + "%"];
+        }); });
+      })).then(function (lists) {
+        var m = {}; lists.forEach(function (l) { l.forEach(function (x) { if (x[1]) m[x[0]] = x[1]; }); });
+        try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), m: m })); } catch (e) {}
+        return m;
+      });
+    ready.then(function (m) {
+      paintAll(m);
+      var timer; new MutationObserver(function () { clearTimeout(timer); timer = setTimeout(function () { paintAll(m); }, 200); })
+        .observe(document.body, { childList: true, subtree: true });
+    });
+  }
+
+  /* ── homepage takeover ── */
+  if (isHome && live) {
+    var slide = document.querySelector(".hero-slideshow");
+    var hero = slide && (slide.closest("section") || slide);
+    if (hero) {
+      var dcs = SECTIONS[0];
+      hero.insertAdjacentHTML("beforebegin", heroHTML(false) +
+        '<div class="crx-bf"><section class="crx-bf-sec" id="crx-bf-home-dc"><div class="crx-bf-sec__head">' + bib("01") +
+        '<div><h2 class="crx-d">' + esc(dcs.title) + '</h2><p class="crx-bf-sub">' + esc(dcs.sub) + '</p></div><div class="crx-bf-n"></div></div>' +
+        '<div class="crx-bf-grid"></div><a class="crx-bf-all" href="' + PAGE + '#door-crashers">See all door crashers →</a></section></div>');
+      hero.style.display = "none";
+      loadSection(dcs).then(function (items) {
+        var g = document.querySelector("#crx-bf-home-dc .crx-bf-grid");
+        if (!items.length) { document.getElementById("crx-bf-home-dc").style.display = "none"; return; }
+        g.innerHTML = items.slice(0, 4).map(function (p) { return card(p, dcs.tag); }).join("");
+      });
+    }
+    /* fill start-list counts from the same sources (quietly) */
+    SECTIONS.forEach(function (s) {
+      loadSection(s).then(function (items) {
+        var a = document.querySelector('[data-crx-bf-n="' + s.id + '"]');
+        if (a) a.textContent = items.length + (items.length === 1 ? " item" : " items");
+      });
+    });
+    var after = document.querySelector(".crx-hp-dc-mount") || document.querySelector(".crx-hp-bont-mount") || document.querySelector(".crx-lrfs-mount");
+    if (after) {
+      after.insertAdjacentHTML("afterend", '<section class="crx-bf crx-bf-tiles"><div class="crx-bf-tiles__in">' + TILES.map(function (t, i) {
+        return '<a class="crx-bf-tile' + (t.dark ? " crx-bf-tile--dark" : "") + '" href="' + t.url + '"' + (t.img ? ' style="background-image:url(' + t.img + ')"' : "") + '>' +
+          (t.product ? '<div class="crx-bf-tile__prod" data-crx-bf-prod="' + i + '"></div>' : "") +
+          '<span class="crx-l">' + esc(t.tag) + '</span><span class="crx-d">' + esc(t.head) + '</span><span class="crx-bf-go">' + esc(t.cta) + "</span></a>";
+      }).join("") + "</div></section>");
+      TILES.forEach(function (t, i) {
+        if (!t.product) return;
+        getJSON("/" + t.product + ".html").then(function (d) {
+          var el = document.querySelector('[data-crx-bf-prod="' + i + '"]');
+          if (el && d.product && d.product.image) el.style.backgroundImage = "url(" + CDN + d.product.image + "/600x600x1/image.jpg)";
+        }).catch(function () {});
+      });
+    }
+  }
 }
