@@ -1674,6 +1674,7 @@ function crxInitProductRows() {
 
 
 
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1715,7 +1716,7 @@ function crxInitBlackFriday() {
       sources: ["/brands/bont-cycling/"], tag: true, early: true },
     { id: "wahoo", title: "Wahoo trainers & computers", nav: "Wahoo", sub: "KICKR trainers and ELEMNT computers at Black Friday prices.",
       sources: ["/brands/wahoo/"], keep: /kickr|elemnt|bolt|roam|rollr|\bace\b/i,
-      drop: /freehub|feet|floor mat/i, tag: false },
+      drop: /freehub|feet|floor mat/i, tag: false, saleOnly: true },
     { id: "ski", title: "Nordic ski", sub: "Skis, boots and poles at 20% off or more.",
       sources: ["/sale/xc-ski/"], slugs: ["salomon-s-max-carbon-skate-mv-boot"], min: 0.20, tag: true, pin: ["salomon-s-max-carbon-skate-mv-boot"],
       promo: true },
@@ -1991,7 +1992,7 @@ function crxInitBlackFriday() {
           if (s.keep && !s.keep.test(p.title || "")) return;
           if (s.drop && s.drop.test(p.title || "")) return;
           if (!p.image || NO_IMAGE.indexOf(p.image) > -1) return;           /* no photo: leave it off */
-          if ((s.tag === true || s.tag === "plain") && !(p.price && p.price.price_old > p.price.price)) return; /* not actually discounted */
+          if ((s.tag === true || s.tag === "plain" || s.saleOnly) && !(p.price && p.price.price_old > p.price.price)) return; /* not actually discounted */
           if (s.min && !(p.price && p.price.price_old > 0 && 1 - p.price.price / p.price.price_old >= s.min - 0.005)) return;
           if (s.skip && s.skip.test(slug)) return;
           if (s.id !== "door-crashers" && DC[slug]) return;
