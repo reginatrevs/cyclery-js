@@ -1450,7 +1450,7 @@ function crxInitSaleBadges() {
   var SHIP_SOON = {
     slugs: ["wahoo-kickr-core-2-w-zwift-cogo", "wahoo-kickr-core-2-w-11s-cassette"],
     stock: "Available · Ships in 2–3 business days",
-    text: "We order this one in for you the same day. Ready for pickup or shipped in 2–3 business days.",
+    text: "Ready for pickup or shipped in 2–3 business days.",
     end: BF_END
   };
   function doShipSoon() {
