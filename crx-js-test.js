@@ -1437,6 +1437,7 @@ function crxInitSaleBadges() {
     ".crx-so-note{background:#FBE9E9;border-left:3px solid #A41314;color:#5A0A0B;" +
       "padding:10px 12px;margin:0 0 12px;font-size:14px;font-weight:600;line-height:1.4}" +
     ".out-of-stock[data-crx-so]{color:#A41314;font-weight:700}" +
+    ".out-of-stock[data-crx-ss]{color:#1a7f37;font-weight:700}" +
     ".crx-so-cart{margin:6px 0 0;font-size:12px;font-weight:700;color:#A41314;line-height:1.35}";
   document.head.appendChild(style);
 
@@ -1444,6 +1445,33 @@ function crxInitSaleBadges() {
   var SO_KEY = "crxSpecialOrders";
   function soLoad() { try { return JSON.parse(localStorage.getItem(SO_KEY) || "[]"); } catch (e) { return []; } }
   function soSave(list) { try { localStorage.setItem(SO_KEY, JSON.stringify(list.slice(-20))); } catch (e) {} }
+
+  /* Backorder items we can get fast (ordered from the distributor the same day) */
+  var SHIP_SOON = {
+    slugs: ["wahoo-kickr-core-2-w-zwift-cogo", "wahoo-kickr-core-2-w-11s-cassette"],
+    stock: "Available · Ships in 2–3 business days",
+    text: "We order this one in for you the same day. Ready for pickup or shipped in 2–3 business days.",
+    end: BF_END
+  };
+  function doShipSoon() {
+    if (!document.querySelector(".product__price-wrapper")) return;
+    if (SHIP_SOON.slugs.indexOf(slugOf(location.pathname)) < 0) return;
+    if (!preview && Date.now() >= Date.parse(SHIP_SOON.end)) return;
+    var stock = null;
+    Array.prototype.forEach.call(document.querySelectorAll(".out-of-stock"), function (el) {
+      if (el.getAttribute("data-crx-ss") || /on backorder/i.test(el.textContent)) stock = el;
+    });
+    var note = document.querySelector(".crx-ss-note");
+    if (!stock) { if (note) note.parentNode.removeChild(note); return; }
+    if (!stock.getAttribute("data-crx-ss")) { stock.setAttribute("data-crx-ss", "1"); stock.textContent = SHIP_SOON.stock; }
+    var btn = document.querySelector(".btn--add-to-cart");
+    if (btn && !note) {
+      note = document.createElement("div");
+      note.className = "crx-so-note crx-ss-note";
+      note.textContent = SHIP_SOON.text;
+      btn.parentElement.parentNode.insertBefore(note, btn.parentElement);
+    }
+  }
 
   function doSpecialOrderNote() {
     if (!document.querySelector(".product__price-wrapper")) return;
@@ -1536,7 +1564,7 @@ function crxInitSaleBadges() {
     row.parentNode.insertBefore(note, row);
   }
 
-  function run() { doCards(); doProductPage(); doSpecialOrderNote(); doDoorCrasherNote(); doCartNotes(); }
+  function run() { doCards(); doProductPage(); doSpecialOrderNote(); doShipSoon(); doDoorCrasherNote(); doCartNotes(); }
   run();
 
   /* Re-run when the theme swaps prices (size picked) or loads more products */
@@ -1675,6 +1703,7 @@ function crxInitProductRows() {
 
 
 
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1716,7 +1745,7 @@ function crxInitBlackFriday() {
       sources: ["/brands/bont-cycling/"], tag: true, early: true },
     { id: "wahoo", title: "Wahoo trainers & computers", nav: "Wahoo", sub: "KICKR trainers and ELEMNT computers at Black Friday prices.",
       sources: ["/brands/wahoo/"], keep: /kickr|elemnt|bolt|roam|rollr|\bace\b/i,
-      drop: /freehub|feet|floor mat/i, tag: false, saleOnly: true },
+      drop: /freehub|feet|floor mat/i, tag: true, saleOnly: true },
     { id: "ski", title: "Nordic ski", sub: "Skis, boots and poles at 20% off or more.",
       sources: ["/sale/xc-ski/"], slugs: ["salomon-s-max-carbon-skate-mv-boot"], min: 0.20, tag: true, pin: ["salomon-s-max-carbon-skate-mv-boot"],
       promo: true },
