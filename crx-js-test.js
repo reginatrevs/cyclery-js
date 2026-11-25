@@ -1704,6 +1704,9 @@ function crxInitProductRows() {
 
 
 
+
+
+
 /* ───────────────────────────────────────────────────
    9. BLACK FRIDAY  (homepage takeover + landing page)
    Turns on by itself Nov 20 at 12:00 am (Toronto) and off Dec 1.
@@ -1768,6 +1771,12 @@ function crxInitBlackFriday() {
     { tag: "Clothing & helmets", big: "−70%", line: "Kit, base layers, winter gear and helmets.", cta: "Shop clothing →", url: PAGE + "#clothing",
       img: CDN + "31781707/1200x1200x1/clothing.jpg", up: "clothing" }
   ];
+
+  /* Full-price product push between the door crashers and the tiles (no discount) */
+  var PUSH = { url: "/zwift-ride-v2-with-kickr-core-2.html", img: CDN + "78498102/800x800x2/zwift-ride.jpg",
+    tag: "In stock now", title: "Zwift Ride", sub: "with KICKR Core 2",
+    line: "Smart frame, virtual shifting and KICKR Core 2 trainer. Everything you need to ride Zwift all winter. In-store pickup.",
+    price: "$2,099.99", cta: "Shop Zwift Ride →" };
 
   /* Lightspeed "No image available" placeholders uploaded as product photos */
   var NO_IMAGE = [58993200, 58994769, 58994776, 58995352];
@@ -1921,6 +1930,18 @@ function crxInitBlackFriday() {
       ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__body{left:52%;right:0;top:0;bottom:0;background:#000;justify-content:center;padding:48px 56px;gap:14px}",
       ".crx-lrfs-mount.crx-lrfs--solo .crx-lrfs .crx-lrfs__head{max-width:none;font-size:clamp(34px,4vw,60px);text-transform:uppercase}",
       ".crx-lrfs__more{font-size:17px;line-height:1.5;opacity:.85;max-width:440px}",
+      /* full-price push banner */
+      ".crx-bf-push{width:100vw;margin-left:calc(50% - 50vw);padding:24px 56px 0}",
+      ".crx-bf-push a{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:400px;background:#000;color:#fff!important;text-decoration:none!important}",
+      ".crx-bf-push__img{background:#F2F2EF center/contain no-repeat;background-blend-mode:multiply;background-origin:content-box;padding:28px}",
+      ".crx-bf-push__body{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;padding:48px 56px}",
+      ".crx-bf-push .crx-l{background:var(--neon);color:#000;font-size:11px;padding:5px 9px}",
+      ".crx-bf-push__t{font-family:'Archivo',Arial,sans-serif;font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;font-size:clamp(40px,4.6vw,72px);color:var(--neon)}",
+      ".crx-bf-push__t small{display:block;font-size:.42em;color:#fff;letter-spacing:0;margin-top:8px}",
+      ".crx-bf-push__line{font-size:17px;line-height:1.5;opacity:.85;max-width:440px}",
+      ".crx-bf-push__p{font-family:'Archivo',Arial,sans-serif;font-weight:900;font-size:30px}",
+      ".crx-bf-push .crx-bf-go{font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid var(--neon);padding-bottom:2px}",
+      "@media(max-width:640px){.crx-bf-push{padding:16px 16px 0}.crx-bf-push a{grid-template-columns:1fr;min-height:0}.crx-bf-push__img{height:240px;padding:16px}.crx-bf-push__body{padding:24px 20px;gap:10px}.crx-bf-push__line{font-size:15px}}",
       /* homepage tiles */
       ".crx-bf-tiles{width:100vw;margin-left:calc(50% - 50vw);padding:24px 56px 40px}",
       ".crx-bf-tiles__in{max-width:1328px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}",
@@ -2230,6 +2251,9 @@ function crxInitBlackFriday() {
         '<div class="crx-bf crx-bf-homedc"><section class="crx-hpr" id="crx-bf-home-dc"><div class="crx-hpr__head"><div>' +
         '<p class="crx-hpr__kicker">One-off frames &amp; bikes<span data-crx-bf-dcup></span></p><h2 class="crx-hpr__title">Door crashers</h2>' +
         '</div><a class="crx-hpr__all" href="' + PAGE + '#door-crashers">See all →</a></div><div class="crx-hpr__grid"></div></section></div>' +
+        (live && PUSH ? '<section class="crx-bf crx-bf-push"><a href="' + PUSH.url + '"><span class="crx-bf-push__img" style="background-image:url(' + PUSH.img + ')"></span>' +
+          '<span class="crx-bf-push__body"><span class="crx-l">' + esc(PUSH.tag) + '</span><span class="crx-bf-push__t">' + esc(PUSH.title) + '<small>' + esc(PUSH.sub) + '</small></span>' +
+          '<span class="crx-bf-push__line">' + esc(PUSH.line) + '</span><span class="crx-bf-push__p">' + esc(PUSH.price) + '</span><span class="crx-bf-go">' + esc(PUSH.cta) + '</span></span></a></section>' : "") +
         (live ? '<section class="crx-bf crx-bf-tiles"><div class="crx-bf-tiles__in">' + TILES.map(function (t, i) {
           return '<a class="crx-bf-tile" href="' + t.url + '" style="background-image:url(' + t.img + ')">' +
             '<span class="crx-l">' + esc(t.tag) + '</span><span class="crx-d crx-bf-tile__big" data-crx-bf-tile="' + i + '">' + esc(t.big) + '</span>' +
