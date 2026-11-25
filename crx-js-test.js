@@ -1448,7 +1448,7 @@ function crxInitSaleBadges() {
 
   /* Backorder items we can get fast (ordered from the distributor the same day) */
   var SHIP_SOON = {
-    slugs: ["wahoo-kickr-core-2-w-11s-cassette"],
+    slugs: ["wahoo-kickr-core-2-w-11s-cassette", "wahoo-kickr-v6-w-zwift-click-and-cog"],
     stock: "Available · Ships in 2–3 business days",
     text: "Ready for pickup or shipped in 2–3 business days. Black Friday items are final sale.",
     end: BF_END
